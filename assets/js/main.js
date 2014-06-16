@@ -13,20 +13,6 @@ function createBaseImg(id) {
   return img;
 }
 
-function createImg(x, y) {
-  var img = document.createElement("img");
-  img.src = "https://a248.e.akamai.net/assets.github.com/images/icons/emoji/arrow_down.png"; 
-  img.id= x + "_" + y + "_" + "emoji";
-  img.alt=":arrow_down:";
-  img.class = "emoji"; 
-  img.draggable="true";
-  img.height="20";
-  img.width="20";
-  img.align="absmiddle";
-  img.setAttribute("ondragstart", "f_dragstart(event)");
-  return img;
-}
-
 function createDropboxDiv(id) {
   var div = document.createElement("span");
   div.id = id;
@@ -59,7 +45,7 @@ function generate() {
   for (y=0;y<height;y++) {
     for (x=0;x<width;x++) {
       var div = createDropboxDiv(x+"_"+y+"_"+"dropbox")
-      var img = createImg(x, y);
+      var img = createBaseImg("arrow_down");
       div.appendChild(img);
       dropbox.appendChild(div);
     }
