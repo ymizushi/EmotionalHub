@@ -29,10 +29,11 @@ function generate() {
   for (var i =palette.childNodes.length-1; i>=0; i--) {
     palette.removeChild(palette.childNodes[i]);
   }
-  for (i=0;i<EMOHUB.emojiTemplate.length;i++) {
+  for (var i=0;i<EMOHUB.emojiTemplate.length;i++) {
     var img = createBaseImg(EMOHUB.emojiTemplate[i]);
+    console.log(i);
     palette.appendChild(img);
-    if (i%40==0) {
+    if ((i+1)%40 == 0) {
       var br = document.createElement("br");
       palette.appendChild(br);
     }
@@ -42,8 +43,8 @@ function generate() {
   for (var i =dropbox.childNodes.length-1; i>=0; i--) {
     dropbox.removeChild(dropbox.childNodes[i]);
   }
-  for (y=0;y<height;y++) {
-    for (x=0;x<width;x++) {
+  for (var y=0;y<height;y++) {
+    for (var x=0;x<width;x++) {
       var div = createDropboxDiv(x+"_"+y+"_"+"dropbox")
       var img = createBaseImg("arrow_down");
       div.appendChild(img);
