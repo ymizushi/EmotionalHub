@@ -2,7 +2,7 @@
     "name" : "emohub",
     "version" : "0.0.1",
     "dependencies" : {
-        "jquery" : "1.8",
-        "jasmine" : "2.0",
+        "jquery" : "2.1",
+        "jasmine" : "2.0"
     }
 }

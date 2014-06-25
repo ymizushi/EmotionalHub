@@ -18,7 +18,7 @@ function createDropboxDiv(id) {
   div.id = id;
   div.setAttribute("ondragover", "f_dragover(event)");
   div.setAttribute("ondrop", "f_drop(event)");
-  return div
+  return div;
 }
 
 function generate() {

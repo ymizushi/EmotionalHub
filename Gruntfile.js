@@ -6,7 +6,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'assets/js/Emohub.js',
-          'assets/jsmain.js',
+          'assets/js/main.js',
         ],
         dest: 'build/js/emohub.js'
       }

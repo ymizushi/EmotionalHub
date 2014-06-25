@@ -1,5 +1,5 @@
 # EMOHUB
-the making tool for github-emoji art.
+the toolset for making github-emoji art.
 
 ### Initialize
 ```sh

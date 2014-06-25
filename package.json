@@ -5,9 +5,9 @@
   "devDependencies": {
     "grunt": "~0.4.0-rc4",
     "grunt-contrib-concat": "~0.1.3",
-    "grunt-contrib-uglify": "~0.1.2"
+    "grunt-contrib-uglify": "~0.5.0"
   },
-  "description": "the making tool for github-emoji art.",
+  "description": "the toolset for making github-emoji art.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
