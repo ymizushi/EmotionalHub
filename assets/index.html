@@ -1,20 +1,12 @@
 <html>
 <head>
 <title>github絵文字メーカー</title>
-<style>
-#palette {
-	/*単なるスタイリング*/
-	background-color:#FF9966; border:1px solid #cc3333;
-}
-#dropbox {
-	/*単なるスタイリング*/
-	background-color:#CCFF66; border:1px solid #00cc00;
-	/*以下はwebkit系ブラウザでドラッグ＆ドロップを動かすための指定（ブラウザのサポートが進めば、必要なくなると思われます）*/
-	-khtml-user-drag: element;
-}
-</style>
-<script src="js/Emohub.js"></script>
-<script src="js/main.js"></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheet/index.css">
+
+<script src="js/Emohub.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+
 </head>
 <body>
 <input id="width_button" type="number" name="width" value="5" />
@@ -22,7 +14,7 @@
 <input id="generate_button" type="button" name="generate" value="生成" onclick="generate()" />
 <textarea id="generate_text" name="generate_text" value="" /></textarea>
 
-<div id="palette"></div>
+<div id="pallet"></div>
 
 <div id="dropbox"> </div>
 

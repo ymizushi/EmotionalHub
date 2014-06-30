@@ -1,4 +1,4 @@
-EMOHUB === undefined ? (throw "EMOHUB is not defined.")
+EMOHUB === undefined ? (throw "Not defined.")
 
 EMOHUB.Tag = function (tagName, attribute, value) {
   this.tagName = tagName;

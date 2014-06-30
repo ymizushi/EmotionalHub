@@ -1,4 +1,4 @@
-# EMOHUB
+# Emotional Hub
 the toolset for making github-emoji art.
 
 ### Initialize

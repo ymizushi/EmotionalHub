@@ -21,25 +21,25 @@ function createDropboxDiv(id) {
   return div;
 }
 
-function generate() {
-  width = document.getElementById("width_button").value;
-  height = document.getElementById("height_button").value;
-
-  var palette = document.getElementById("palette");
-  for (var i =palette.childNodes.length-1; i>=0; i--) {
-    palette.removeChild(palette.childNodes[i]);
+function initPallet(pallet, height, width) {
+  // パレット初期化
+  for (var i=pallet.childNodes.length-1;i>=0; i--) {
+    pallet.removeChild(pallet.childNodes[i]);
   }
+
+  // パレット追加
   for (var i=0;i<EMOHUB.emojiTemplate.length;i++) {
     var img = createBaseImg(EMOHUB.emojiTemplate[i]);
-    console.log(i);
-    palette.appendChild(img);
+    pallet.appendChild(img);
     if ((i+1)%40 == 0) {
       var br = document.createElement("br");
-      palette.appendChild(br);
+      pallet.appendChild(br);
     }
   }
+  return pallet;
+}
 
-  var dropbox = document.getElementById("dropbox");
+function initDropbox(dropbox) {
   for (var i =dropbox.childNodes.length-1; i>=0; i--) {
     dropbox.removeChild(dropbox.childNodes[i]);
   }
@@ -53,6 +53,17 @@ function generate() {
     var br = document.createElement("br")
     dropbox.appendChild(br);
   }
+}
+
+function generate() {
+  width = document.getElementById("width_button").value;
+  height = document.getElementById("height_button").value;
+
+  var pallet = document.getElementById("pallet");
+  initPallet(pallet, height, width);
+
+  var dropbox = document.getElementById("dropbox");
+  initDropbox(dropbox);
 }
 
 function f_dragstart(event){
