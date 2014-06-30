@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['assets/js/Emohub.js', 'assets/js/main.js'],
-        dest: 'build/js/emohub.js'
+        dest: 'public/js/build/emohub.js'
       }
     },
  
@@ -32,8 +32,8 @@ module.exports = function(grunt) {
           banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'build/js/emohub.js',
-        dest: 'build/js/emohub.min.js'
+        src: 'public/js/build/emohub.js',
+        dest: 'public/js/build/emohub.min.js'
       }
     }
   });
