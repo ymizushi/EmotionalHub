@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 
     jasmine: {
       emohub: {
-        src: 'assets/js/Emohub.js',
+        src: 'public/js/build/emohub.js',
         options: {
           specs: 'spec/*Spec.js',
           helpers: 'spec/*Helper.js'
@@ -21,7 +21,11 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['assets/js/Emohub.js', 'assets/js/main.js'],
+        src: [
+          'assets/js/Emohub.js',
+          'assets/js/Pallet.js',
+          'assets/js/main.js'
+        ],
         dest: 'public/js/build/emohub.js'
       }
     },
