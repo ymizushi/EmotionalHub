@@ -1,23 +1,28 @@
+
 function createBaseImg(id) {
   var img = document.createElement("img");
   img.id =  ":" + id + ":";
   img.class = "emoji"; 
   img.title = ":" + id + ":"; 
   img.alt = ":" + id + ":";
-  img.src = "https://a248.e.akamai.net/assets.github.com/images/icons/emoji/" + id + ".png"; 
+  img.src = "image/emoji/" + id + ".png"; 
   img.height="20";
   img.width="20";
   img.align="absmiddle";
   img.draggable="true";
-  img.setAttribute("ondragstart", "f_dragstart(event)");
+  img.addEventListener("dragstart", f_dragstart)
+  console.log(img);
+  // img.setAttribute("ondragstart", "f_dragstart(event)");
   return img;
 }
 
 function createDropboxDiv(id) {
   var div = document.createElement("span");
   div.id = id;
-  div.setAttribute("ondragover", "f_dragover(event)");
-  div.setAttribute("ondrop", "f_drop(event)");
+  div.addEventListener("dragover", f_dragover);
+  // div.setAttribute("ondragover", "f_dragover(event)");
+  div.addEventListener("drop", f_drop);
+  // div.setAttribute("ondrop", "f_drop(event)");
   return div;
 }
 
@@ -55,7 +60,14 @@ function initDropbox(dropbox) {
   }
 }
 
-function generate() {
+document.addEventListener('DOMContentLoaded', function () {
+  generateButton = document.getElementById("generate_button");
+  generateButton.addEventListener("click", clickHandler);
+});
+
+
+function clickHandler (e) {
+  console.log("init");
   width = document.getElementById("width_button").value;
   height = document.getElementById("height_button").value;
 
@@ -67,6 +79,7 @@ function generate() {
 }
 
 function f_dragstart(event){
+  console.log("drag start");
   event.dataTransfer.setData("text", event.target.id);
 }
 
