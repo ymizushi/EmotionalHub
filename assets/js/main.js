@@ -1,3 +1,46 @@
+var math = {
+  plus: function (a, b) {
+    return a + b;
+  },
+  minus: function (a, b) {
+    return a - b;
+  }, 
+  bi: function (a, b) {
+    return a * b;
+  },
+  div: function (a, b) {
+    return a / b;
+  }
+}
+
+function eval(x, env) {
+  if (x instanceof Array) {
+    if (x[0] == 'if') {
+      testExp = x[1];
+      thenExp = x[2];
+      elseExp = x[3];
+      if (eval(testExp, env)) {
+        return eval(thenExp);
+      } else {
+        return eval(elseExp);
+      }
+    } else if (x[0] == '+') {
+      return x[1] + x[2];
+    } else if (x[0] == '-') {
+      return x[1] - x[2];
+    } else if (x[0] == '*') {
+      return x[1] * x[2];
+    } else if (x[0] == '/') {
+      return x[1] / x[2];
+    } else if (x[0] == '=') {
+      return x[1] == x[2];
+    } else if (x[0] == '<') {
+      return x[1] < x[2];
+    }
+  } else {
+  
+  }
+}
 
 function createBaseImg(id) {
   var img = document.createElement("img");
