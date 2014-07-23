@@ -13,16 +13,31 @@ var math = {
   }
 }
 
+
+var glovalEnv = {};
+
 function eval(x, env) {
   if (x instanceof Array) {
     if (x[0] == 'if') {
-      testExp = x[1];
-      thenExp = x[2];
-      elseExp = x[3];
+      var testExp = x[1];
+      var thenExp = x[2];
+      var elseExp = x[3];
       if (eval(testExp, env)) {
         return eval(thenExp, env);
       } else {
         return eval(elseExp, env);
+      }
+    } else if (x[0] == 'def') {
+      var symbol = x[1];
+      var value = x[2];
+      env[symbol] = value;
+    } else if (x[0] == 'defn') {
+      var symbol = x[1];
+      var args = x[2];
+      var exp = x[3];
+      env[symbol] = function (variable) {
+        env[args[0]] =  variable;
+        return eval(exp, env);
       }
     } else if (x[0] == '+') {
       var sum = 0;
@@ -56,13 +71,19 @@ function eval(x, env) {
   } else {
     if (typeof(x) == 'number') {
       return x;
-    }
+    } else if (typeof(x[0]) == 'string') {
+      if (env[x]) {
+        return env[x];
+      } else {
+        throw 'symbol is not defined.'
+      }
   }
 }
 
-console.log(eval(['=', ['+',1, 2 ,4 ,5, ['*', 1, 2 ,10, 5]], ['+', 100, 12]], null));
-console.log(eval(['=', 4, ['*', 1 , 4]], null));
-console.log(eval(['=', 2, ['+', 1 ,2]], null));
+console.log(eval(['if', ['=', 2, 1], ['+', 3, 5], ['*', 10, 10]], null));
+// console.log(eval(['=', ['+',1, 2 ,4 ,5, ['*', 1, 2 ,10, 5]], ['+', 100, 12]], null));
+// console.log(eval(['=', 4, ['*', 1 , 4]], null));
+// console.log(eval(['=', 2, ['+', 1 ,2]], null));
 
 function createBaseImg(id) {
   var img = document.createElement("img");
