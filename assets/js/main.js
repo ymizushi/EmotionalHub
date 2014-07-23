@@ -20,27 +20,49 @@ function eval(x, env) {
       thenExp = x[2];
       elseExp = x[3];
       if (eval(testExp, env)) {
-        return eval(thenExp);
+        return eval(thenExp, env);
       } else {
-        return eval(elseExp);
+        return eval(elseExp, env);
       }
     } else if (x[0] == '+') {
-      return x[1] + x[2];
+      var sum = 0;
+      for(var i=1;i < x.length;++i) {
+        sum += eval(x[i], env);
+      }
+      return sum;
     } else if (x[0] == '-') {
-      return x[1] - x[2];
+      var sum = 0;
+      for(var i=1;i < x.length;++i) {
+        sum -= eval(x[i], env);
+      }
+      return sum;
     } else if (x[0] == '*') {
-      return x[1] * x[2];
+      var sum = 1;
+      for(var i=1;i < x.length;++i) {
+        sum *= eval(x[i], env);
+      }
+      return sum;
     } else if (x[0] == '/') {
-      return x[1] / x[2];
+      var sum = 1;
+      for(var i=1;i < x.length;++i) {
+        sum /= eval(x[i], env);
+      }
+      return sum;
     } else if (x[0] == '=') {
-      return x[1] == x[2];
+      return eval(x[1], env) == eval(x[2], env);
     } else if (x[0] == '<') {
-      return x[1] < x[2];
+      return eval(x[1], env) < eval(x[2], env);
     }
   } else {
-  
+    if (typeof(x) == 'number') {
+      return x;
+    }
   }
 }
+
+console.log(eval(['=', ['+',1, 2 ,4 ,5, ['*', 1, 2 ,10, 5]], ['+', 100, 12]], null));
+console.log(eval(['=', 4, ['*', 1 , 4]], null));
+console.log(eval(['=', 2, ['+', 1 ,2]], null));
 
 function createBaseImg(id) {
   var img = document.createElement("img");
