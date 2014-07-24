@@ -13,8 +13,25 @@ var math = {
   }
 }
 
+function Env (outer) {
+  this.outer = outer;
+  this.dict = {};
+}
 
-var glovalEnv = {};
+Env.prototype.find = function (key) {
+  if (this.dict[key]) {
+    return this.dict;
+  } else {
+    return this.outer.find(key);
+  }
+}
+
+originalEnv = new Env(null);
+originalEnv.dict['hoge'] = 'bar';
+env = new Env(originalEnv);
+env.dict['foo'] = 'piyo';
+
+console.log(env.find('foo'));
 
 function eval(x, env) {
   if (x instanceof Array) {
@@ -27,18 +44,15 @@ function eval(x, env) {
       } else {
         return eval(elseExp, env);
       }
+    } else if (x[0] == 'do') {
+      for(var i=1;i < x.length-1;++i) {
+        eval(x[i], env);
+      }
+      return eval(x[x.length-1], env);
     } else if (x[0] == 'def') {
       var symbol = x[1];
       var value = x[2];
-      env[symbol] = value;
-    } else if (x[0] == 'defn') {
-      var symbol = x[1];
-      var args = x[2];
-      var exp = x[3];
-      env[symbol] = function (variable) {
-        env[args[0]] =  variable;
-        return eval(exp, env);
-      }
+      env.dict[symbol] = eval(value, env);
     } else if (x[0] == '+') {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
@@ -71,16 +85,18 @@ function eval(x, env) {
   } else {
     if (typeof(x) == 'number') {
       return x;
-    } else if (typeof(x[0]) == 'string') {
-      if (env[x]) {
-        return env[x];
+    } else if (typeof(x) == 'string') {
+      if (env.find(x)) {
+        return eval(env.find(x)[x], env);
       } else {
         throw 'symbol is not defined.'
       }
   }
 }
+}
 
-console.log(eval(['if', ['=', 2, 1], ['+', 3, 5], ['*', 10, 10]], null));
+console.log(eval(['do', ['def', 'hoge', 18], ['+', 'hoge', 3]], new Env(null)));
+// console.log(eval(['if', ['=', 2, 1], ['+', 3, 5], ['*', 10, 10]], null));
 // console.log(eval(['=', ['+',1, 2 ,4 ,5, ['*', 1, 2 ,10, 5]], ['+', 100, 12]], null));
 // console.log(eval(['=', 4, ['*', 1 , 4]], null));
 // console.log(eval(['=', 2, ['+', 1 ,2]], null));
