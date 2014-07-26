@@ -23,13 +23,14 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'assets/js/EMOHUB.js',
-          'assets/js/EMOHUB.Main.js',
+          'assets/js/EMOHUB.Main.js'
         ],
         dest: 'public/js/build/emohub.js'
       },
       emola: {
         src: [
-          'assets/js/Emola.js',
+          'assets/js/EMOLA.js',
+          'assets/js/EMOLA.Main.js'
         ],
         dest: 'public/js/build/emola.js'
       }

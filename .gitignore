@@ -4,3 +4,4 @@ node_modules
 assets/js/tags
 _SPECRUNNER.html
 .grunt
+.DS_Store

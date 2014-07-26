@@ -20,8 +20,7 @@ EMOLA.Fn = function (args, exp, outer) {
 
 EMOLA.Fn.prototype.exec = function (valueArgs) {
   var env = new EMOLA.Env(this.outer);
-  var i=0;
-  for (i=0;i<this.args.length;i++) {
+  for (var i=0;i<this.args.length;i++) {
     env.dict[this.args[i]] = valueArgs[i];
   }
   return ev(this.exp, env);
@@ -99,9 +98,10 @@ function ev(x, env) {
   }
 }
 
-originalEnv = new EMOLA.Env(null);
-originalEnv.dict['hoge'] = 'bar';
-env = new EMOLA.Env(originalEnv);
-env.dict['foo'] = 'piyo';
+function tokenize(string) {
+  return string.replace('(', ' ( ').replace(')', ' ) ').split(' ');
+}
+
+var re = /ab+c/;
 
 print(ev(['do', ['def', 'hoge', ['fn', ['x', 'y', 'z'], ['*', 'x', 'y', 'z']]], ['hoge', 4, 3, 10]], new EMOLA.Env(null)));
