@@ -1,9 +1,11 @@
-function Env (outer) {
+var EMOLA = { REVISION: '0.0.1'};
+
+EMOLA.Env = function (outer) {
   this.outer = outer;
   this.dict = {};
-}
+};
 
-Env.prototype.find = function (key) {
+EMOLA.Env.prototype.find = function (key) {
   if (this.dict[key]) {
     return this.dict;
   } else {
@@ -11,25 +13,19 @@ Env.prototype.find = function (key) {
   }
 }
 
-
-function Fn(args, exp, outer) {
+EMOLA.Fn = function (args, exp, outer) {
   this.args = args;
   this.exp = exp;
   this.outer = outer;
 }
 
-Fn.prototype.exec = function (valueArgs) {
+EMOLA.Fn.prototype.exec = function (valueArgs) {
   env = new Env(this.outer)
   for (var i=0;i<this.args.length;i++) {
     env.dict[this.args[i]] = valueArgs[i];
   }
   return eval(this.exp, env)
 }
-
-originalEnv = new Env(null);
-originalEnv.dict['hoge'] = 'bar';
-env = new Env(originalEnv);
-env.dict['foo'] = 'piyo';
 
 function eval(x, env) {
   if (x instanceof Array) {
@@ -104,9 +100,9 @@ function eval(x, env) {
   }
 }
 
+originalEnv = new Env(null);
+originalEnv.dict['hoge'] = 'bar';
+env = new Env(originalEnv);
+env.dict['foo'] = 'piyo';
+
 console.log(eval(['do', ['def', 'hoge', ['fn', ['x', 'y', 'z'], ['+', 'x', 'y', 'z']]], ['hoge', 2, 3, 10]], new Env(null)));
-// console.log(eval(['if', ['=', 2, 1], ['+', 3, 5], ['*', 10, 10]], null));
-// console.log(eval(['=', ['+',1, 2 ,4 ,5, ['*', 1, 2 ,10, 5]], ['+', 100, 12]], null));
-// console.log(eval(['=', 4, ['*', 1 , 4]], null));
-// console.log(eval(['=', 2, ['+', 1 ,2]], null));
-//
