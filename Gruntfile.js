@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       files: ['assets/js/*.js'],
-      tasks: ['concat', 'jasmine', 'concat:emola']
+      tasks: ['concat', 'concat:emola', 'jasmine']
     },
 
     jasmine: {
@@ -22,9 +22,8 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          'assets/js/Emohub.js',
-          'assets/js/Pallet.js',
-          'assets/js/main.js'
+          'assets/js/EMOHUB.js',
+          'assets/js/EMOHUB.Main.js',
         ],
         dest: 'public/js/build/emohub.js'
       },
