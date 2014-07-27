@@ -1,11 +1,14 @@
 var EMOLA = { REVISION: '0.0.1'};
 
-EMOLA.Env = function (outer) {
+EMOLA.DictEnv = function (outer) {
   this.outer = outer;
   this.dict = {};
 };
 
-EMOLA.Env.prototype.find = function (key) {
+EMOLA.DictEnv.prototype.find = function (key) {
+  if (this.outer === null && !this.dict[key]) {
+    throw 'symbol is not defined.'
+  }
   if (this.dict[key]) {
     return this.dict;
   }
@@ -19,11 +22,11 @@ EMOLA.Fn = function (args, exp, outer) {
 };
 
 EMOLA.Fn.prototype.exec = function (valueArgs) {
-  var env = new EMOLA.Env(this.outer);
+  var dictEnv = new EMOLA.DictEnv(this.outer);
   for (var i=0;i<this.args.length;i++) {
-    env.dict[this.args[i]] = valueArgs[i];
+    dictEnv.dict[this.args[i]] = valueArgs[i];
   }
-  return ev(this.exp, env);
+  return ev(this.exp, dictEnv);
 };
 
 function ev(x, env) {
@@ -86,22 +89,51 @@ function ev(x, env) {
       return func.exec(args);
     }
   } else {
-    if (typeof(x) == 'number') {
-      return x;
+    if (!isNaN(Number(x))) {
+      return Number(x);
     } else if (typeof(x) == 'string') {
       if (env.find(x)) {
         return ev(env.find(x)[x], env);
-      } else {
-        throw 'symbol is not defined.'
       }
     }
   }
 }
 
 function tokenize(string) {
-  return string.replace('(', ' ( ').replace(')', ' ) ').split(' ');
+  return string.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(function (str) { return str ? true : false;});
 }
 
-var re = /ab+c/;
+function ListEnv(outer) {
+  this.outer = outer;
+  this.list = [];
+}
 
-print(ev(['do', ['def', 'hoge', ['fn', ['x', 'y', 'z'], ['*', 'x', 'y', 'z']]], ['hoge', 4, 3, 10]], new EMOLA.Env(null)));
+ListEnv.prototype.push = function (list) {
+  this.list.push(list);
+}
+
+function parse(tokens, nowEnv) {
+  var token = tokens[0];
+  var restToken = tokens.slice(1);
+  if(!(restToken.length > 0)) {
+    return nowEnv;
+  }
+
+  if (token === '(') {
+    var newEnv = new ListEnv(nowEnv);
+    return parse(restToken, newEnv);
+  } else if (token ===')') {
+    nowEnv.outer.push(nowEnv)
+    return parse(restToken, nowEnv.outer);
+  } else {
+    nowEnv.push(token);
+    return parse(restToken, nowEnv);
+  }
+}
+
+var parserEnv = new ListEnv(null);
+var piyo = parse(tokenize('(do (def hoge (fn (x y ) (+ x y))) (hoge 1 2))'), parserEnv)
+
+var parsed = ['do', ['def', 'hoge', ['fn', ['x', 'y'], ['*', 'x', 'y']]], ['hoge', 100, 2]];
+var hoge = ev(parsed, new EMOLA.DictEnv(null));
+console.log(hoge);

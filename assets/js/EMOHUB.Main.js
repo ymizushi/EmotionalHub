@@ -60,7 +60,7 @@ function initDropbox(dropbox) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  generateButton = document.getElementById("generate_button");
+  var generateButton = document.getElementById("generate_button");
   generateButton.addEventListener("click", clickHandler);
 });
 
