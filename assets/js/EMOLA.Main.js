@@ -29,6 +29,12 @@ EMOLA.Fn.prototype.exec = function (valueArgs) {
   return ev(this.exp, dictEnv);
 };
 
+
+EMOLA.Symbol = function (str, type, value) {
+  this.str = str;
+  this.type = type;
+}
+
 function ev(x, env) {
   if (x instanceof Array) {
     if (x[0] === 'if') {
