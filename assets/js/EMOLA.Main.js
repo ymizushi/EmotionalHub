@@ -26,34 +26,34 @@ EMOLA.Fn.prototype.exec = function (valueArgs) {
   for (var i=0;i<this.args.length;i++) {
     dictEnv.dict[this.args[i]] = valueArgs[i];
   }
-  return ev(this.exp, dictEnv);
+  return eval(this.exp, dictEnv);
 };
 
-
-EMOLA.Symbol = function (str, type, value) {
-  this.str = str;
+EMOLA.Symbol = function (name, type, value) {
+  this.name = name;
   this.type = type;
+  this.value = value;
 }
 
-function ev(x, env) {
+function eval(x, env) {
   if (x instanceof Array) {
     if (x[0] === 'if') {
       var testExp = x[1];
       var thenExp = x[2];
       var elseExp = x[3];
-      if (ev(testExp, env)) {
-        return ev(thenExp, env);
+      if (eval(testExp, env)) {
+        return eval(thenExp, env);
       } 
-      return ev(elseExp, env);
+      return eval(elseExp, env);
     } else if (x[0] == 'do') {
       for(var i=1;i < x.length-1;++i) {
-        ev(x[i], env);
+        eval(x[i], env);
       }
-      return ev(x[x.length-1], env);
+      return eval(x[x.length-1], env);
     } else if (x[0] == 'def') {
       var symbol = x[1];
       var value = x[2];
-      env.dict[symbol] = ev(value, env);
+      env.dict[symbol] = eval(value, env);
     } else if (x[0] == 'fn') {
       var args =  x[1];
       var exp = x[2];
@@ -61,31 +61,31 @@ function ev(x, env) {
     } else if (x[0] == '+') {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
-        sum += ev(x[i], env);
+        sum += eval(x[i], env);
       }
       return sum;
     } else if (x[0] == '-') {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
-        sum -= ev(x[i], env);
+        sum -= eval(x[i], env);
       }
       return sum;
     } else if (x[0] == '*') {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
-        sum *= ev(x[i], env);
+        sum *= eval(x[i], env);
       }
       return sum;
     } else if (x[0] == '/') {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
-        sum /= ev(x[i], env);
+        sum /= eval(x[i], env);
       }
       return sum;
     } else if (x[0] == '=') {
-      return ev(x[1], env) == ev(x[2], env);
+      return eval(x[1], env) == eval(x[2], env);
     } else if (x[0] == '<') {
-      return ev(x[1], env) < ev(x[2], env);
+      return eval(x[1], env) < eval(x[2], env);
     } else if (typeof(x[0]) == 'string') {
       func = env.find(x[0])[x[0]];
       args = [];
@@ -99,7 +99,7 @@ function ev(x, env) {
       return Number(x);
     } else if (typeof(x) == 'string') {
       if (env.find(x)) {
-        return ev(env.find(x)[x], env);
+        return eval(env.find(x)[x], env);
       }
     }
   }
@@ -141,5 +141,5 @@ var parserEnv = new ListEnv(null);
 var piyo = parse(tokenize('(do (def hoge (fn (x y ) (+ x y))) (hoge 1 2))'), parserEnv)
 
 var parsed = ['do', ['def', 'hoge', ['fn', ['x', 'y'], ['*', 'x', 'y']]], ['hoge', 100, 2]];
-var hoge = ev(parsed, new EMOLA.DictEnv(null));
+var hoge = eval(parsed, new EMOLA.DictEnv(null));
 console.log(hoge);
