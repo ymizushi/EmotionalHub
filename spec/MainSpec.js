@@ -1,6 +1,13 @@
 describe("Eval test", function() {
   it("constructor", function() {
-    var parsed = ['do', ['def', 'hoge', ['fn', ['x', 'y'], ['*', 'x', 'y']]], ['hoge', 100, 2]];
+      var parsed = [
+        new EMOLA.Symbol(EMOLA.Symbol.DO, null),
+        [new EMOLA.Symbol(EMOLA.Symbol.DEF, null), new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge'),
+          [new EMOLA.Symbol(EMOLA.Symbol.FN, null),
+            [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')],
+            [new EMOLA.Symbol(EMOLA.Symbol.MUL, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]]], 
+        [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 100), new EMOLA.Symbol(EMOLA.Symbol.INT, 2)]
+      ];
     var hoge = eval(parsed, new EMOLA.DictEnv(null));
     expect(hoge).toBe(200);
   });

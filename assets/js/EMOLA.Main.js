@@ -1,5 +1,4 @@
 var EMOLA = { REVISION: '0.0.1'};
-
 EMOLA.DictEnv = function (outer) {
   this.outer = outer;
   this.dict = {};
@@ -7,7 +6,7 @@ EMOLA.DictEnv = function (outer) {
 
 EMOLA.DictEnv.prototype.find = function (key) {
   if (this.outer === null && !this.dict[key]) {
-    throw 'symbol is not defined.'
+    throw 'symbol is not defined.';
   }
   if (this.dict[key]) {
     return this.dict;
@@ -24,7 +23,7 @@ EMOLA.Fn = function (args, exp, outer) {
 EMOLA.Fn.prototype.exec = function (valueArgs) {
   var dictEnv = new EMOLA.DictEnv(this.outer);
   for (var i=0;i<this.args.length;i++) {
-    dictEnv.dict[this.args[i]] = valueArgs[i];
+    dictEnv.dict[this.args[i].value] = valueArgs[i];
   }
   return eval(this.exp, dictEnv);
 };
@@ -34,9 +33,19 @@ EMOLA.Symbol = function (type, value) {
   this.value = value;
 }
 EMOLA.Symbol.FN = 'fn';
+EMOLA.Symbol.VAR = 'var';
 EMOLA.Symbol.STR = 'str';
 EMOLA.Symbol.INT = 'int';
 EMOLA.Symbol.IF = 'if';
+EMOLA.Symbol.DO = 'do';
+EMOLA.Symbol.DEF = 'def';
+EMOLA.Symbol.PLUS = '+';
+EMOLA.Symbol.MINUS = '-';
+EMOLA.Symbol.DIV = '/';
+EMOLA.Symbol.MUL = '*';
+EMOLA.Symbol.EQUAL = '=';
+EMOLA.Symbol.GREATER = '>';
+EMOLA.Symbol.LESS = '<';
 
 EMOLA.Symbol.isSymbol = function (symbol) {
   if (symbol instanceof EMOLA.Symbol) {
@@ -57,7 +66,7 @@ EMOLA.Symbol.prototype.equalToType = function (type) {
 
 function eval(x, env) {
   if (x instanceof Array) {
-    if (x[0] === 'if') {
+    if (x[0].equalToType(EMOLA.Symbol.IF)) {
       var testExp = x[1];
       var thenExp = x[2];
       var elseExp = x[3];
@@ -65,49 +74,49 @@ function eval(x, env) {
         return eval(thenExp, env);
       } 
       return eval(elseExp, env);
-    } else if (x[0] == 'do') {
+    } else if (x[0].equalToType(EMOLA.Symbol.DO)) {
       for(var i=1;i < x.length-1;++i) {
         eval(x[i], env);
       }
       return eval(x[x.length-1], env);
-    } else if (x[0] == 'def') {
+    } else if (x[0].equalToType(EMOLA.Symbol.DEF)) {
       var symbol = x[1];
       var value = x[2];
-      env.dict[symbol] = eval(value, env);
-    } else if (x[0] == 'fn') {
+      env.dict[symbol.value] = eval(value, env);
+    } else if (x[0].equalToType(EMOLA.Symbol.FN)) {
       var args =  x[1];
       var exp = x[2];
       return new EMOLA.Fn(args, exp, env);
-    } else if (x[0] == '+') {
+    } else if (x[0].equalToType(EMOLA.Symbol.PLUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
         sum += eval(x[i], env);
       }
       return sum;
-    } else if (x[0] == '-') {
+    } else if (x[0].equalToType(EMOLA.Symbol.MINUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
         sum -= eval(x[i], env);
       }
       return sum;
-    } else if (x[0] == '*') {
+    } else if (x[0].equalToType(EMOLA.Symbol.MUL)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
         sum *= eval(x[i], env);
       }
       return sum;
-    } else if (x[0] == '/') {
+    } else if (x[0].equalToType(EMOLA.Symbol.DIV)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
         sum /= eval(x[i], env);
       }
       return sum;
-    } else if (x[0] == '=') {
+    } else if (x[0].equalToType(EMOLA.Symbol.EQUAL)) {
       return eval(x[1], env) == eval(x[2], env);
-    } else if (x[0] == '<') {
+    } else if (x[0].equalToType(EMOLA.Symbol.LESS)) {
       return eval(x[1], env) < eval(x[2], env);
-    } else if (typeof(x[0]) == 'string') {
-      func = env.find(x[0])[x[0]];
+    } else if (x[0].equalToType(EMOLA.Symbol.VAR)) {
+      func = env.find(x[0].value)[x[0].value];
       args = [];
       for (var i=1;i<x.length;i++) {
         args.push(x[i]);
@@ -116,11 +125,19 @@ function eval(x, env) {
     }
   } else {
     if (!isNaN(Number(x))) {
-      return Number(x);
-    } else if (typeof(x) == 'string') {
-      if (env.find(x)) {
-        return eval(env.find(x)[x], env);
+      return Number(x); 
+    } else if (typeof x === 'string') {
+      return x; 
+    } else if (x.equalToType(EMOLA.Symbol.INT)) {
+      return Number(x.value);
+    } else if (x.equalToType(EMOLA.Symbol.VAR)) {
+      if (env.find(x.value)) {
+        return eval(env.find(x.value)[x.value], env);
+      } else {
+        throw 'unknown error.';
       }
+    } else if (x.equalToType(EMOLA.Symbol.STR)) {
+      return x.value;
     }
   }
 }
@@ -157,9 +174,12 @@ function parse(tokens, nowEnv) {
   }
 }
 
-var parserEnv = new ListEnv(null);
-var piyo = parse(tokenize('(do (def hoge (fn (x y ) (+ x y))) (hoge 1 2))'), parserEnv)
-
-var parsed = ['do', ['def', 'hoge', ['fn', ['x', 'y'], ['*', 'x', 'y']]], ['hoge', 100, 2]];
+var parsed = [
+  new EMOLA.Symbol(EMOLA.Symbol.DO, null),
+  [new EMOLA.Symbol(EMOLA.Symbol.DEF, null), new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge'),
+    [new EMOLA.Symbol(EMOLA.Symbol.FN, null),
+      [new EMOLA.Symbol(EMOLA.Symbol.STR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.STR, 'y')],
+      [new EMOLA.Symbol(EMOLA.Symbol.MUL, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]]], 
+  [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 100), new EMOLA.Symbol(EMOLA.Symbol.INT, 2)]
+];
 var hoge = eval(parsed, new EMOLA.DictEnv(null));
-console.log(hoge);
