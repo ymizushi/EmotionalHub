@@ -29,11 +29,31 @@ EMOLA.Fn.prototype.exec = function (valueArgs) {
   return eval(this.exp, dictEnv);
 };
 
-EMOLA.Symbol = function (name, type, value) {
-  this.name = name;
+EMOLA.Symbol = function (type, value) {
   this.type = type;
   this.value = value;
 }
+EMOLA.Symbol.FN = 'fn';
+EMOLA.Symbol.STR = 'str';
+EMOLA.Symbol.INT = 'int';
+EMOLA.Symbol.IF = 'if';
+
+EMOLA.Symbol.isSymbol = function (symbol) {
+  if (symbol instanceof EMOLA.Symbol) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+EMOLA.Symbol.prototype.equalToType = function (type) {
+  if (this.type === type) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 
 function eval(x, env) {
   if (x instanceof Array) {
