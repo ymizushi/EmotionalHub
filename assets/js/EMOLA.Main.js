@@ -1,9 +1,7 @@
-var EMOLA = { REVISION: '0.0.1'};
 EMOLA.DictEnv = function (outer) {
   this.outer = outer;
   this.dict = {};
 };
-
 EMOLA.DictEnv.prototype.find = function (key) {
   if (this.outer === null && !this.dict[key]) {
     throw 'symbol is not defined.';

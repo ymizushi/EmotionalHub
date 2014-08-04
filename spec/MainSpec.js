@@ -32,3 +32,11 @@ describe("Symbol test", function() {
     expect(symbol.equalToType(EMOLA.Symbol.IF)).toBe(false);
   });
 });
+
+// describe("Parser test", function() {
+//   it("parse", function() {
+//     var parsed = EMOLA.Parser.parse('(do (def hoge (fn [x y] (* x y))) (hoge 100 2))')
+//     var result = eval(parsed, new EMOLA.DictEnv(null));
+//     expect(result).toBe(200);
+//   });
+// });

@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          // 'assets/js/EMOLA.js',
+          'assets/js/EMOLA.js',
           'assets/js/EMOLA.Main.js'
         ],
         dest: 'public/js/build/emola.js'
