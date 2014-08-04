@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 
     jasmine: {
       emohub: {
-        src: 'public/js/build/emohub.js',
+        src: 'public/js/build/emola.js',
         options: {
           specs: 'spec/*Spec.js',
           helpers: 'spec/*Helper.js'
