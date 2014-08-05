@@ -160,15 +160,16 @@ EMOLA.ListEnv.prototype.push = function (list) {
 EMOLA.parse = function (tokens) {
   var env = [];
   for (var i=0;i<tokens.length;i++) {
-    console.log(tokens);
     if (tokens[i] === '(') {
       env.push(EMOLA.parse(tokens.slice(i+1)));
+      return env;
     } else if (tokens[i] === ')') {
       return env;
     } else {
       env.push(tokens[i]);
     }
   }
+  return env;
 }
 
 EMOLA.atomize = function (token) {
@@ -244,3 +245,5 @@ $(document).ready(function(){
      }
    });
  });
+
+var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);
