@@ -8,7 +8,11 @@ module.exports = function(grunt) {
 
     jasmine: {
       dist: {
-        src: 'public/js/build/emola.js',
+        src: [
+          'public/js/lib/jquery/dist/jquery.js',
+          'public/js/lib/jquery-console/jquery.console.js',
+          'public/js/build/emola.js'
+        ],
         options: {
           specs: 'spec/*Spec.js',
           helpers: 'spec/*Helper.js'
@@ -23,7 +27,8 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'assets/js/EMOLA.js',
-          'assets/js/EMOLA.Main.js'
+          'assets/js/EMOLA.Main.js',
+          'assets/js/EMOLA.Front.js'
         ],
         dest: 'public/js/build/emola.js'
       }

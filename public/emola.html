@@ -1,14 +1,17 @@
 <html>
 <head>
   <title>REPL</title>
-  <link rel="stylesheet" type="text/css" href="stylesheet/index.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="stylesheet/index.css" />
+  <script src="js/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+  <script src="js/lib/jquery-console/jquery.console.js" type="text/javascript"></script>
   <script src="js/build/emola.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="hoge">hoge</div>
-  <form id="eval_form">
-    <textarea id="input_text"  rows="40", cols="100", value="sample"></textarea>
-    <input type="submit" id="eval_button"  value="評価" />
-  </form>
+  <noscript>
+    <p>
+      <strong>Javascriptの実行をを許可してください.</strong>
+    </p>
+  </noscript>
+  <h1>Emola demo</h1>
 </body>
 </html>
