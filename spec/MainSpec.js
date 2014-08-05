@@ -46,7 +46,9 @@ describe("Parser test", function() {
   it("function parser", function() {
       var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);
       expect(result).toEqual(
-      [['-', 2, ['+', 2 ,3]]]
+        [[new EMOLA.Symbol(EMOLA.Symbol.MINUS, null),
+          new EMOLA.Symbol(EMOLA.Symbol.INT, 2),
+            [new EMOLA.Symbol(EMOLA.Symbol.PLUS, null), new EMOLA.Symbol(EMOLA.Symbol.INT, 2) ,new EMOLA.Symbol(EMOLA.Symbol.INT, 3)]]]
     );
   });
 });
