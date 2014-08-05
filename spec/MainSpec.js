@@ -43,18 +43,10 @@ describe("Tokenizer test", function() {
 });
 
 describe("Parser test", function() {
-  it("function tokenize", function() {
-      var result = EMOLA.parse(['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')'], new EMOLA.ListEnv(null));
+  it("function parser", function() {
+      var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')'], []);
     expect(result).toEqual(
-      ['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')']
+      []
     );
-  });
-});
-
-describe("Parser test", function() {
-  it("parse", function() {
-    var parsed = EMOLA.Parser.parse('(do (def hoge (fn [x y] (* x y))) (hoge 100 2))')
-    var result = eval(parsed, new EMOLA.DictEnv(null));
-    expect(result).toBe(200);
   });
 });

@@ -157,28 +157,17 @@ EMOLA.ListEnv.prototype.push = function (list) {
   this.list.push(list);
 }
 
-EMOLA.parse = function (tokens, nowEnv) {
-  var token = tokens[0];
-  var restToken = tokens.slice(1);
-  if(!(restToken.length > 0)) {
-    return nowEnv;
-  }
-
-  if (token === '(') {
-    env = [];
-    for (var i=0;i<tokens.length;i++) {
-
-    
+EMOLA.parse = function (tokens) {
+  var env = [];
+  for (var i=0;i<tokens.length;i++) {
+    console.log(tokens);
+    if (tokens[i] === '(') {
+      env.push(EMOLA.parse(tokens.slice(i+1)));
+    } else if (tokens[i] === ')') {
+      return env;
+    } else {
+      env.push(tokens[i]);
     }
-
-    var newEnv = new EMOLA.ListEnv(nowEnv);
-    return EMOLA.parse(restToken, newEnv);
-  } else if (token ===')') {
-    nowEnv.outer.push(nowEnv)
-    return EMOLA.parse(restToken, nowEnv.outer);
-  } else {
-    nowEnv.push(token);
-    return EMOLA.parse(restToken, nowEnv);
   }
 }
 
