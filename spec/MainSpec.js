@@ -33,6 +33,22 @@ describe("Symbol test", function() {
   });
 });
 
+describe("Tokenizer test", function() {
+  it("function tokenize", function() {
+    var result = EMOLA.tokenize('(def hoge (x y) (+ x y))');
+    expect(result).toEqual(
+      ['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')']
+    );
+  });
+
+  it("equalToType", function() {
+    var symbol = new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge');
+    expect(symbol.equalToType(EMOLA.Symbol.STR)).toBe(true);
+    expect(symbol.equalToType(EMOLA.Symbol.IF)).toBe(false);
+  });
+});
+
+
 // describe("Parser test", function() {
 //   it("parse", function() {
 //     var parsed = EMOLA.Parser.parse('(do (def hoge (fn [x y] (* x y))) (hoge 100 2))')

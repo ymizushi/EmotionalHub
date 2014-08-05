@@ -140,8 +140,10 @@ function eval(x, env) {
   }
 }
 
-function tokenize(string) {
-  return string.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(function (str) { return str ? true : false;});
+EMOLA.tokenize = function (inputStr) {
+  return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
+    function (str) { return str ? true : false;
+  });
 }
 
 function ListEnv(outer) {
