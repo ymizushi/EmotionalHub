@@ -30,13 +30,11 @@ EMOLA.Symbol = function (type, value) {
   this.type = type;
   this.value = value;
 }
-EMOLA.Symbol.FN = 'fn';
-EMOLA.Symbol.VAR = 'var';
-EMOLA.Symbol.STR = 'str';
-EMOLA.Symbol.INT = 'int';
 EMOLA.Symbol.IF = 'if';
 EMOLA.Symbol.DO = 'do';
 EMOLA.Symbol.DEF = 'def';
+EMOLA.Symbol.FN = 'fn';
+
 EMOLA.Symbol.PLUS = '+';
 EMOLA.Symbol.MINUS = '-';
 EMOLA.Symbol.DIV = '/';
@@ -44,6 +42,10 @@ EMOLA.Symbol.MUL = '*';
 EMOLA.Symbol.EQUAL = '=';
 EMOLA.Symbol.GREATER = '>';
 EMOLA.Symbol.LESS = '<';
+
+EMOLA.Symbol.VAR = 'var';
+EMOLA.Symbol.STR = 'str';
+EMOLA.Symbol.INT = 'int';
 
 EMOLA.Symbol.isSymbol = function (symbol) {
   if (symbol instanceof EMOLA.Symbol) {
@@ -146,16 +148,16 @@ EMOLA.tokenize = function (inputStr) {
   });
 }
 
-function ListEnv(outer) {
+EMOLA.ListEnv = function (outer) {
   this.outer = outer;
   this.list = [];
 }
 
-ListEnv.prototype.push = function (list) {
+EMOLA.ListEnv.prototype.push = function (list) {
   this.list.push(list);
 }
 
-function parse(tokens, nowEnv) {
+EMOLA.parse = function (tokens, nowEnv) {
   var token = tokens[0];
   var restToken = tokens.slice(1);
   if(!(restToken.length > 0)) {
@@ -163,14 +165,56 @@ function parse(tokens, nowEnv) {
   }
 
   if (token === '(') {
-    var newEnv = new ListEnv(nowEnv);
-    return parse(restToken, newEnv);
+    env = [];
+    for (var i=0;i<tokens.length;i++) {
+
+    
+    }
+
+    var newEnv = new EMOLA.ListEnv(nowEnv);
+    return EMOLA.parse(restToken, newEnv);
   } else if (token ===')') {
     nowEnv.outer.push(nowEnv)
-    return parse(restToken, nowEnv.outer);
+    return EMOLA.parse(restToken, nowEnv.outer);
   } else {
     nowEnv.push(token);
-    return parse(restToken, nowEnv);
+    return EMOLA.parse(restToken, nowEnv);
+  }
+}
+
+EMOLA.atomize = function (token) {
+  switch (token) {
+    case EMOLA.Symbol.IF:
+      return new EMOLA.Symbol(EMOLA.Symbol.IF, null);
+    case EMOLA.Symbol.DO:
+      return new EMOLA.Symbol(EMOLA.Symbol.DO, null);
+    case EMOLA.Symbol.DEF:
+      return new EMOLA.Symbol(EMOLA.Symbol.DEF, null);
+    case EMOLA.Symbol.FN:
+      return new EMOLA.Symbol(EMOLA.Symbol.FN, null);
+    case EMOLA.Symbol.PLUS:
+      return new EMOLA.Symbol(EMOLA.Symbol.PLUS, null);
+    case EMOLA.Symbol.MINUS:
+      return new EMOLA.Symbol(EMOLA.Symbol.MINUS, null);
+    case EMOLA.Symbol.DIV:
+      return new EMOLA.Symbol(EMOLA.Symbol.DIV, null);
+    case EMOLA.Symbol.MUL:
+      return new EMOLA.Symbol(EMOLA.Symbol.MUL, null);
+    case EMOLA.Symbol.EQUAL:
+      return new EMOLA.Symbol(EMOLA.Symbol.EQUAL, null);
+    case EMOLA.Symbol.GREATER:
+      return new EMOLA.Symbol(EMOLA.Symbol.GREATER, null);
+    case EMOLA.Symbol.LESS:
+      return new EMOLA.Symbol(EMOLA.Symbol.LESS, null);
+  }
+  if (typeof x === 'string') {
+    if (x[0] === '"' || x[0] === "'") {
+      return  new EMOLA.Symbol(EMOLA.Symbol.STR, x.slice(1,-1));
+    } else {
+      return new EMOLA.Symbol(EMOLA.Symbol.VAR, x);
+    }
+  } else if (typeof x === 'number') {
+      return new EMOLA.Symbol(EMOLA.Symbol.INT, x);
   }
 }
 

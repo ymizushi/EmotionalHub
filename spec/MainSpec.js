@@ -40,19 +40,21 @@ describe("Tokenizer test", function() {
       ['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')']
     );
   });
+});
 
-  it("equalToType", function() {
-    var symbol = new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge');
-    expect(symbol.equalToType(EMOLA.Symbol.STR)).toBe(true);
-    expect(symbol.equalToType(EMOLA.Symbol.IF)).toBe(false);
+describe("Parser test", function() {
+  it("function tokenize", function() {
+      var result = EMOLA.parse(['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')'], new EMOLA.ListEnv(null));
+    expect(result).toEqual(
+      ['(', 'def', 'hoge', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')']
+    );
   });
 });
 
-
-// describe("Parser test", function() {
-//   it("parse", function() {
-//     var parsed = EMOLA.Parser.parse('(do (def hoge (fn [x y] (* x y))) (hoge 100 2))')
-//     var result = eval(parsed, new EMOLA.DictEnv(null));
-//     expect(result).toBe(200);
-//   });
-// });
+describe("Parser test", function() {
+  it("parse", function() {
+    var parsed = EMOLA.Parser.parse('(do (def hoge (fn [x y] (* x y))) (hoge 100 2))')
+    var result = eval(parsed, new EMOLA.DictEnv(null));
+    expect(result).toBe(200);
+  });
+});
