@@ -245,5 +245,3 @@ $(document).ready(function(){
      }
    });
  });
-
-var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);

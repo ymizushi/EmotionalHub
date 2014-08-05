@@ -44,7 +44,7 @@ describe("Tokenizer test", function() {
 
 describe("Parser test", function() {
   it("function parser", function() {
-      var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')'], []);
+      var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);
       expect(result).toEqual(
       [['-', 2, ['+', 2 ,3]]]
     );
