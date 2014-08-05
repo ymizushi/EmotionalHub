@@ -161,12 +161,13 @@ EMOLA.parse = function (tokens) {
   var env = [];
   for (var i=0;i<tokens.length;i++) {
     if (tokens[i] === '(') {
-      env.push(EMOLA.parse(tokens.slice(i+1)));
+      var result = EMOLA.parse(tokens.slice(i+1));
+      env.push(result);
       return env;
     } else if (tokens[i] === ')') {
       return env;
     } else {
-      env.push(tokens[i]);
+      env.push(EMOLA.atomize(tokens[i]));
     }
   }
   return env;
@@ -197,14 +198,14 @@ EMOLA.atomize = function (token) {
     case EMOLA.Symbol.LESS:
       return new EMOLA.Symbol(EMOLA.Symbol.LESS, null);
   }
-  if (typeof x === 'string') {
-    if (x[0] === '"' || x[0] === "'") {
-      return  new EMOLA.Symbol(EMOLA.Symbol.STR, x.slice(1,-1));
+  if (typeof token === 'string') {
+    if (token[0] === '"' || token[0] === "'") {
+      return  new EMOLA.Symbol(EMOLA.Symbol.STR, token.slice(1,-1));
     } else {
-      return new EMOLA.Symbol(EMOLA.Symbol.VAR, x);
+      return new EMOLA.Symbol(EMOLA.Symbol.VAR, token);
     }
-  } else if (typeof x === 'number') {
-      return new EMOLA.Symbol(EMOLA.Symbol.INT, x);
+  } else if (typeof token === 'number') {
+      return new EMOLA.Symbol(EMOLA.Symbol.INT, token);
   }
 }
 
