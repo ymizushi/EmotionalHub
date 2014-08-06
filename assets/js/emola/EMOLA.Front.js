@@ -4,9 +4,9 @@ function read_eval(input) {
 
 $(document).ready(function(){
    /* First console */
-   var console1 = $('<div class="console1">');
-   $('body').append(console1);
-   var controller1 = console1.console({
+   var console = $('<div class="console">');
+   $('body').append(console);
+   var controller1 = console.console({
      promptLabel: 'Emola> ',
      commandValidate: function(line){
        if (line == "") return false;
