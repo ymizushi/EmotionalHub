@@ -13,7 +13,7 @@ EMOLA.DictEnv.prototype.get = function (key) {
 
 EMOLA.DictEnv.prototype.find = function (key) {
   if (this.outer === null && !this.dict[key]) {
-    throw 'symbol is not defined.';
+    throw 'symbol:' + key +  ' is not defined.';
   }
   if (this.dict[key]) {
     return this;

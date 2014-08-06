@@ -143,7 +143,6 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Atom(EMOLA.Atom.INT, token);
   } else {
     throw 'Unknown token';
-    
   }
 }
 
