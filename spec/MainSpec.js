@@ -8,7 +8,7 @@ describe("Eval test", function() {
             [new EMOLA.Symbol(EMOLA.Symbol.MUL, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]]], 
         [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 100), new EMOLA.Symbol(EMOLA.Symbol.INT, 2)]
       ];
-    var hoge = eval(parsed, new EMOLA.DictEnv(null));
+    var hoge = EMOLA.eval(parsed, new EMOLA.DictEnv(null));
     expect(hoge).toBe(200);
   });
 });

@@ -1,22 +1,22 @@
-function eval(x, env) {
+EMOLA.eval = function (x, env) {
   if (x instanceof Array) {
     if (x[0].equalToType(EMOLA.Symbol.IF)) {
       var testExp = x[1];
       var thenExp = x[2];
       var elseExp = x[3];
-      if (eval(testExp, env)) {
-        return eval(thenExp, env);
+      if (EMOLA.eval(testExp, env)) {
+        return EMOLA.eval(thenExp, env);
       } 
-      return eval(elseExp, env);
+      return EMOLA.eval(elseExp, env);
     } else if (x[0].equalToType(EMOLA.Symbol.DO)) {
       for(var i=1;i < x.length-1;++i) {
-        eval(x[i], env);
+        EMOLA.eval(x[i], env);
       }
-      return eval(x[x.length-1], env);
+      return EMOLA.eval(x[x.length-1], env);
     } else if (x[0].equalToType(EMOLA.Symbol.DEF)) {
       var symbol = x[1];
       var value = x[2];
-      env.dict[symbol.value] = eval(value, env);
+      env.dict[symbol.value] = EMOLA.eval(value, env);
     } else if (x[0].equalToType(EMOLA.Symbol.FN)) {
       var args =  x[1];
       var exp = x[2];
@@ -24,31 +24,31 @@ function eval(x, env) {
     } else if (x[0].equalToType(EMOLA.Symbol.PLUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
-        sum += eval(x[i], env);
+        sum += EMOLA.eval(x[i], env);
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Symbol.MINUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
-        sum -= eval(x[i], env);
+        sum -= EMOLA.eval(x[i], env);
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Symbol.MUL)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
-        sum *= eval(x[i], env);
+        sum *= EMOLA.eval(x[i], env);
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Symbol.DIV)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
-        sum /= eval(x[i], env);
+        sum /= EMOLA.eval(x[i], env);
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Symbol.EQUAL)) {
-      return eval(x[1], env) == eval(x[2], env);
+      return EMOLA.eval(x[1], env) == EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Symbol.LESS)) {
-      return eval(x[1], env) < eval(x[2], env);
+      return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Symbol.VAR)) {
       func = env.find(x[0].value)[x[0].value];
       args = [];
@@ -66,7 +66,7 @@ function eval(x, env) {
       return Number(x.value);
     } else if (x.equalToType(EMOLA.Symbol.VAR)) {
       if (env.find(x.value)) {
-        return eval(env.find(x.value)[x.value], env);
+        return EMOLA.eval(env.find(x.value)[x.value], env);
       } else {
         throw 'unknown error.';
       }
