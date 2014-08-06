@@ -89,15 +89,15 @@ EMOLA.parse = function (tokens) {
   for (var i=0;i<tokens.length;i++) {
     if (tokens[i] === '(') {
       var result = EMOLA.parse(tokens.slice(i+1));
-      env.push(result);
-      return env;
+      env.push(result[0]);
+      i += result[1] + 1;
     } else if (tokens[i] === ')') {
-      return env;
+      return [env, i];
     } else {
       env.push(EMOLA.atomize(tokens[i]));
     }
   }
-  return env;
+  return env[0];
 }
 
 EMOLA.atomize = function (token) {
@@ -133,5 +133,8 @@ EMOLA.atomize = function (token) {
     }
   } else if (typeof token === 'number') {
       return new EMOLA.Symbol(EMOLA.Symbol.INT, token);
+  } else {
+    throw 'Unknown token';
+    
   }
 }
