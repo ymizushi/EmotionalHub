@@ -1,18 +1,3 @@
-describe("DictEnv test", function() {
-  it("update", function() {
-    var env = new EMOLA.DictEnv(null);
-    env.update("hoge", 5);
-    expect(env.dict["hoge"]).toEqual(5);
-  });
-
-  it("find", function() {
-    var outerEnv = new EMOLA.DictEnv(null);
-    outerEnv.update('hoge', 5);
-    var env = new EMOLA.DictEnv(outerEnv);
-    expect(env.find('hoge')).toBe(outerEnv);
-  });
-});
-
 describe("Eval test", function() {
   it("constructor", function() {
       var parsed = [
@@ -28,24 +13,6 @@ describe("Eval test", function() {
   });
 });
 
-describe("Atom test", function() {
-  it("constructor", function() {
-    var atom = new EMOLA.Atom(EMOLA.Atom.FN, 'hoge');
-    expect(atom.type).toBe('fn');
-    expect(atom.value).toBe('hoge');
-  });
-
-  it("static isAtom", function() {
-    var result = EMOLA.Atom.isAtom(new EMOLA.Atom(EMOLA.Atom.FN, 'hoge'));
-    expect(result).toBe(true);
-  });
-
-  it("equalToType", function() {
-    var atom = new EMOLA.Atom(EMOLA.Atom.STR, 'hoge');
-    expect(atom.equalToType(EMOLA.Atom.STR)).toBe(true);
-    expect(atom.equalToType(EMOLA.Atom.IF)).toBe(false);
-  });
-});
 
 describe("Tokenizer test", function() {
   it("function tokenize", function() {

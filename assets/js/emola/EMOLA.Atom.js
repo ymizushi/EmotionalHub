@@ -35,3 +35,4 @@ EMOLA.Atom.prototype.equalToType = function (type) {
     return false;
   }
 };
+
