@@ -1,6 +1,8 @@
 # Emotional Hub
 The toolset for making github-emoji art, interactive programming environment with Emola.
+
 (Emola is the kind of LISP designed by ymizushi).
+
 This repository is under development.
 
 ### Initialize
