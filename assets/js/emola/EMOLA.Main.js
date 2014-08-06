@@ -1,69 +1,3 @@
-EMOLA.DictEnv = function (outer) {
-  this.outer = outer;
-  this.dict = {};
-};
-EMOLA.DictEnv.prototype.find = function (key) {
-  if (this.outer === null && !this.dict[key]) {
-    throw 'symbol is not defined.';
-  }
-  if (this.dict[key]) {
-    return this.dict;
-  }
-  return this.outer.find(key);
-};
-
-EMOLA.Fn = function (args, exp, outer) {
-  this.args = args;
-  this.exp = exp;
-  this.outer = outer;
-};
-
-EMOLA.Fn.prototype.exec = function (valueArgs) {
-  var dictEnv = new EMOLA.DictEnv(this.outer);
-  for (var i=0;i<this.args.length;i++) {
-    dictEnv.dict[this.args[i].value] = valueArgs[i];
-  }
-  return eval(this.exp, dictEnv);
-};
-
-EMOLA.Symbol = function (type, value) {
-  this.type = type;
-  this.value = value;
-}
-EMOLA.Symbol.IF = 'if';
-EMOLA.Symbol.DO = 'do';
-EMOLA.Symbol.DEF = 'def';
-EMOLA.Symbol.FN = 'fn';
-
-EMOLA.Symbol.PLUS = '+';
-EMOLA.Symbol.MINUS = '-';
-EMOLA.Symbol.DIV = '/';
-EMOLA.Symbol.MUL = '*';
-EMOLA.Symbol.EQUAL = '=';
-EMOLA.Symbol.GREATER = '>';
-EMOLA.Symbol.LESS = '<';
-
-EMOLA.Symbol.VAR = 'var';
-EMOLA.Symbol.STR = 'str';
-EMOLA.Symbol.INT = 'int';
-
-EMOLA.Symbol.isSymbol = function (symbol) {
-  if (symbol instanceof EMOLA.Symbol) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-EMOLA.Symbol.prototype.equalToType = function (type) {
-  if (this.type === type) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-
 function eval(x, env) {
   if (x instanceof Array) {
     if (x[0].equalToType(EMOLA.Symbol.IF)) {
@@ -148,15 +82,6 @@ EMOLA.tokenize = function (inputStr) {
   });
 }
 
-EMOLA.ListEnv = function (outer) {
-  this.outer = outer;
-  this.list = [];
-}
-
-EMOLA.ListEnv.prototype.push = function (list) {
-  this.list.push(list);
-}
-
 EMOLA.parse = function (tokens) {
   var env = [];
   for (var i=0;i<tokens.length;i++) {
@@ -208,41 +133,3 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Symbol(EMOLA.Symbol.INT, token);
   }
 }
-
-var parsed = [
-  new EMOLA.Symbol(EMOLA.Symbol.DO, null),
-  [new EMOLA.Symbol(EMOLA.Symbol.DEF, null), new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge'),
-    [new EMOLA.Symbol(EMOLA.Symbol.FN, null),
-      [new EMOLA.Symbol(EMOLA.Symbol.STR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.STR, 'y')],
-      [new EMOLA.Symbol(EMOLA.Symbol.MUL, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]]], 
-  [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 100), new EMOLA.Symbol(EMOLA.Symbol.INT, 2)]
-];
-var hoge = eval(parsed, new EMOLA.DictEnv(null));
-
-
-function read_eval(input) {
-  return input;
-}
-
-$(document).ready(function(){
-   /* First console */
-   var console1 = $('<div class="console1">');
-   $('body').append(console1);
-   var controller1 = console1.console({
-     promptLabel: 'Emola> ',
-     commandValidate: function(line){
-       if (line == "") return false;
-       else return true;
-     },
-     commandHandle:function(line){
-
-       return [{msg:"=> " + read_eval(line), className:"jquery-console-message-value"} ]
-     },
-     autofocus:true,
-     animateScroll:true,
-     promptHistory:true,
-     charInsertTrigger:function(keycode,line){
-       return true;
-     }
-   });
- });
