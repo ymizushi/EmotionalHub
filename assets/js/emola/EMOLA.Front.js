@@ -1,5 +1,5 @@
 function read_eval(input) {
-  return input;
+  return EMOLA.readAndEval(input);
 }
 
 $(document).ready(function(){
