@@ -138,3 +138,7 @@ EMOLA.atomize = function (token) {
     
   }
 }
+
+EMOLA.readAndEval = function (str) {
+  return EMOLA.eval(EMOLA.parse(EMOLA.tokenize(str)), new EMOLA.DictEnv(null));
+}

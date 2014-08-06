@@ -54,10 +54,7 @@ describe("Parser test", function() {
 
 describe("integration test", function() {
   it("integration", function() {
-      var result = EMOLA.eval(EMOLA.parse(EMOLA.tokenize('(+ 1 2)')), new EMOLA.DictEnv(null));
-      expect(result).toEqual(3);
-
-      var result2 = EMOLA.eval(EMOLA.parse(EMOLA.tokenize('(do (def hoge (fn (x y) (* x y))) (hoge 100 2))')), new EMOLA.DictEnv(null));
-      expect(result2).toEqual(200);
+      expect(EMOLA.readAndEval('(+ 1 2)')).toEqual(3);
+      expect(EMOLA.readAndEval('(do (def hoge (fn (x y) (* x y))) (hoge 100 2))')).toEqual(200);
   });
 });
