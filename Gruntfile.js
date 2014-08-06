@@ -29,7 +29,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.js',
           'assets/js/emola/EMOLA.DictEnv.js',
           'assets/js/emola/EMOLA.Fn.js',
-          'assets/js/emola/EMOLA.Symbol.js',
+          'assets/js/emola/EMOLA.Atom.js',
           'assets/js/emola/EMOLA.Main.js',
           'assets/js/emola/EMOLA.Front.js'
         ],

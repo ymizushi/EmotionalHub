@@ -1,6 +1,6 @@
 EMOLA.eval = function (x, env) {
   if (x instanceof Array) {
-    if (x[0].equalToType(EMOLA.Symbol.IF)) {
+    if (x[0].equalToType(EMOLA.Atom.IF)) {
       var testExp = x[1];
       var thenExp = x[2];
       var elseExp = x[3];
@@ -8,48 +8,48 @@ EMOLA.eval = function (x, env) {
         return EMOLA.eval(thenExp, env);
       } 
       return EMOLA.eval(elseExp, env);
-    } else if (x[0].equalToType(EMOLA.Symbol.DO)) {
+    } else if (x[0].equalToType(EMOLA.Atom.DO)) {
       for(var i=1;i < x.length-1;++i) {
         EMOLA.eval(x[i], env);
       }
       return EMOLA.eval(x[x.length-1], env);
-    } else if (x[0].equalToType(EMOLA.Symbol.DEF)) {
+    } else if (x[0].equalToType(EMOLA.Atom.DEF)) {
       var symbol = x[1];
       var value = x[2];
       env.dict[symbol.value] = EMOLA.eval(value, env);
-    } else if (x[0].equalToType(EMOLA.Symbol.FN)) {
+    } else if (x[0].equalToType(EMOLA.Atom.FN)) {
       var args =  x[1];
       var exp = x[2];
       return new EMOLA.Fn(args, exp, env);
-    } else if (x[0].equalToType(EMOLA.Symbol.PLUS)) {
+    } else if (x[0].equalToType(EMOLA.Atom.PLUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
         sum += EMOLA.eval(x[i], env);
       }
       return sum;
-    } else if (x[0].equalToType(EMOLA.Symbol.MINUS)) {
+    } else if (x[0].equalToType(EMOLA.Atom.MINUS)) {
       var sum = 0;
       for(var i=1;i < x.length;++i) {
         sum -= EMOLA.eval(x[i], env);
       }
       return sum;
-    } else if (x[0].equalToType(EMOLA.Symbol.MUL)) {
+    } else if (x[0].equalToType(EMOLA.Atom.MUL)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
         sum *= EMOLA.eval(x[i], env);
       }
       return sum;
-    } else if (x[0].equalToType(EMOLA.Symbol.DIV)) {
+    } else if (x[0].equalToType(EMOLA.Atom.DIV)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
         sum /= EMOLA.eval(x[i], env);
       }
       return sum;
-    } else if (x[0].equalToType(EMOLA.Symbol.EQUAL)) {
+    } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
       return EMOLA.eval(x[1], env) == EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Symbol.LESS)) {
+    } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
       return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Symbol.VAR)) {
+    } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
       func = env.find(x[0].value)[x[0].value];
       args = [];
       for (var i=1;i<x.length;i++) {
@@ -62,15 +62,15 @@ EMOLA.eval = function (x, env) {
       return Number(x); 
     } else if (typeof x === 'string') {
       return x; 
-    } else if (x.equalToType(EMOLA.Symbol.INT)) {
+    } else if (x.equalToType(EMOLA.Atom.INT)) {
       return Number(x.value);
-    } else if (x.equalToType(EMOLA.Symbol.VAR)) {
+    } else if (x.equalToType(EMOLA.Atom.VAR)) {
       if (env.find(x.value)) {
         return EMOLA.eval(env.find(x.value)[x.value], env);
       } else {
         throw 'unknown error.';
       }
-    } else if (x.equalToType(EMOLA.Symbol.STR)) {
+    } else if (x.equalToType(EMOLA.Atom.STR)) {
       return x.value;
     }
   }
@@ -102,37 +102,37 @@ EMOLA.parse = function (tokens) {
 
 EMOLA.atomize = function (token) {
   switch (token) {
-    case EMOLA.Symbol.IF:
-      return new EMOLA.Symbol(EMOLA.Symbol.IF, null);
-    case EMOLA.Symbol.DO:
-      return new EMOLA.Symbol(EMOLA.Symbol.DO, null);
-    case EMOLA.Symbol.DEF:
-      return new EMOLA.Symbol(EMOLA.Symbol.DEF, null);
-    case EMOLA.Symbol.FN:
-      return new EMOLA.Symbol(EMOLA.Symbol.FN, null);
-    case EMOLA.Symbol.PLUS:
-      return new EMOLA.Symbol(EMOLA.Symbol.PLUS, null);
-    case EMOLA.Symbol.MINUS:
-      return new EMOLA.Symbol(EMOLA.Symbol.MINUS, null);
-    case EMOLA.Symbol.DIV:
-      return new EMOLA.Symbol(EMOLA.Symbol.DIV, null);
-    case EMOLA.Symbol.MUL:
-      return new EMOLA.Symbol(EMOLA.Symbol.MUL, null);
-    case EMOLA.Symbol.EQUAL:
-      return new EMOLA.Symbol(EMOLA.Symbol.EQUAL, null);
-    case EMOLA.Symbol.GREATER:
-      return new EMOLA.Symbol(EMOLA.Symbol.GREATER, null);
-    case EMOLA.Symbol.LESS:
-      return new EMOLA.Symbol(EMOLA.Symbol.LESS, null);
+    case EMOLA.Atom.IF:
+      return new EMOLA.Atom(EMOLA.Atom.IF, null);
+    case EMOLA.Atom.DO:
+      return new EMOLA.Atom(EMOLA.Atom.DO, null);
+    case EMOLA.Atom.DEF:
+      return new EMOLA.Atom(EMOLA.Atom.DEF, null);
+    case EMOLA.Atom.FN:
+      return new EMOLA.Atom(EMOLA.Atom.FN, null);
+    case EMOLA.Atom.PLUS:
+      return new EMOLA.Atom(EMOLA.Atom.PLUS, null);
+    case EMOLA.Atom.MINUS:
+      return new EMOLA.Atom(EMOLA.Atom.MINUS, null);
+    case EMOLA.Atom.DIV:
+      return new EMOLA.Atom(EMOLA.Atom.DIV, null);
+    case EMOLA.Atom.MUL:
+      return new EMOLA.Atom(EMOLA.Atom.MUL, null);
+    case EMOLA.Atom.EQUAL:
+      return new EMOLA.Atom(EMOLA.Atom.EQUAL, null);
+    case EMOLA.Atom.GREATER:
+      return new EMOLA.Atom(EMOLA.Atom.GREATER, null);
+    case EMOLA.Atom.LESS:
+      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
   }
   if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {
-      return  new EMOLA.Symbol(EMOLA.Symbol.STR, token.slice(1,-1));
+      return  new EMOLA.Atom(EMOLA.Atom.STR, token.slice(1,-1));
     } else {
-      return new EMOLA.Symbol(EMOLA.Symbol.VAR, token);
+      return new EMOLA.Atom(EMOLA.Atom.VAR, token);
     }
   } else if (typeof token === 'number') {
-      return new EMOLA.Symbol(EMOLA.Symbol.INT, token);
+      return new EMOLA.Atom(EMOLA.Atom.INT, token);
   } else {
     throw 'Unknown token';
     

@@ -1,12 +1,12 @@
 describe("Eval test", function() {
   it("constructor", function() {
       var parsed = [
-        new EMOLA.Symbol(EMOLA.Symbol.DO, null),
-        [new EMOLA.Symbol(EMOLA.Symbol.DEF, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'),
-          [new EMOLA.Symbol(EMOLA.Symbol.FN, null),
-            [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')],
-            [new EMOLA.Symbol(EMOLA.Symbol.MUL, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]]], 
-        [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 100), new EMOLA.Symbol(EMOLA.Symbol.INT, 2)]
+        new EMOLA.Atom(EMOLA.Atom.DO, null),
+        [new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),
+          [new EMOLA.Atom(EMOLA.Atom.FN, null),
+            [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
+            [new EMOLA.Atom(EMOLA.Atom.MUL, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]]], 
+        [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 100), new EMOLA.Atom(EMOLA.Atom.INT, 2)]
       ];
     var hoge = EMOLA.eval(parsed, new EMOLA.DictEnv(null));
     expect(hoge).toBe(200);
@@ -14,22 +14,22 @@ describe("Eval test", function() {
 });
 
 
-describe("Symbol test", function() {
+describe("Atom test", function() {
   it("constructor", function() {
-    var symbol = new EMOLA.Symbol(EMOLA.Symbol.FN, 'hoge');
-    expect(symbol.type).toBe('fn');
-    expect(symbol.value).toBe('hoge');
+    var atom = new EMOLA.Atom(EMOLA.Atom.FN, 'hoge');
+    expect(atom.type).toBe('fn');
+    expect(atom.value).toBe('hoge');
   });
 
-  it("static isSymbol", function() {
-    var result = EMOLA.Symbol.isSymbol(new EMOLA.Symbol(EMOLA.Symbol.FN, 'hoge'));
+  it("static isAtom", function() {
+    var result = EMOLA.Atom.isAtom(new EMOLA.Atom(EMOLA.Atom.FN, 'hoge'));
     expect(result).toBe(true);
   });
 
   it("equalToType", function() {
-    var symbol = new EMOLA.Symbol(EMOLA.Symbol.STR, 'hoge');
-    expect(symbol.equalToType(EMOLA.Symbol.STR)).toBe(true);
-    expect(symbol.equalToType(EMOLA.Symbol.IF)).toBe(false);
+    var atom = new EMOLA.Atom(EMOLA.Atom.STR, 'hoge');
+    expect(atom.equalToType(EMOLA.Atom.STR)).toBe(true);
+    expect(atom.equalToType(EMOLA.Atom.IF)).toBe(false);
   });
 });
 
@@ -50,21 +50,21 @@ describe("Parser test", function() {
   it("function parser", function() {
       var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);
       expect(result).toEqual(
-        [new EMOLA.Symbol(EMOLA.Symbol.MINUS, null),
-          new EMOLA.Symbol(EMOLA.Symbol.INT, 2),
-            [new EMOLA.Symbol(EMOLA.Symbol.PLUS, null), new EMOLA.Symbol(EMOLA.Symbol.INT, 2) ,new EMOLA.Symbol(EMOLA.Symbol.INT, 3)]]
+        [new EMOLA.Atom(EMOLA.Atom.MINUS, null),
+          new EMOLA.Atom(EMOLA.Atom.INT, 2),
+            [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2) ,new EMOLA.Atom(EMOLA.Atom.INT, 3)]]
     );
 
     var result2 = EMOLA.parse(['(', 'do', '(', 'def', 'hoge' , '(', 'fn', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')', ')', '(', 'hoge', 2 , 1, ')', ')']);
     expect(result2).toEqual(
-        [new EMOLA.Symbol(EMOLA.Symbol.DO, null),
+        [new EMOLA.Atom(EMOLA.Atom.DO, null),
           [
-            new EMOLA.Symbol(EMOLA.Symbol.DEF, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'),            [new EMOLA.Symbol(EMOLA.Symbol.FN, null),
-              [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')],
-              [new EMOLA.Symbol(EMOLA.Symbol.PLUS, null), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'x'), new EMOLA.Symbol(EMOLA.Symbol.VAR, 'y')]
+            new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),            [new EMOLA.Atom(EMOLA.Atom.FN, null),
+              [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
+              [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]
             ]
           ],
-          [new EMOLA.Symbol(EMOLA.Symbol.VAR, 'hoge'), new EMOLA.Symbol(EMOLA.Symbol.INT, 2), new EMOLA.Symbol(EMOLA.Symbol.INT, 1)]
+          [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Atom(EMOLA.Atom.INT, 1)]
         ]
     );
   });
