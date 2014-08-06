@@ -29,8 +29,12 @@ EMOLA.eval = function (x, env) {
       return sum;
     } else if (x[0].equalToType(EMOLA.Atom.MINUS)) {
       var sum = 0;
-      for(var i=1;i < x.length;++i) {
-        sum -= EMOLA.eval(x[i], env);
+      for(var i=1;i < x.length;i++) {
+        if (i === 1) {
+          sum = EMOLA.eval(x[i], env);
+        } else {
+          sum -= EMOLA.eval(x[i], env);
+        }
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Atom.MUL)) {
@@ -42,7 +46,11 @@ EMOLA.eval = function (x, env) {
     } else if (x[0].equalToType(EMOLA.Atom.DIV)) {
       var sum = 1;
       for(var i=1;i < x.length;++i) {
-        sum /= EMOLA.eval(x[i], env);
+        if (i === 1) {
+          sum = EMOLA.eval(x[i], env);
+        } else {
+          sum /= EMOLA.eval(x[i], env);
+        }
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
