@@ -79,7 +79,9 @@ EMOLA.eval = function (x, env) {
 EMOLA.tokenize = function (inputStr) {
   return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
     function (str) { return str ? true : false;
-  });
+  }).map(
+    function (ele) { return isNaN(parseInt(ele)) ? ele : parseInt(ele); }
+  );
 }
 
 EMOLA.parse = function (tokens) {

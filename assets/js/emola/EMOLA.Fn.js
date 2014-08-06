@@ -9,5 +9,5 @@ EMOLA.Fn.prototype.exec = function (valueArgs) {
   for (var i=0;i<this.args.length;i++) {
     dictEnv.dict[this.args[i].value] = valueArgs[i];
   }
-  return eval(this.exp, dictEnv);
+  return EMOLA.eval(this.exp, dictEnv);
 };
