@@ -1,3 +1,18 @@
+describe("DictEnv test", function() {
+  it("update", function() {
+    var env = new EMOLA.DictEnv(null);
+    env.update("hoge", 5);
+    expect(env.dict["hoge"]).toEqual(5);
+  });
+
+  it("find", function() {
+    var outerEnv = new EMOLA.DictEnv(null);
+    outerEnv.update('hoge', 5);
+    var env = new EMOLA.DictEnv(outerEnv);
+    expect(env.find('hoge')).toBe(outerEnv);
+  });
+});
+
 describe("Eval test", function() {
   it("constructor", function() {
       var parsed = [
@@ -12,7 +27,6 @@ describe("Eval test", function() {
     expect(hoge).toBe(200);
   });
 });
-
 
 describe("Atom test", function() {
   it("constructor", function() {

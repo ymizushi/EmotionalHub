@@ -16,7 +16,7 @@ EMOLA.eval = function (x, env) {
     } else if (x[0].equalToType(EMOLA.Atom.DEF)) {
       var symbol = x[1];
       var value = x[2];
-      env.dict[symbol.value] = EMOLA.eval(value, env);
+      env.update(symbol.value, EMOLA.eval(value, env));
     } else if (x[0].equalToType(EMOLA.Atom.FN)) {
       var args =  x[1];
       var exp = x[2];
@@ -50,7 +50,7 @@ EMOLA.eval = function (x, env) {
     } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
       return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
-      func = env.find(x[0].value)[x[0].value];
+      func = env.find(x[0].value).get(x[0].value);
       args = [];
       for (var i=1;i<x.length;i++) {
         args.push(x[i]);
@@ -66,7 +66,7 @@ EMOLA.eval = function (x, env) {
       return Number(x.value);
     } else if (x.equalToType(EMOLA.Atom.VAR)) {
       if (env.find(x.value)) {
-        return EMOLA.eval(env.find(x.value)[x.value], env);
+        return EMOLA.eval(env.find(x.value).get(x.value), env);
       } else {
         throw 'unknown error.';
       }
