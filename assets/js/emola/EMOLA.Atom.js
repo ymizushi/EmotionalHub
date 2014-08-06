@@ -21,18 +21,9 @@ EMOLA.Atom.STR = 'str';
 EMOLA.Atom.INT = 'int';
 
 EMOLA.Atom.isAtom = function (atom) {
-  if (atom instanceof EMOLA.Atom) {
-    return true;
-  } else {
-    return false;
-  }
-};
+  return atom instanceof EMOLA.Atom;
+}
 
 EMOLA.Atom.prototype.equalToType = function (type) {
-  if (this.type === type) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
+  return this.type === type;
+}
