@@ -15,6 +15,9 @@ EMOLA.Atom.MUL = '*';
 EMOLA.Atom.EQUAL = '=';
 EMOLA.Atom.GREATER = '>';
 EMOLA.Atom.LESS = '<';
+EMOLA.Atom.POINT = 'point';
+EMOLA.Atom.COLOR = 'color';
+EMOLA.Atom.CIRCLE = 'circle';
 
 EMOLA.Atom.VAR = 'var';
 EMOLA.Atom.STR = 'str';

@@ -17,6 +17,21 @@ EMOLA.eval = function (x, env) {
       var symbol = x[1];
       var value = x[2];
       env.update(symbol.value, EMOLA.eval(value, env));
+    } else if (x[0].equalToType(EMOLA.Atom.POINT)) {
+      if (x[1] === undefined || x[2] === undefined || x.length > 3) {
+        throw 'point arguments are illegal.';
+      }
+      return new EMOLA.Point(EMOLA.eval(x[1]), EMOLA.eval(x[2]));
+    } else if (x[0].equalToType(EMOLA.Atom.COLOR)) {
+      if (x[1] === undefined || x[2] === undefined || x[3] === undefined || x.length > 4) {
+        throw 'color arguments are illegal.';
+      }
+      return new EMOLA.Color(EMOLA.eval(x[1]), EMOLA.eval(x[2]), EMOLA.eval(x[3]));
+    } else if (x[0].equalToType(EMOLA.Atom.CIRCLE)) {
+      var point = x[1];
+      var radius = x[2];
+      var color = x[3];
+      return new EMOLA.Circle(EMOLA.eval(point), EMOLA.eval(radius), EMOLA.eval(color));
     } else if (x[0].equalToType(EMOLA.Atom.FN)) {
       var args =  x[1];
       var exp = x[2];
@@ -130,8 +145,12 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Atom(EMOLA.Atom.EQUAL, null);
     case EMOLA.Atom.GREATER:
       return new EMOLA.Atom(EMOLA.Atom.GREATER, null);
-    case EMOLA.Atom.LESS:
-      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
+    case EMOLA.Atom.CIRCLE:
+      return new EMOLA.Atom(EMOLA.Atom.CIRCLE, null);
+    case EMOLA.Atom.POINT:
+      return new EMOLA.Atom(EMOLA.Atom.POINT, null);
+    case EMOLA.Atom.COLOR:
+      return new EMOLA.Atom(EMOLA.Atom.COLOR, null);
   }
   if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {

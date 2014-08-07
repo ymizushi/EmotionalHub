@@ -67,5 +67,10 @@ describe("Circle test", function() {
     expect(circle.color.r).toEqual(50);
     expect(circle.color.g).toEqual(60);
     expect(circle.color.b).toEqual(70);
+
+    expect(EMOLA.readAndEval('(circle (point 100 200) 100 (color 192 80 77))')).toEqual(
+      new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
+    );
+
   });
 });

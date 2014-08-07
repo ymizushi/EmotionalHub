@@ -14,7 +14,6 @@ $(document).ready(function(){
 
       draw();
 
-
        return [{msg:"=> " + EMOLA.readAndEval(line, globalEnv), className:"jquery-console-message-value"} ]
      },
      autofocus:true,
