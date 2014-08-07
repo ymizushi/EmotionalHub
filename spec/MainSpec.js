@@ -49,12 +49,23 @@ describe("Parser test", function() {
         ]
     );
   });
-
 });
 
 describe("integration test", function() {
   it("integration", function() {
       expect(EMOLA.readAndEval('(+ 1 2)')).toEqual(3);
       expect(EMOLA.readAndEval('(do (def hoge (fn (x y) (* x y))) (hoge 100 2))')).toEqual(200);
+  });
+});
+
+describe("Circle test", function() {
+  it("constructor", function() {
+    var circle = new EMOLA.Circle(new EMOLA.Point(100,200), 300, new EMOLA.Color(50, 60, 70));
+    expect(circle.point.x).toEqual(100);
+    expect(circle.point.y).toEqual(200);
+    expect(circle.radius).toEqual(300);
+    expect(circle.color.r).toEqual(50);
+    expect(circle.color.g).toEqual(60);
+    expect(circle.color.b).toEqual(70);
   });
 });
