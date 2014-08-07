@@ -1,5 +1,7 @@
+var globalEnv = new EMOLA.DictEnv(null);
+
 function read_eval(input) {
-  return EMOLA.readAndEval(input);
+  return EMOLA.readAndEval(input, globalEnv);
 }
 
 $(document).ready(function(){
