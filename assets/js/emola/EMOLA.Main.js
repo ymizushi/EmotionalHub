@@ -85,6 +85,8 @@ EMOLA.eval = function (x, env) {
       return Number(x); 
     } else if (typeof x === 'string') {
       return x; 
+    } else if (x instanceof EMOLA.Circle) {
+      return x; 
     } else if (x.equalToType(EMOLA.Atom.INT)) {
       return Number(x.value);
     } else if (x.equalToType(EMOLA.Atom.VAR)) {

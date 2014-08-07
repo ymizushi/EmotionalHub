@@ -55,6 +55,7 @@ describe("integration test", function() {
   it("integration", function() {
       expect(EMOLA.readAndEval('(+ 1 2)')).toEqual(3);
       expect(EMOLA.readAndEval('(do (def hoge (fn (x y) (* x y))) (hoge 100 2))')).toEqual(200);
+      expect(EMOLA.readAndEval('(do (def hoge (+ (* 10 20) 10 (/ 4 2))) hoge)')).toEqual(212);
   });
 });
 
@@ -69,6 +70,10 @@ describe("Circle test", function() {
     expect(circle.color.b).toEqual(70);
 
     expect(EMOLA.readAndEval('(circle (point 100 200) 100 (color 192 80 77))')).toEqual(
+      new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
+    );
+
+    expect(EMOLA.readAndEval('(do (def hoge (circle (point 100 200) 100 (color 192 80 77))) hoge)')).toEqual(
       new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
     );
 
