@@ -1,9 +1,5 @@
 var globalEnv = new EMOLA.DictEnv(null);
 
-function read_eval(input) {
-  return EMOLA.readAndEval(input, globalEnv);
-}
-
 $(document).ready(function(){
    /* First console */
    var commandContainer = $('<div class="console">');
@@ -16,7 +12,7 @@ $(document).ready(function(){
      },
      commandHandle:function(line){
 
-       return [{msg:"=> " + read_eval(line), className:"jquery-console-message-value"} ]
+       return [{msg:"=> " + EMOLA.readAndEval(line, globalEnv), className:"jquery-console-message-value"} ]
      },
      autofocus:true,
      animateScroll:true,
