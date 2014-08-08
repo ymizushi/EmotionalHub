@@ -3,7 +3,7 @@ h1 { font-family: 'Quicksand', sans-serif; }
 div.console { word-wrap: break-word; }
 div.console { font-size: 20px }
 div.console div.jquery-console-inner
- { width:1200px; height:400px; background:#333; padding:0.5em; overflow:auto }
+ { width:1300px; height:150px; background:#333; padding:0.5em; overflow:auto }
 div.console div.jquery-console-prompt-box
  { color:#f0f; font-family:monospace; }
 div.console div.jquery-console-focus span.jquery-console-cursor
