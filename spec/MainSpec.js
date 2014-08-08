@@ -76,6 +76,18 @@ describe("Circle test", function() {
     expect(EMOLA.readAndEval('(do (def hoge (circle (point 100 200) 100 (color 192 80 77))) hoge)')).toEqual(
       new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
     );
+  });
+});
 
+describe("Point test", function() {
+  it("constructor", function() {
+    var point = new EMOLA.Point(100, 200);
+    expect(EMOLA.readAndEval('(point 100 200)')).toEqual(point);
+  });
+});
+describe("Color test", function() {
+  it("constructor", function() {
+    var color = new EMOLA.Color(100, 200, 300);
+    expect(EMOLA.readAndEval('(color 100 200 300)')).toEqual(color);
   });
 });

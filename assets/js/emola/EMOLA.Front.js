@@ -6,38 +6,37 @@ $(document).ready(function(){
    $('body').append(commandContainer);
    var controller1 = commandContainer.console({
      promptLabel: 'Emola> ',
-     commandValidate: function(line){
-       if (line == "") return false;
-       else return true;
+     commandValidate: function(line) {
+       return line != "";
      },
-     commandHandle:function(line){
-
-      draw();
-
+     commandHandle:function(line) {
        return [{msg:"=> " + EMOLA.readAndEval(line, globalEnv), className:"jquery-console-message-value"} ]
      },
-     autofocus:true,
-     animateScroll:true,
-     promptHistory:true,
-     charInsertTrigger:function(keycode,line){
+     autofocus: true,
+     animateScroll: true,
+     promptHistory: true,
+     charInsertTrigger:function(keycode,line) {
        return true;
      }
    });
  });
 
 
-function draw() {
+function makeContext() {
   var canvas = document.getElementById('canvas');
-  if (!canvas || !canvas.getContext ) {
+  if (!canvas || !canvas.getContext) {
     throw "This browser doesn't support HTML5 canvas";
   }
-  var ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.fillStyle = 'rgb(192, 80, 77)'; // 赤
-  ctx.arc(70, 45, 35, 0, Math.PI*2, false);
-  ctx.fill();
+  return canvas.getContext('2d');
 }
 
-// window.onload = function() {
-//     draw();
-// };
+EMOLA.Front = {};
+EMOLA.Front.draw = function (figure, context) {
+  if (context === undefined) {
+    context = makeContext();
+  }
+  context.beginPath();
+  context.fillStyle = 'rgb(' + figure.color.r + ' ,' + figure.color.g + ' ,' + figure.color.b + ')';
+  context.arc(figure.point.x, figure.point.y, figure.radius, 0, Math.PI*2, false);
+  context.fill();
+}
