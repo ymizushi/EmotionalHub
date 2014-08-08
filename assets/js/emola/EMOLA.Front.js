@@ -1,5 +1,4 @@
 var globalEnv = new EMOLA.DictEnv(null);
-
 $(document).ready(function(){
    /* First console */
    var commandContainer = $('<div class="console">');
@@ -20,7 +19,6 @@ $(document).ready(function(){
      }
    });
  });
-
 
 function makeContext() {
   var canvas = document.getElementById('canvas');
