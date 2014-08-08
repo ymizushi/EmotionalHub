@@ -58,36 +58,3 @@ describe("integration test", function() {
       expect(EMOLA.readAndEval('(do (def hoge (+ (* 10 20) 10 (/ 4 2))) hoge)')).toEqual(212);
   });
 });
-
-describe("Circle test", function() {
-  it("constructor", function() {
-    var circle = new EMOLA.Circle(new EMOLA.Point(100,200), 300, new EMOLA.Color(50, 60, 70));
-    expect(circle.point.x).toEqual(100);
-    expect(circle.point.y).toEqual(200);
-    expect(circle.radius).toEqual(300);
-    expect(circle.color.r).toEqual(50);
-    expect(circle.color.g).toEqual(60);
-    expect(circle.color.b).toEqual(70);
-
-    expect(EMOLA.readAndEval('(circle (point 100 200) 100 (color 192 80 77))')).toEqual(
-      new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
-    );
-
-    expect(EMOLA.readAndEval('(do (def hoge (circle (point 100 200) 100 (color 192 80 77))) hoge)')).toEqual(
-      new EMOLA.Circle(new EMOLA.Point(100 , 200), 100, new EMOLA.Color(192, 80, 77))
-    );
-  });
-});
-
-describe("Point test", function() {
-  it("constructor", function() {
-    var point = new EMOLA.Point(100, 200);
-    expect(EMOLA.readAndEval('(point 100 200)')).toEqual(point);
-  });
-});
-describe("Color test", function() {
-  it("constructor", function() {
-    var color = new EMOLA.Color(100, 200, 300);
-    expect(EMOLA.readAndEval('(color 100 200 300)')).toEqual(color);
-  });
-});
