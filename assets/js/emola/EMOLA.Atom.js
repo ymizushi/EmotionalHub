@@ -3,11 +3,21 @@ EMOLA.Atom = function (type, value) {
   this.value = value;
 }
 
-EMOLA.Atom.IF = 'if';
-EMOLA.Atom.DO = 'do';
-EMOLA.Atom.DEF = 'def';
+/* lang */ 
 EMOLA.Atom.FN = 'fn';
+EMOLA.Atom.IF = 'if';
+EMOLA.Atom.DEF = 'def';
+EMOLA.Atom.DO = 'do';
+EMOLA.Atom.SEND = 'send';
+EMOLA.Atom.VAR = 'var';
 
+/* type */
+EMOLA.Atom.TRUE = 'true';
+EMOLA.Atom.FALSE = 'false';
+EMOLA.Atom.STR = 'str';
+EMOLA.Atom.INT = 'int';
+
+/* math */
 EMOLA.Atom.PLUS = '+';
 EMOLA.Atom.MINUS = '-';
 EMOLA.Atom.DIV = '/';
@@ -15,17 +25,12 @@ EMOLA.Atom.MUL = '*';
 EMOLA.Atom.EQUAL = '=';
 EMOLA.Atom.GREATER = '>';
 EMOLA.Atom.LESS = '<';
+
+/* visual */
+EMOLA.Atom.DRAW = 'draw';
 EMOLA.Atom.POINT = 'point';
 EMOLA.Atom.COLOR = 'color';
 EMOLA.Atom.CIRCLE = 'circle';
-EMOLA.Atom.DRAW = 'draw';
-EMOLA.Atom.SEND = 'send';
-EMOLA.Atom.TRUE = 'true';
-EMOLA.Atom.FALSE = 'false';
-
-EMOLA.Atom.VAR = 'var';
-EMOLA.Atom.STR = 'str';
-EMOLA.Atom.INT = 'int';
 
 EMOLA.Atom.isAtom = function (atom) {
   return atom instanceof EMOLA.Atom;
