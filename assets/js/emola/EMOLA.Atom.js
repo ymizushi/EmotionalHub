@@ -25,6 +25,8 @@ EMOLA.Atom.MUL = '*';
 EMOLA.Atom.EQUAL = '=';
 EMOLA.Atom.GREATER = '>';
 EMOLA.Atom.LESS = '<';
+EMOLA.Atom.GREATEREQUAL = '>=';
+EMOLA.Atom.LESSEQUAL = '<=';
 
 /* visual */
 EMOLA.Atom.DRAW = 'draw';

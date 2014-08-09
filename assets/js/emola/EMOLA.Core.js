@@ -81,10 +81,14 @@ EMOLA.eval = function (x, env) {
       return sum;
     } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
       return EMOLA.eval(x[1], env) === EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
-      return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Atom.GREATER)) {
       return EMOLA.eval(x[1], env) > EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.GREATEREQUAL)) {
+      return EMOLA.eval(x[1], env) >= EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
+      return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.LESSEQUAL)) {
+      return EMOLA.eval(x[1], env) <= EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
       func = env.find(x[0].value).get(x[0].value);
       args = [];
@@ -149,8 +153,6 @@ EMOLA.atomize = function (token) {
       return true;
     case EMOLA.Atom.FALSE:
       return false;
-    case EMOLA.Atom.LESS:
-      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
     case EMOLA.Atom.IF:
       return new EMOLA.Atom(EMOLA.Atom.IF, null);
     case EMOLA.Atom.DO:
@@ -169,8 +171,14 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Atom(EMOLA.Atom.MUL, null);
     case EMOLA.Atom.EQUAL:
       return new EMOLA.Atom(EMOLA.Atom.EQUAL, null);
+    case EMOLA.Atom.LESS:
+      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
+    case EMOLA.Atom.LESSEQUAL:
+      return new EMOLA.Atom(EMOLA.Atom.LESSEQUAL, null);
     case EMOLA.Atom.GREATER:
       return new EMOLA.Atom(EMOLA.Atom.GREATER, null);
+    case EMOLA.Atom.GREATEREQUAL:
+      return new EMOLA.Atom(EMOLA.Atom.GREATEREQUAL, null);
     case EMOLA.Atom.CIRCLE:
       return new EMOLA.Atom(EMOLA.Atom.CIRCLE, null);
     case EMOLA.Atom.POINT:

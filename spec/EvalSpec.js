@@ -1,4 +1,4 @@
-describe("Core Eval test", function() {
+describe("Type Eval test", function() {
   it("boolean", function() {
       expect(EMOLA.readAndEval('(= 1 1)')).toEqual(true);
       expect(EMOLA.readAndEval('(= 1 2)')).toEqual(false);
@@ -18,7 +18,9 @@ describe("Core Eval test", function() {
       expect(EMOLA.readAndEval('"1"')).toEqual('1');
       expect(EMOLA.readAndEval("'1'")).toEqual("1");
   });
+});
 
+describe("Lang Eval test", function() {
   it("if", function() {
       expect(EMOLA.readAndEval('(if (= 1 1) 1 0)')).toEqual(1);
       expect(EMOLA.readAndEval('(if (= 1 2) 1 0)')).toEqual(0);
@@ -38,6 +40,14 @@ describe("Core Eval test", function() {
       expect(EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))')).toEqual(24);
   });
 
+
+  it("send", function() {
+    var point = new EMOLA.Point(200, 300);
+    expect(EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')).toEqual(point);
+  });
+});
+
+describe("Math Eval test", function() {
   it("+", function() {
       expect(EMOLA.readAndEval('(+ 1 2 3 4 5 6)')).toEqual(21);
   });
@@ -74,15 +84,16 @@ describe("Core Eval test", function() {
       expect(EMOLA.readAndEval('(> 2 3)')).toEqual(false);
   });
 
-
-  it(">", function() {
-      expect(EMOLA.readAndEval('(> 2 1)')).toEqual(true);
-      expect(EMOLA.readAndEval('(> 2 3)')).toEqual(false);
+  it("<=", function() {
+      expect(EMOLA.readAndEval('(<= 2 2)')).toEqual(true);
+      expect(EMOLA.readAndEval('(<= 2 3)')).toEqual(true);
+      expect(EMOLA.readAndEval('(<= 2 1)')).toEqual(false);
   });
 
-  it("send", function() {
-    var point = new EMOLA.Point(200, 300);
-    expect(EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')).toEqual(point);
+  it(">=", function() {
+      expect(EMOLA.readAndEval('(>= 2 2)')).toEqual(true);
+      expect(EMOLA.readAndEval('(>= 2 1)')).toEqual(true);
+      expect(EMOLA.readAndEval('(>= 2 3)')).toEqual(false);
   });
 
 });
