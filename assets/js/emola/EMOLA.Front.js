@@ -32,6 +32,6 @@ function makeContext(canvasId) {
 
 EMOLA.Front = {};
 
-window.onload = function () {
+window.onclick = function () {
   globalContext = makeContext('canvas');
 }
