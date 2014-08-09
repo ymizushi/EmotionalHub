@@ -40,7 +40,6 @@ describe("Lang Eval test", function() {
       expect(EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))')).toEqual(24);
   });
 
-
   it("send", function() {
     var point = new EMOLA.Point(200, 300);
     expect(EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')).toEqual(point);

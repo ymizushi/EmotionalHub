@@ -9,15 +9,73 @@ EMOLA.eval = function (x, env) {
       } 
       return EMOLA.eval(elseExp, env);
     } else if (x[0].equalToType(EMOLA.Atom.DO)) {
-      for(var i=1;i < x.length-1;++i) {
-        EMOLA.eval(x[i], env);
-      }
-      return EMOLA.eval(x[x.length-1], env);
+      var expList = x.slice(1);
+      var result = expList.map(function (elem) { return EMOLA.eval(elem, env)});
+      return result[result.length-1]; // 配列の最後の要素を取り出す
     } else if (x[0].equalToType(EMOLA.Atom.DEF)) {
       var symbol = x[1];
       var value = x[2];
       env.update(symbol.value, EMOLA.eval(value, env));
       return null;
+    } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
+      var object = EMOLA.eval(x[1], env);
+      var methodName = x[2].value;
+      var args = x.slice(3).map(function (x) { return EMOLA.eval(x, env)});
+      object[methodName].apply(object, args)
+      return object;
+    } else if (x[0].equalToType(EMOLA.Atom.FN)) {
+      var args =  x[1];
+      var exp = x[2];
+      return new EMOLA.Fn(args, exp, env);
+    } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
+      var func = env.find(x[0].value).get(x[0].value);
+      var args = x.slice(1);
+      return func.exec(args);
+    /* math */
+    } else if (x[0].equalToType(EMOLA.Atom.PLUS)) {
+      var sum = x.slice(1).reduce(
+        function (previousValue, currentValue, index, array) {
+          return EMOLA.eval(previousValue, env) + EMOLA.eval(currentValue, env);
+        }
+      );
+      return sum;
+    } else if (x[0].equalToType(EMOLA.Atom.MINUS)) {
+      var sum = 0;
+      for (var i=1;i < x.length;i++) {
+        if (i === 1) {
+          sum = EMOLA.eval(x[i], env);
+        } else {
+          sum -= EMOLA.eval(x[i], env);
+        }
+      }
+      return sum;
+    } else if (x[0].equalToType(EMOLA.Atom.MUL)) {
+      var sum = 1;
+      for (var i=1;i < x.length;i++) {
+        sum *= EMOLA.eval(x[i], env);
+      }
+      return sum;
+    } else if (x[0].equalToType(EMOLA.Atom.DIV)) {
+      var sum = 1;
+      for (var i=1;i < x.length;i++) {
+        if (i === 1) {
+          sum = EMOLA.eval(x[i], env);
+        } else {
+          sum /= EMOLA.eval(x[i], env);
+        }
+      }
+      return sum;
+    } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
+      return EMOLA.eval(x[1], env) === EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.GREATER)) {
+      return EMOLA.eval(x[1], env) > EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.GREATEREQUAL)) {
+      return EMOLA.eval(x[1], env) >= EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
+      return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.LESSEQUAL)) {
+      return EMOLA.eval(x[1], env) <= EMOLA.eval(x[2], env);
+    /* point */
     } else if (x[0].equalToType(EMOLA.Atom.POINT)) {
       if (x[1] === undefined || x[2] === undefined || x.length > 3) {
         throw 'point arguments are illegal.';
@@ -37,67 +95,11 @@ EMOLA.eval = function (x, env) {
       var figure = EMOLA.eval(x[1], env);
       EMOLA.Front.draw(figure, globalContext);
       return figure;
-    } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
-      var object = EMOLA.eval(x[1], env);
-      var methodName = x[2].value;
-      var args = x.slice(3).map(function (x) { return EMOLA.eval(x ,env)});
-      object[methodName].apply(object, args)
-      return object;
-    } else if (x[0].equalToType(EMOLA.Atom.FN)) {
-      var args =  x[1];
-      var exp = x[2];
-      return new EMOLA.Fn(args, exp, env);
-    } else if (x[0].equalToType(EMOLA.Atom.PLUS)) {
-      var sum = 0;
-      for(var i=1;i < x.length;++i) {
-        sum += EMOLA.eval(x[i], env);
-      }
-      return sum;
-    } else if (x[0].equalToType(EMOLA.Atom.MINUS)) {
-      var sum = 0;
-      for(var i=1;i < x.length;i++) {
-        if (i === 1) {
-          sum = EMOLA.eval(x[i], env);
-        } else {
-          sum -= EMOLA.eval(x[i], env);
-        }
-      }
-      return sum;
-    } else if (x[0].equalToType(EMOLA.Atom.MUL)) {
-      var sum = 1;
-      for(var i=1;i < x.length;++i) {
-        sum *= EMOLA.eval(x[i], env);
-      }
-      return sum;
-    } else if (x[0].equalToType(EMOLA.Atom.DIV)) {
-      var sum = 1;
-      for(var i=1;i < x.length;++i) {
-        if (i === 1) {
-          sum = EMOLA.eval(x[i], env);
-        } else {
-          sum /= EMOLA.eval(x[i], env);
-        }
-      }
-      return sum;
-    } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
-      return EMOLA.eval(x[1], env) === EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.GREATER)) {
-      return EMOLA.eval(x[1], env) > EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.GREATEREQUAL)) {
-      return EMOLA.eval(x[1], env) >= EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
-      return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.LESSEQUAL)) {
-      return EMOLA.eval(x[1], env) <= EMOLA.eval(x[2], env);
-    } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
-      func = env.find(x[0].value).get(x[0].value);
-      args = [];
-      for (var i=1;i<x.length;i++) {
-        args.push(x[i]);
-      }
-      return func.exec(args);
+    } else {
+      throw 'proper operator does not exist.';
     }
   } else {
+    /* type */
     if (x === true) {
       return true;
     } else if (x === false) {
@@ -109,14 +111,14 @@ EMOLA.eval = function (x, env) {
     } else if (x instanceof EMOLA.Atom) {
       if (x.equalToType(EMOLA.Atom.INT)) {
         return Number(x.value);
-      } else if (x.equalToType(EMOLA.Atom.STR)) {
-        return x.value;
       } else if (x.equalToType(EMOLA.Atom.VAR)) {
         if (env.find(x.value)) {
           return EMOLA.eval(env.find(x.value).get(x.value), env);
         } else {
           throw 'target key of environment is not found.';
         }
+      } else {
+        return x.value;
       }
     }
     return x;
