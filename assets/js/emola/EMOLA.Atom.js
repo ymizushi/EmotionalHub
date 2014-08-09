@@ -20,6 +20,8 @@ EMOLA.Atom.COLOR = 'color';
 EMOLA.Atom.CIRCLE = 'circle';
 EMOLA.Atom.DRAW = 'draw';
 EMOLA.Atom.SEND = 'send';
+EMOLA.Atom.TRUE = 'true';
+EMOLA.Atom.FALSE = 'false';
 
 EMOLA.Atom.VAR = 'var';
 EMOLA.Atom.STR = 'str';

@@ -95,21 +95,20 @@ EMOLA.eval = function (x, env) {
       return Number(x); 
     } else if (typeof x === 'string') {
       return x; 
-    } else if (x instanceof EMOLA.Circle) {
-      return x; 
-    } else if (x instanceof EMOLA.Point) {
-      return x; 
-    } else if (x.equalToType(EMOLA.Atom.INT)) {
-      return Number(x.value);
-    } else if (x.equalToType(EMOLA.Atom.VAR)) {
-      if (env.find(x.value)) {
-        return EMOLA.eval(env.find(x.value).get(x.value), env);
-      } else {
-        throw 'unknown error.';
+    } else if (x instanceof EMOLA.Atom) {
+      if (x.equalToType(EMOLA.Atom.INT)) {
+        return Number(x.value);
+      } else if (x.equalToType(EMOLA.Atom.STR)) {
+        return x.value;
+      } else if (x.equalToType(EMOLA.Atom.VAR)) {
+        if (env.find(x.value)) {
+          return EMOLA.eval(env.find(x.value).get(x.value), env);
+        } else {
+          throw 'target key of environment is not found.';
+        }
       }
-    } else if (x.equalToType(EMOLA.Atom.STR)) {
-      return x.value;
     }
+    return x;
   }
 }
 
@@ -139,6 +138,10 @@ EMOLA.parse = function (tokens) {
 
 EMOLA.atomize = function (token) {
   switch (token) {
+    case EMOLA.Atom.TRUE:
+      return true;
+    case EMOLA.Atom.FALSE:
+      return false;
     case EMOLA.Atom.IF:
       return new EMOLA.Atom(EMOLA.Atom.IF, null);
     case EMOLA.Atom.DO:
