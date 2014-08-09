@@ -172,6 +172,7 @@ EMOLA.atomize = function (token) {
 EMOLA.readAndEval = function (str, env) {
   if (env === undefined) {
     env = new EMOLA.DictEnv(null);
-  } 
-  return EMOLA.eval(EMOLA.parse(EMOLA.tokenize(str)), env);
+  }
+  var parsed = EMOLA.parse(EMOLA.tokenize(str));
+  return EMOLA.eval(parsed, env);
 }

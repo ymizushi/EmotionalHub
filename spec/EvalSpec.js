@@ -1,9 +1,9 @@
 describe("Type Eval test", function() {
   it("boolean", function() {
-      expect(EMOLA.readAndEval('(= 1 1)')).toEqual(true);
-      expect(EMOLA.readAndEval('(= 1 2)')).toEqual(false);
-      expect(EMOLA.readAndEval('true')).toEqual(true);
-      expect(EMOLA.readAndEval('false')).toEqual(false);
+    expect(EMOLA.readAndEval('(= 1 1)')).toEqual(true);
+    expect(EMOLA.readAndEval('(= 1 2)')).toEqual(false);
+    expect(EMOLA.readAndEval('true')).toEqual(true);
+    expect(EMOLA.readAndEval('false')).toEqual(false);
   });
 
   it("integer", function() {
@@ -94,7 +94,6 @@ describe("Math Eval test", function() {
       expect(EMOLA.readAndEval('(>= 2 1)')).toEqual(true);
       expect(EMOLA.readAndEval('(>= 2 3)')).toEqual(false);
   });
-
 });
 
 describe("Visual Eval test", function() {
