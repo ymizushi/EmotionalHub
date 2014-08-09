@@ -6,7 +6,7 @@ describe("Core Eval test", function() {
       expect(EMOLA.readAndEval('false')).toEqual(false);
   });
 
-  it("Integer", function() {
+  it("integer", function() {
       expect(EMOLA.readAndEval('1')).toEqual(1);
       expect(EMOLA.readAndEval('0')).toEqual(0);
       expect(EMOLA.readAndEval('0100')).toEqual(100);
@@ -81,10 +81,25 @@ describe("Core Eval test", function() {
   });
 
   it("send", function() {
-      var point = new EMOLA.Point(200, 300);
-      expect(EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')).toEqual(point);
+    var point = new EMOLA.Point(200, 300);
+    expect(EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')).toEqual(point);
   });
+
 });
 
 describe("Visual Eval test", function() {
+  it("point", function() {
+    var point = new EMOLA.Point(200, 300);
+    expect(EMOLA.readAndEval('(point 200 300)')).toEqual(point);
+  });
+
+  it("color", function() {
+    var color = new EMOLA.Color(100, 150, 200);
+    expect(EMOLA.readAndEval('(color 100 150 200)')).toEqual(color);
+  });
+
+  it("circle", function() {
+    var circle = new EMOLA.Circle(new EMOLA.Point(200, 300), 100, new EMOLA.Color(100, 150, 200));
+    expect(EMOLA.readAndEval('(circle (point 200 300) 100 (color 100 150 200))')).toEqual(circle);
+  });
 });
