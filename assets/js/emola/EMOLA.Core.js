@@ -34,7 +34,7 @@ EMOLA.eval = function (x, env) {
       return new EMOLA.Circle(EMOLA.eval(point, env), EMOLA.eval(radius, env), EMOLA.eval(color, env));
     } else if (x[0].equalToType(EMOLA.Atom.DRAW)) {
       var figure = EMOLA.eval(x[1], env);
-      EMOLA.Front.draw(figure, figure.point, globalContext);
+      EMOLA.Front.draw(figure, globalContext);
       return figure;
     } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
       var object = EMOLA.eval(x[1], env);
@@ -189,5 +189,3 @@ EMOLA.readAndEval = function (str, env) {
   } 
   return EMOLA.eval(EMOLA.parse(EMOLA.tokenize(str)), env);
 }
-
-EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')

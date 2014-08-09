@@ -31,14 +31,11 @@ function makeContext(canvasId) {
 }
 
 EMOLA.Front = {};
-EMOLA.Front.draw = function (figure, point, context) {
+EMOLA.Front.draw = function (figure, context) {
   if (context === null) {
     globalContext = makeContext('canvas');
     context = globalContext;
   }
-
-  context.clearRect(figure.point.x, figure.point.y, figure.width, figure.height);
-  figure.point.move(point);
 
   context.beginPath();
   context.fillStyle = 'rgb(' + figure.color.r + ' ,' + figure.color.g + ' ,' + figure.color.b + ')';
