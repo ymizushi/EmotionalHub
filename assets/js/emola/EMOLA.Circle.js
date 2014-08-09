@@ -8,4 +8,11 @@ EMOLA.Circle.prototype.move = function (point, radius, color) {
   this.point.x = point.x;
   this.point.y = point.y;
   this.radius = radius;
+  this.color.r = color.r;
+  this.color.g = color.g;
+  this.color.b = color.b;
+}
+
+EMOLA.Circle.prototype.draw = function (context) {
+  context.drawCircle(this);
 }

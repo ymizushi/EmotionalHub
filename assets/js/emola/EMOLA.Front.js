@@ -27,18 +27,11 @@ function makeContext(canvasId) {
   if (!canvas || !canvas.getContext) {
     throw "This browser doesn't support HTML5 canvas";
   }
-  return canvas.getContext('2d');
+  return new EMOLA.ContextWrapper(canvas.getContext('2d'));
 }
 
 EMOLA.Front = {};
-EMOLA.Front.draw = function (figure, context) {
-  if (context === null) {
-    globalContext = makeContext('canvas');
-    context = globalContext;
-  }
 
-  context.beginPath();
-  context.fillStyle = 'rgb(' + figure.color.r + ' ,' + figure.color.g + ' ,' + figure.color.b + ')';
-  context.arc(figure.point.x, figure.point.y, figure.radius, 0, Math.PI*2, false);
-  context.fill();
+window.onload = function () {
+  globalContext = makeContext('canvas');
 }

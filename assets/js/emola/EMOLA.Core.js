@@ -93,8 +93,8 @@ EMOLA.eval = function (x, env) {
       return new EMOLA.Circle(EMOLA.eval(point, env), EMOLA.eval(radius, env), EMOLA.eval(color, env));
     } else if (x[0].equalToType(EMOLA.Atom.DRAW)) {
       var figure = EMOLA.eval(x[1], env);
-      EMOLA.Front.draw(figure, globalContext);
-      return figure;
+      figure.draw(globalContext);
+      return figure.point.x;
     } else {
       throw 'proper operator does not exist.';
     }
