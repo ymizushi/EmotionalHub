@@ -17,6 +17,7 @@ EMOLA.eval = function (x, env) {
       var symbol = x[1];
       var value = x[2];
       env.update(symbol.value, EMOLA.eval(value, env));
+      return null;
     } else if (x[0].equalToType(EMOLA.Atom.POINT)) {
       if (x[1] === undefined || x[2] === undefined || x.length > 3) {
         throw 'point arguments are illegal.';
@@ -79,9 +80,11 @@ EMOLA.eval = function (x, env) {
       }
       return sum;
     } else if (x[0].equalToType(EMOLA.Atom.EQUAL)) {
-      return EMOLA.eval(x[1], env) == EMOLA.eval(x[2], env);
+      return EMOLA.eval(x[1], env) === EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Atom.LESS)) {
       return EMOLA.eval(x[1], env) < EMOLA.eval(x[2], env);
+    } else if (x[0].equalToType(EMOLA.Atom.GREATER)) {
+      return EMOLA.eval(x[1], env) > EMOLA.eval(x[2], env);
     } else if (x[0].equalToType(EMOLA.Atom.VAR)) {
       func = env.find(x[0].value).get(x[0].value);
       args = [];
@@ -91,7 +94,11 @@ EMOLA.eval = function (x, env) {
       return func.exec(args);
     }
   } else {
-    if (!isNaN(Number(x))) {
+    if (x === true) {
+      return true;
+    } else if (x === false) {
+      return false;
+    } else if (!isNaN(Number(x))) {
       return Number(x); 
     } else if (typeof x === 'string') {
       return x; 
@@ -142,6 +149,8 @@ EMOLA.atomize = function (token) {
       return true;
     case EMOLA.Atom.FALSE:
       return false;
+    case EMOLA.Atom.LESS:
+      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
     case EMOLA.Atom.IF:
       return new EMOLA.Atom(EMOLA.Atom.IF, null);
     case EMOLA.Atom.DO:
