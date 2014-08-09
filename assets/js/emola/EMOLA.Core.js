@@ -154,12 +154,12 @@ EMOLA.atomize = function (token) {
     return true;
   } else if (token === EMOLA.Atom.FALSE) {
     return false;
-  } else if (EMOLA.Atom.isAtomToken(token)) {
-    return  new EMOLA.Atom(token, null);
   } else if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {
       return  new EMOLA.Atom(EMOLA.Atom.STR, token.slice(1,-1));
-    } else {
+    } else if (EMOLA.Atom.isAtomToken(token)) {
+      return  new EMOLA.Atom(token, null);
+    }  else {
       return new EMOLA.Atom(EMOLA.Atom.VAR, token);
     }
   } else if (typeof token === 'number') {
