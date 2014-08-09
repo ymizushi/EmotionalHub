@@ -1,4 +1,6 @@
 var globalEnv = new EMOLA.DictEnv(null);
+var globalContext = null;
+
 $(document).ready(function(){
    /* First console */
    var commandContainer = $('<div class="console">');
@@ -20,8 +22,8 @@ $(document).ready(function(){
    });
  });
 
-function makeContext() {
-  var canvas = document.getElementById('canvas');
+function makeContext(canvasId) {
+  var canvas = document.getElementById(canvasId);
   if (!canvas || !canvas.getContext) {
     throw "This browser doesn't support HTML5 canvas";
   }
@@ -29,10 +31,15 @@ function makeContext() {
 }
 
 EMOLA.Front = {};
-EMOLA.Front.draw = function (figure, context) {
-  if (context === undefined) {
-    context = makeContext();
+EMOLA.Front.draw = function (figure, point, context) {
+  if (context === null) {
+    globalContext = makeContext('canvas');
+    context = globalContext;
   }
+
+  context.clearRect(figure.point.x, figure.point.y, figure.width, figure.height);
+  figure.point.move(point);
+
   context.beginPath();
   context.fillStyle = 'rgb(' + figure.color.r + ' ,' + figure.color.g + ' ,' + figure.color.b + ')';
   context.arc(figure.point.x, figure.point.y, figure.radius, 0, Math.PI*2, false);

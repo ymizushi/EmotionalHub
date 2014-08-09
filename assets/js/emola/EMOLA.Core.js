@@ -34,8 +34,14 @@ EMOLA.eval = function (x, env) {
       return new EMOLA.Circle(EMOLA.eval(point, env), EMOLA.eval(radius, env), EMOLA.eval(color, env));
     } else if (x[0].equalToType(EMOLA.Atom.DRAW)) {
       var figure = EMOLA.eval(x[1], env);
-      EMOLA.Front.draw(figure);
+      EMOLA.Front.draw(figure, figure.point, globalContext);
       return figure;
+    } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
+      var object = EMOLA.eval(x[1], env);
+      var methodName = x[2].value;
+      var args = x.slice(3).map(function (x) { return EMOLA.eval(x ,env)});
+      object[methodName].apply(object, args)
+      return object;
     } else if (x[0].equalToType(EMOLA.Atom.FN)) {
       var args =  x[1];
       var exp = x[2];
@@ -90,6 +96,8 @@ EMOLA.eval = function (x, env) {
     } else if (typeof x === 'string') {
       return x; 
     } else if (x instanceof EMOLA.Circle) {
+      return x; 
+    } else if (x instanceof EMOLA.Point) {
       return x; 
     } else if (x.equalToType(EMOLA.Atom.INT)) {
       return Number(x.value);
@@ -159,6 +167,8 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Atom(EMOLA.Atom.COLOR, null);
     case EMOLA.Atom.DRAW:
       return new EMOLA.Atom(EMOLA.Atom.DRAW, null);
+    case EMOLA.Atom.SEND:
+      return new EMOLA.Atom(EMOLA.Atom.SEND, null);
   }
   if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {
@@ -179,3 +189,5 @@ EMOLA.readAndEval = function (str, env) {
   } 
   return EMOLA.eval(EMOLA.parse(EMOLA.tokenize(str)), env);
 }
+
+EMOLA.readAndEval('(do (def hoge (point 100 200)) (send hoge move (point 200 300)) hoge)')

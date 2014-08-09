@@ -17,5 +17,3 @@ describe("Circle test", function() {
     );
   });
 });
-
-
