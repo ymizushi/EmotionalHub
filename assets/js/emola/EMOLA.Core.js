@@ -150,49 +150,13 @@ EMOLA.parse = function (tokens) {
 }
 
 EMOLA.atomize = function (token) {
-  switch (token) {
-    case EMOLA.Atom.TRUE:
-      return true;
-    case EMOLA.Atom.FALSE:
-      return false;
-    case EMOLA.Atom.IF:
-      return new EMOLA.Atom(EMOLA.Atom.IF, null);
-    case EMOLA.Atom.DO:
-      return new EMOLA.Atom(EMOLA.Atom.DO, null);
-    case EMOLA.Atom.DEF:
-      return new EMOLA.Atom(EMOLA.Atom.DEF, null);
-    case EMOLA.Atom.FN:
-      return new EMOLA.Atom(EMOLA.Atom.FN, null);
-    case EMOLA.Atom.PLUS:
-      return new EMOLA.Atom(EMOLA.Atom.PLUS, null);
-    case EMOLA.Atom.MINUS:
-      return new EMOLA.Atom(EMOLA.Atom.MINUS, null);
-    case EMOLA.Atom.DIV:
-      return new EMOLA.Atom(EMOLA.Atom.DIV, null);
-    case EMOLA.Atom.MUL:
-      return new EMOLA.Atom(EMOLA.Atom.MUL, null);
-    case EMOLA.Atom.EQUAL:
-      return new EMOLA.Atom(EMOLA.Atom.EQUAL, null);
-    case EMOLA.Atom.LESS:
-      return new EMOLA.Atom(EMOLA.Atom.LESS, null);
-    case EMOLA.Atom.LESSEQUAL:
-      return new EMOLA.Atom(EMOLA.Atom.LESSEQUAL, null);
-    case EMOLA.Atom.GREATER:
-      return new EMOLA.Atom(EMOLA.Atom.GREATER, null);
-    case EMOLA.Atom.GREATEREQUAL:
-      return new EMOLA.Atom(EMOLA.Atom.GREATEREQUAL, null);
-    case EMOLA.Atom.CIRCLE:
-      return new EMOLA.Atom(EMOLA.Atom.CIRCLE, null);
-    case EMOLA.Atom.POINT:
-      return new EMOLA.Atom(EMOLA.Atom.POINT, null);
-    case EMOLA.Atom.COLOR:
-      return new EMOLA.Atom(EMOLA.Atom.COLOR, null);
-    case EMOLA.Atom.DRAW:
-      return new EMOLA.Atom(EMOLA.Atom.DRAW, null);
-    case EMOLA.Atom.SEND:
-      return new EMOLA.Atom(EMOLA.Atom.SEND, null);
-  }
-  if (typeof token === 'string') {
+  if (token === EMOLA.Atom.TRUE) {
+    return true;
+  } else if (token === EMOLA.Atom.FALSE) {
+    return false;
+  } else if (EMOLA.Atom.isAtomToken(token)) {
+    return  new EMOLA.Atom(token, null);
+  } else if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {
       return  new EMOLA.Atom(EMOLA.Atom.STR, token.slice(1,-1));
     } else {
