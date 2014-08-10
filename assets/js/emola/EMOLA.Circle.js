@@ -4,6 +4,7 @@ EMOLA.Circle = function (point, radius, color) {
   this.color = color;
 };
 EMOLA.Circle.prototype = new EMOLA.Figure();
+
 EMOLA.Circle.prototype.move = function (point, radius, color) {
   this.point.x = point.x;
   this.point.y = point.y;
