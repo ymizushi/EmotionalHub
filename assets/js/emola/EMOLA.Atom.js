@@ -10,6 +10,7 @@ EMOLA.Atom.DEF = 'def';
 EMOLA.Atom.DO = 'do';
 EMOLA.Atom.SEND = 'send';
 EMOLA.Atom.VAR = 'var';
+EMOLA.Atom.LET = 'let';
 
 /* type */
 EMOLA.Atom.TRUE = 'true';
@@ -45,6 +46,8 @@ EMOLA.Atom.getAtoms = function () {
     EMOLA.Atom.DEF,
     EMOLA.Atom.DO,
     EMOLA.Atom.SEND,
+    EMOLA.Atom.LET,
+
     EMOLA.Atom.PLUS,
     EMOLA.Atom.MINUS,
     EMOLA.Atom.DIV,
@@ -54,6 +57,7 @@ EMOLA.Atom.getAtoms = function () {
     EMOLA.Atom.LESS,
     EMOLA.Atom.GREATEREQUAL,
     EMOLA.Atom.LESSEQUAL,
+
     EMOLA.Atom.DRAW,
     EMOLA.Atom.POINT,
     EMOLA.Atom.COLOR,

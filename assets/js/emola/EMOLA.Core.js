@@ -12,6 +12,14 @@ EMOLA.eval = function (x, env) {
       var expList = x.slice(1);
       var result = expList.map(function (elem) { return EMOLA.eval(elem, env)});
       return result[result.length-1]; // 配列の最後の要素を取り出す
+    } else if (x[0].equalToType(EMOLA.Atom.LET)) {
+      var letList = x[1];
+      var exp = x[2];
+      var newEnv = new EMOLA.DictEnv(env);
+      for (var i=0;i<letList.length;i=i+2) {
+        newEnv.update(letList[i].value, EMOLA.eval(letList[i+1], env));
+      }
+      return EMOLA.eval(exp, newEnv);
     } else if (x[0].equalToType(EMOLA.Atom.DEF)) {
       var symbol = x[1];
       var value = x[2];
