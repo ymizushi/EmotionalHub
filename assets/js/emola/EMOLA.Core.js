@@ -108,7 +108,7 @@ EMOLA.eval = function (x, env) {
         return new EMOLA.Circle(EMOLA.eval(point, env), EMOLA.eval(radius, env), EMOLA.eval(color, env));
       } else if (x[0].equalToType(EMOLA.Atom.DRAW)) {
         var figure = EMOLA.eval(x[1], env);
-        figure.draw(globalContext);
+        figure.draw(EMOLA.Global.graphicContext);
         return figure.point.x;
       } else {
         throw 'proper operator does not exist.';
@@ -196,3 +196,19 @@ EMOLA.readAndEval = function (str, env) {
   var parsed = EMOLA.parse(EMOLA.tokenize(str));
   return EMOLA.eval(parsed, env);
 }
+
+EMOLA.Front = {};
+
+window.onkeydown = function () {
+  if (EMOLA.Global.graphicContext === null) {
+    EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
+  }
+}
+
+EMOLA.createContextWrapper = function (canvasId) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas || !canvas.getContext) {
+    return new EMOLA.ContextWrapper(null);
+  }
+  return new EMOLA.ContextWrapper(canvas.getContext('2d'));
+};

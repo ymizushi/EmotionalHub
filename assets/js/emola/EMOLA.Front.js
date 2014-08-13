@@ -1,6 +1,3 @@
-var globalEnv = new EMOLA.DictEnv(null);
-var globalContext = null;
-
 $(document).ready(function(){
    /* First console */
    var commandContainer = $('<div class="console">');
@@ -11,7 +8,7 @@ $(document).ready(function(){
        return line != "";
      },
      commandHandle:function(line) {
-       return [{msg:"=> " + EMOLA.readAndEval(line, globalEnv), className:"jquery-console-message-value"} ]
+       return [{msg:"=> " + EMOLA.readAndEval(line, EMOLA.Global.env), className:"jquery-console-message-value"} ]
      },
      autofocus: true,
      animateScroll: true,
@@ -22,16 +19,4 @@ $(document).ready(function(){
    });
  });
 
-function makeContext(canvasId) {
-  var canvas = document.getElementById(canvasId);
-  if (!canvas || !canvas.getContext) {
-    throw "This browser doesn't support HTML5 canvas";
-  }
-  return new EMOLA.ContextWrapper(canvas.getContext('2d'));
-}
 
-EMOLA.Front = {};
-
-window.onclick = function () {
-  globalContext = makeContext('canvas');
-}

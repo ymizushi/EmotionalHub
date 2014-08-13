@@ -35,6 +35,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.Figure.js',
           'assets/js/emola/EMOLA.Circle.js',
           'assets/js/emola/EMOLA.ContextWrapper.js',
+          'assets/js/emola/EMOLA.Global.js',
           'assets/js/emola/EMOLA.Core.js',
           'assets/js/emola/EMOLA.Front.js'
         ],
