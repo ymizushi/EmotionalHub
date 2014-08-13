@@ -19,4 +19,8 @@ $(document).ready(function(){
    });
  });
 
-
+var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, EMOLA.Color(100, 100, 100));
+function loop(){
+  circle.point.x += 10;
+  setTimeout(loop,1000);
+}
