@@ -199,7 +199,15 @@ EMOLA.readAndEval = function (str, env) {
 
 EMOLA.Front = {};
 
+// TODO: 下の二つなんとかする
 window.onkeydown = function () {
+  console.log("hog");
+  if (EMOLA.Global.graphicContext === null) {
+    EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
+  }
+}
+
+window.onclick = function () {
   if (EMOLA.Global.graphicContext === null) {
     EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
   }
