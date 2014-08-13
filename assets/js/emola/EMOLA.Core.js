@@ -26,6 +26,12 @@ EMOLA.eval = function (x, env) {
         var value = x[2];
         env.update(symbol.value, EMOLA.eval(value, env));
         return null;
+      } else if (x[0].equalToType(EMOLA.Atom.DEFN)) {
+        var symbol = x[1];
+        var args = x[2];
+        var exp = x[3];
+        env.update(symbol.value, new EMOLA.Fn(args, exp, env));
+        return null;
       } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
         var object = EMOLA.eval(x[1], env);
         var methodName = x[2].value;

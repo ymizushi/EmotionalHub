@@ -7,6 +7,7 @@ EMOLA.Atom = function (type, value) {
 EMOLA.Atom.FN = 'fn';
 EMOLA.Atom.IF = 'if';
 EMOLA.Atom.DEF = 'def';
+EMOLA.Atom.DEFN = 'defn';
 EMOLA.Atom.DO = 'do';
 EMOLA.Atom.SEND = 'send';
 EMOLA.Atom.VAR = 'var';
@@ -44,6 +45,7 @@ EMOLA.Atom.getAtoms = function () {
     EMOLA.Atom.FN,
     EMOLA.Atom.IF,
     EMOLA.Atom.DEF,
+    EMOLA.Atom.DEFN,
     EMOLA.Atom.DO,
     EMOLA.Atom.SEND,
     EMOLA.Atom.LET,
