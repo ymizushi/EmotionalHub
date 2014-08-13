@@ -21,6 +21,9 @@ describe("Type Eval test", function() {
 });
 
 describe("Lang Eval test", function() {
+  it("space", function() {
+      // TODO: expect(EMOLA.readAndEval('(do (def hoge "hoge  piyo") hoge)')).toEqual(0);
+  });
   it("if", function() {
       expect(EMOLA.readAndEval('(if (= 1 1) 1 0)')).toEqual(1);
       expect(EMOLA.readAndEval('(if (= 1 2) 1 0)')).toEqual(0);
