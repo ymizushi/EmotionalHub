@@ -109,7 +109,7 @@ EMOLA.eval = function (x, env) {
       } else if (x[0].equalToType(EMOLA.Atom.DRAW)) {
         var figure = EMOLA.eval(x[1], env);
         figure.draw(EMOLA.Global.graphicContext);
-        return figure.point.x;
+        return figure;
       } else {
         throw 'proper operator does not exist.';
       }

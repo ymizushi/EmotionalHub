@@ -13,7 +13,6 @@ describe("Eval test", function() {
   });
 });
 
-
 describe("Tokenizer test", function() {
   it("function tokenize", function() {
     expect(EMOLA.tokenize(
