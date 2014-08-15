@@ -189,6 +189,31 @@ EMOLA.treeParse = function (tokens) {
   return result[0];
 }
 
+EMOLA.parseA = function (tokenReader, node) {
+  while (true) {
+    var token = tokenReader.next();
+    console.log(token);
+    if (token === '(') {
+      EMOLA.parseA(tokenReader, new EMOLA.Node(node));
+    } else if (token === ')') {
+      return node;
+    } else if (token === null) {
+      break;
+    } else {
+      if (node.token === null) {
+        node.token = EMOLA.atomize(token);
+      } else {
+        node.addChildren(EMOLA.atomize(token));
+      }
+    }
+  }
+  return node;
+}
+
+EMOLA.parseB = function (tokenReader) {
+  return EMOLA.parseA(tokenReader, new EMOLA.Node(null));
+}
+
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
     return true;
@@ -216,32 +241,6 @@ EMOLA.readAndEval = function (str, env) {
   var parsed = EMOLA.parse(EMOLA.tokenize(str));
   return EMOLA.eval(parsed, env);
 }
-
-// TODO: 下の二つなんとかする
-window.onkeydown = function () {
-  if (EMOLA.Global.graphicContext === null) {
-    EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
-  }
-}
-
-window.onclick = function () {
-  if (EMOLA.Global.graphicContext === null) {
-    EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
-  }
-
-  var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, new EMOLA.Color(100, 100, 100));
-  function loop(){
-    circle.point.x += 10;
-    console.log(circle);
-    circle.draw(EMOLA.Global.graphicContext)
-    setTimeout(loop,1000);
-  }
-  loop();
-
-
-  
-}
-
 
 EMOLA.FigureTree = function () {
   this.children = [];
@@ -271,15 +270,6 @@ function eval(eleList, figureTree) {
   } else if (target instanceof EMOLA.Atom) {
     figureTree.add()
     return eval(restList, new EMOLA.FigureTree(figureTree));
-  
   }
 }
-
-EMOLA.createContextWrapper = function (canvasId) {
-  var canvas = document.getElementById(canvasId);
-  if (!canvas || !canvas.getContext) {
-    return new EMOLA.ContextWrapper(null);
-  }
-  return new EMOLA.ContextWrapper(canvas.getContext('2d'));
-};
 

@@ -1,5 +1,6 @@
-EMOLA.TokenReader = function () {
+EMOLA.TokenReader = function (line) {
   this.tokenizedList = [];
+  this.add(line);
 }
 
 EMOLA.TokenReader.prototype.add = function (line) {
@@ -11,5 +12,4 @@ EMOLA.TokenReader.prototype.next = function () {
     return null;
   }
   return this.tokenizedList.shift();
-
 }

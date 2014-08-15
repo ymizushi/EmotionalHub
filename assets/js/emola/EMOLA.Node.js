@@ -1,7 +1,7 @@
-EMOLA.Node = function (parent, token) {
+EMOLA.Node = function (parent) {
   this.parent = parent;
-  this.token = token;
   this.children = [];
+  this.token = null;
 }
 EMOLA.Node.prototype.addChildren = function (children) {
   this.children.push(children);
