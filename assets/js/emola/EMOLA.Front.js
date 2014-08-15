@@ -1,3 +1,5 @@
+EMOLA.Front = {};
+
 $(document).ready(function(){
    /* First console */
    var commandContainer = $('<div class="console">');
@@ -8,6 +10,10 @@ $(document).ready(function(){
        return line != "";
      },
      commandHandle:function(line) {
+
+
+
+
        return [{msg:"=> " + EMOLA.readAndEval(line, EMOLA.Global.env), className:"jquery-console-message-value"} ]
      },
      autofocus: true,
@@ -17,7 +23,7 @@ $(document).ready(function(){
        return true;
      }
    });
- });
+});
 
 var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, EMOLA.Color(100, 100, 100));
 function loop(){

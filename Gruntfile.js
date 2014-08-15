@@ -29,6 +29,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.js',
           'assets/js/emola/EMOLA.DictEnv.js',
           'assets/js/emola/EMOLA.Fn.js',
+          'assets/js/emola/EMOLA.Node.js',
           'assets/js/emola/EMOLA.Atom.js',
           'assets/js/emola/EMOLA.Color.js',
           'assets/js/emola/EMOLA.Point.js',
@@ -37,6 +38,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.ContextWrapper.js',
           'assets/js/emola/EMOLA.Global.js',
           'assets/js/emola/EMOLA.Core.js',
+          'assets/js/emola/EMOLA.TokenReader.js',
           'assets/js/emola/EMOLA.Front.js'
         ],
         dest: 'public/js/build/emola.js'

@@ -169,6 +169,26 @@ EMOLA.parse = function (tokens) {
   return env[0];
 }
 
+EMOLA.treeParse_a = function (tokens, node) {
+  for (var i=1;i<tokens.length;i++) {
+    if (tokens[i] === '(') {
+      var result = EMOLA.treeParse_a(tokens.slice(i+1), new EMOLA.Node(node, tokens[i+1]));
+      node.addChildren(result[0]);
+      i += result[1] + 1;
+    } else if (tokens[i] === ')') {
+      return [node, i];
+    } else {
+      node.addChildren(tokens[i]);
+    }
+  }
+  return node;
+}
+
+EMOLA.treeParse = function (tokens) {
+  var result = EMOLA.treeParse_a(tokens, new EMOLA.Node(null));
+  return result[0];
+}
+
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
     return true;
@@ -196,8 +216,6 @@ EMOLA.readAndEval = function (str, env) {
   var parsed = EMOLA.parse(EMOLA.tokenize(str));
   return EMOLA.eval(parsed, env);
 }
-
-EMOLA.Front = {};
 
 // TODO: 下の二つなんとかする
 window.onkeydown = function () {
@@ -243,10 +261,7 @@ function drawTree() {
           [new EMOLA.Atom(EMOLA.Atom.MUL, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]]], 
       [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 100), new EMOLA.Atom(EMOLA.Atom.INT, 2)]
   ];
-
-
 }
-
 
 function eval(eleList, figureTree) {
   var target = eleList[0];
@@ -258,8 +273,6 @@ function eval(eleList, figureTree) {
     return eval(restList, new EMOLA.FigureTree(figureTree));
   
   }
-
-
 }
 
 EMOLA.createContextWrapper = function (canvasId) {
@@ -269,3 +282,4 @@ EMOLA.createContextWrapper = function (canvasId) {
   }
   return new EMOLA.ContextWrapper(canvas.getContext('2d'));
 };
+

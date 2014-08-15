@@ -65,3 +65,31 @@ describe("integration test", function() {
       expect(EMOLA.readAndEval('(do (def hoge (+ (* 10 20) 10 (/ 4 2))) hoge)')).toEqual(212);
   });
 });
+
+// describe("Tree Test", function() {
+//   it("treeParse", function() {
+//       expect(EMOLA.treeParse(['(', 'do', '(', 'def', 'hoge' , '(', 'fn', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')', ')', '(', 'hoge', 2 , 1, ')', ')'])).toEqual([new EMOLA.Atom(EMOLA.Atom.DO, null),
+//           [
+//             new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),            [new EMOLA.Atom(EMOLA.Atom.FN, null),
+//               [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
+//               [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]
+//             ]
+//           ],
+//           [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Atom(EMOLA.Atom.INT, 1)]
+//         ]);
+//   });
+// });
+
+describe("InputReader Test", function() {
+  it("", function() {
+      var tokenReader = new EMOLA.TokenReader();
+      tokenReader.add('(def hoge 1)');
+      expect(tokenReader.next()).toEqual('(');
+      expect(tokenReader.next()).toEqual('def');
+      expect(tokenReader.next()).toEqual('hoge');
+      expect(tokenReader.next()).toEqual(1);
+      expect(tokenReader.next()).toEqual(')');
+      expect(tokenReader.next()).toEqual(null);
+  });
+});
+
