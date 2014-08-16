@@ -1,13 +1,12 @@
-EMOLA.Fn = function (args, exp, outer) {
+EMOLA.Fn = function (args, exp, env) {
   this.args = args;
   this.exp = exp;
-  this.outer = outer;
+  this.env = env;
 };
 
 EMOLA.Fn.prototype.exec = function (valueArgs) {
-  var dictEnv = new EMOLA.DictEnv(this.outer);
   for (var i=0;i<this.args.length;i++) {
-    dictEnv.dict[this.args[i].value] = valueArgs[i];
+    this.env.dict[this.args[i].value] = EMOLA.eval(valueArgs[i].value, this.env);
   }
-  return EMOLA.eval(this.exp, dictEnv);
+  return EMOLA.eval(this.exp, this.env);
 };

@@ -30,7 +30,7 @@ EMOLA.eval = function (x, env) {
         var symbol = x[1];
         var args = x[2];
         var exp = x[3];
-        env.update(symbol.value, new EMOLA.Fn(args, exp, env));
+        env.update(symbol.value, new EMOLA.Fn(args, exp, new EMOLA.DictEnv(env)));
         return null;
       } else if (x[0].equalToType(EMOLA.Atom.SEND)) {
         var object = EMOLA.eval(x[1], env);
@@ -192,7 +192,6 @@ EMOLA.treeParse = function (tokens) {
 EMOLA.parseA = function (tokenReader, node) {
   while (true) {
     var token = tokenReader.next();
-    console.log(token);
     if (token === '(') {
       EMOLA.parseA(tokenReader, new EMOLA.Node(node));
     } else if (token === ')') {
@@ -272,4 +271,3 @@ function eval(eleList, figureTree) {
     return eval(restList, new EMOLA.FigureTree(figureTree));
   }
 }
-

@@ -104,9 +104,9 @@ describe("TokenReader Test", function() {
   });
 });
 
-describe("Parser Test", function() {
-  it("parse", function() {
-      var tokenReader = new EMOLA.TokenReader('(defn hoge (x y) (+ x y))');
-    expect(EMOLA.parseB(tokenReader)).toEqual();
-  });
-});
+// describe("Parser2 Test", function() {
+//   it("parse", function() {
+//       var tokenReader = new EMOLA.TokenReader('(defn hoge (x y) (+ x y))');
+//     expect(EMOLA.parseB(tokenReader)).toEqual();
+//   });
+// });
