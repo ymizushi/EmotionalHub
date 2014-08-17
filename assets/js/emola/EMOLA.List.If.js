@@ -2,6 +2,8 @@ EMOLA.List.If = function (list) {
   this.list = list;
 };
 
+EMOLA.List.If.prototype = new EMOLA.List();
+
 EMOLA.List.If.prototype.eval = function (env) {
   this.assert();
   var testExp = this.list[1];

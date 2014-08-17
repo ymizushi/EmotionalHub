@@ -43,6 +43,10 @@ describe("Lang Eval test", function() {
       expect(EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))')).toEqual(24);
   });
 
+  it("recur fn", function() {
+      expect(EMOLA.readAndEval('(do (def count (fn (x) (if (= x 0) "finished" (hoge (- x 1))))) (hoge 2))')).toEqual("finished");
+  });
+
   it("defn", function() {
       expect(EMOLA.readAndEval('(do (defn hoge (a b c d) (* a b c d)) (hoge 1 2 3 4))')).toEqual(24);
   });
