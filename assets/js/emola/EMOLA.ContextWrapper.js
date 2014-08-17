@@ -19,3 +19,10 @@ EMOLA.ContextWrapper.prototype.clear = function () {
   var sizeHeight = this.context.canvas.clientHeight;
   this.context.clearRect(0, 0, sizeWidth, sizeHeight);
 }
+
+EMOLA.ContextWrapper.prototype.drawLine = function (line) {
+  this.context.beginPath();
+  this.context.moveTo(line.from.x, line.from.y);
+  this.context.lineTo(line.to.x, line.to.y);
+  this.context.stroke();
+}

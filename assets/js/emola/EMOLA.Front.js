@@ -61,5 +61,3 @@ EMOLA.createContextWrapper = function (canvasId) {
   }
   return new EMOLA.ContextWrapper(canvas.getContext('2d'));
 };
-
-

@@ -1,4 +1,3 @@
-
 EMOLA.List = function (list, point, parent) {
   this.list = list;
   this.childrenAspectRatio = 0.5;
@@ -33,12 +32,13 @@ EMOLA.List.prototype.pop = function () {
 
 EMOLA.List.prototype.draw = function (context) {
   var nodeCircle = new EMOLA.Circle(this.point , EMOLA.List.NODE_RADIUS, this.nodeColor);
-  nodeCircle.draw(context);
-
   var theta = this.deltaTheta;
+
   for (var i=0;i<this.list.length;i++) {
     theta += 2 * Math.PI/this.list.length;
     var point = new EMOLA.Point(this.point.x + this.childrenAspectRatio * this.radius*Math.cos(theta), this.point.y + this.childrenAspectRatio * this.radius*Math.sin(theta));
+    var line = new EMOLA.Line(nodeCircle.point, point);
+    line.draw(context);
     if (this.list[i] instanceof EMOLA.List) {
       this.list[i].point = point;
       this.list[i].draw(context);
@@ -47,4 +47,5 @@ EMOLA.List.prototype.draw = function (context) {
       circle.draw(context);
     }
   }
+  nodeCircle.draw(context);
 }
