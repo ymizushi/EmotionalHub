@@ -33,6 +33,8 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.Atom.js',
           'assets/js/emola/EMOLA.Color.js',
           'assets/js/emola/EMOLA.Point.js',
+          'assets/js/emola/EMOLA.Rect.js',
+          'assets/js/emola/EMOLA.Size.js',
           'assets/js/emola/EMOLA.Figure.js',
           'assets/js/emola/EMOLA.Circle.js',
           'assets/js/emola/EMOLA.ContextWrapper.js',

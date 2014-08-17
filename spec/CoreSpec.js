@@ -58,14 +58,6 @@ describe("Parser test", function() {
   });
 });
 
-describe("integration test", function() {
-  it("integration", function() {
-      expect(EMOLA.readAndEval('(+ 1 2)')).toEqual(3);
-      expect(EMOLA.readAndEval('(do (def hoge (fn (x y) (* x y))) (hoge 100 2))')).toEqual(200);
-      expect(EMOLA.readAndEval('(do (def hoge (+ (* 10 20) 10 (/ 4 2))) hoge)')).toEqual(212);
-  });
-});
-
 // describe("Tree Test", function() {
 //   it("treeParse", function() {
 //       expect(EMOLA.treeParse(['(', 'do', '(', 'def', 'hoge' , '(', 'fn', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')', ')', '(', 'hoge', 2 , 1, ')', ')'])).toEqual([new EMOLA.Atom(EMOLA.Atom.DO, null),
@@ -79,30 +71,6 @@ describe("integration test", function() {
 //         ]);
 //   });
 // });
-
-describe("TokenReader Test", function() {
-  it("add and next", function() {
-      var tokenReader = new EMOLA.TokenReader('(defn hoge (x y)');
-      expect(tokenReader.next()).toEqual('(');
-      expect(tokenReader.next()).toEqual('defn');
-      expect(tokenReader.next()).toEqual('hoge');
-      expect(tokenReader.next()).toEqual('(');
-      expect(tokenReader.next()).toEqual('x');
-      expect(tokenReader.next()).toEqual('y');
-      expect(tokenReader.next()).toEqual(')');
-      expect(tokenReader.next()).toEqual(null);
-
-      tokenReader.add('(+ x y 1))');
-      expect(tokenReader.next()).toEqual('(');
-      expect(tokenReader.next()).toEqual('+');
-      expect(tokenReader.next()).toEqual('x');
-      expect(tokenReader.next()).toEqual('y');
-      expect(tokenReader.next()).toEqual(1);
-      expect(tokenReader.next()).toEqual(')');
-      expect(tokenReader.next()).toEqual(')');
-      expect(tokenReader.next()).toEqual(null);
-  });
-});
 
 // describe("Parser2 Test", function() {
 //   it("parse", function() {

@@ -44,9 +44,11 @@ window.onclick = function () {
   }
 
   var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, new EMOLA.Color(100, 100, 100));
+  var rect = new EMOLA.Rect(new EMOLA.Point(500, 100), new EMOLA.Size(100, 100), new EMOLA.Color(100, 100, 100));
   function loop(){
     circle.point.x += 10;
     console.log(circle);
+    rect.draw(EMOLA.Global.graphicContext);
     circle.draw(EMOLA.Global.graphicContext)
     setTimeout(loop,1000);
   }
