@@ -1,3 +1,4 @@
+// TODO: evalの実装ひどいのでなんとかしておく
 EMOLA.eval = function (x, env) {
   if (x instanceof Array) {
     return EMOLA.evalList(x, env);

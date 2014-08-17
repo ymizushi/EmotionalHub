@@ -10,10 +10,6 @@ $(document).ready(function(){
        return line != "";
      },
      commandHandle:function(line) {
-
-
-
-
        return [{msg:"=> " + EMOLA.readAndEval(line, EMOLA.Global.env), className:"jquery-console-message-value"} ]
      },
      autofocus: true,
@@ -24,12 +20,6 @@ $(document).ready(function(){
      }
    });
 });
-
-var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, EMOLA.Color(100, 100, 100));
-function loop(){
-  circle.point.x += 10;
-  setTimeout(loop,1000);
-}
 
 // TODO: 下の二つなんとかする
 window.onkeydown = function () {
@@ -43,14 +33,23 @@ window.onclick = function () {
     EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
   }
 
+  var childList = new EMOLA.List([new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2) ,new EMOLA.Atom(EMOLA.Atom.INT, 3)]);
+  var testList = new EMOLA.List(
+    [new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Point(400, 200), childList],
+    new EMOLA.Point(400, 200)
+  )
+  childList.parent = testList;
+
   var circle = new EMOLA.Circle(new EMOLA.Point(100, 100), 100, new EMOLA.Color(100, 100, 100));
   var rect = new EMOLA.Rect(new EMOLA.Point(500, 100), new EMOLA.Size(100, 100), new EMOLA.Color(100, 100, 100));
   function loop(){
-    circle.point.x += 10;
-    console.log(circle);
-    rect.draw(EMOLA.Global.graphicContext);
-    circle.draw(EMOLA.Global.graphicContext)
-    setTimeout(loop,1000);
+    // circle.point.x += 10;
+    // rect.draw(EMOLA.Global.graphicContext);
+    // circle.draw(EMOLA.Global.graphicContext)
+    EMOLA.Global.graphicContext.clear();
+    testList.rotate(0.01);
+    testList.draw(EMOLA.Global.graphicContext);
+    setTimeout(loop,10);
   }
   loop();
 }
@@ -62,4 +61,5 @@ EMOLA.createContextWrapper = function (canvasId) {
   }
   return new EMOLA.ContextWrapper(canvas.getContext('2d'));
 };
+
 

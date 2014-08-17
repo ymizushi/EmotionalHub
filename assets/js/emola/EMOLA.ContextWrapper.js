@@ -13,3 +13,9 @@ EMOLA.ContextWrapper.prototype.drawRect = function (rect) {
   this.context.fillStyle = 'rgb(' + rect.color.r + ' ,' + rect.color.g + ' ,' + rect.color.b + ')';
   this.context.fillRect(rect.point.x, rect.point.y, rect.size.width, rect.size.height);
 }
+
+EMOLA.ContextWrapper.prototype.clear = function () {
+  var sizeWidth = this.context.canvas.clientWidth;
+  var sizeHeight = this.context.canvas.clientHeight;
+  this.context.clearRect(0, 0, sizeWidth, sizeHeight);
+}
