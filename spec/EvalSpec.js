@@ -41,6 +41,8 @@ describe("Lang Eval test", function() {
 
   it("fn", function() {
       expect(EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))')).toEqual(24);
+
+      expect(EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))')).toEqual(24);
   });
 
   // TODO: 再帰に対応しておく
