@@ -6,6 +6,9 @@ Emotional Hub provides interactive programming, music sequencer, toolset for mak
 
 This repository is under development.
 
+### Screenshot
+![alt text](https://github.com/ymizushi/emohub/blob/master/screenshot.png "Screenshot")
+
 ### Initialize
 ```sh
 git clone git@github.com:ymizushi/emohub.git
