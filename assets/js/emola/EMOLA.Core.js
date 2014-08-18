@@ -140,6 +140,9 @@ EMOLA.evalList = function (x, env) {
       var figure = EMOLA.eval(x[1], env);
       figure.draw(EMOLA.Global.graphicContext);
       return figure;
+    } else if (x[0].equalToType(EMOLA.Atom.CLEAR)) {
+      EMOLA.Global.graphicContext.clear();
+      return EMOLA.Global.graphicContext;
     } else {
       throw 'proper operator does not exist.';
     }
@@ -224,12 +227,11 @@ EMOLA.readAndEval = function (line, env) {
   return EMOLA.parseAndEval(EMOLA.Global.tokenReader, env);
 }
 
-EMOLA.readAndEvalForDrawing = function (str, env) {
-  if (env === undefined) {
-    env = new EMOLA.DictEnv(null);
-  }
-  var parsed = EMOLA.parse(EMOLA.tokenize(str));
-  var drawingList = EMOLA.convertSyntaxListForDrawing(parsed, null);
+EMOLA.readAndEvalForDrawing = function (line) {
+  env = new EMOLA.DictEnv(null);
+  var tokenReader = new EMOLA.TokenReader(line);
+  var syntaxList = EMOLA.parse(tokenReader)
+  var drawingList = EMOLA.convertSyntaxListForDrawing(syntaxList, null);
   drawingList.draw(EMOLA.Global.graphicContext);
 }
 

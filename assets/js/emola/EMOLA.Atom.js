@@ -35,6 +35,7 @@ EMOLA.Atom.DRAW = 'draw';
 EMOLA.Atom.POINT = 'point';
 EMOLA.Atom.COLOR = 'color';
 EMOLA.Atom.CIRCLE = 'circle';
+EMOLA.Atom.CLEAR = 'clear';
 
 EMOLA.Atom.isAtom = function (atom) {
   return atom instanceof EMOLA.Atom;
@@ -63,7 +64,8 @@ EMOLA.Atom.getAtoms = function () {
     EMOLA.Atom.DRAW,
     EMOLA.Atom.POINT,
     EMOLA.Atom.COLOR,
-    EMOLA.Atom.CIRCLE
+    EMOLA.Atom.CIRCLE,
+    EMOLA.Atom.CLEAR
   ]
 }
 

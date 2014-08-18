@@ -9,7 +9,7 @@ $(document).ready(function() {
        return line != "";
      },
      commandHandle:function(line) {
-       // EMOLA.readAndEvalForDrawing(line);
+       EMOLA.readAndEvalForDrawing(line);
        return [{ msg:"=> " + EMOLA.readAndEval(line, EMOLA.Global.env), className:"jquery-console-message-value"} ]
      },
      autofocus: true,
