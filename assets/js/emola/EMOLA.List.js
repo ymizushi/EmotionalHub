@@ -1,4 +1,4 @@
-EMOLA.List = function (list, point, parent) {
+EMOLA.List = function (list, parent, point) {
   this.list = list;
   this.childrenAspectRatio = 0.5;
   this.radius = 150;

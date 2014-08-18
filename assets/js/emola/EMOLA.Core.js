@@ -237,6 +237,24 @@ EMOLA.atomize = function (token) {
     throw 'Unknown token';
   }
 }
+EMOLA.convertSyntaxListForDrawing = function (syntaxList, parentList) {
+  var point;
+  if (!parentList) {
+    point = new EMOLA.Point(200, 200);
+  } else {
+    point = null;
+  }
+  var children = new EMOLA.List([], parentList, point);
+  for (var i=0;i<syntaxList.length;i++) {
+    if (syntaxList[i] instanceof Array) {
+      var result = EMOLA.convertSyntaxListForDrawing(syntaxList[i], parentList);
+      children.push(result);
+    } else {
+      children.push(syntaxList[i]);
+    }
+  }
+  return children;
+}
 
 EMOLA.readAndEval = function (str, env) {
   if (env === undefined) {
@@ -244,5 +262,15 @@ EMOLA.readAndEval = function (str, env) {
   }
   var parsed = EMOLA.parse(EMOLA.tokenize(str));
   return EMOLA.eval(parsed, env);
+}
+
+;
+EMOLA.readAndEvalForDrawing = function (str, env) {
+  if (env === undefined) {
+    env = new EMOLA.DictEnv(null);
+  }
+  var parsed = EMOLA.parse(EMOLA.tokenize(str));
+  var drawingList = EMOLA.convertSyntaxListForDrawing(parsed, null);
+  drawingList.draw(EMOLA.Global.graphicContext);
 }
 

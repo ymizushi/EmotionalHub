@@ -78,3 +78,21 @@ describe("Parser test", function() {
 //     expect(EMOLA.parseB(tokenReader)).toEqual();
 //   });
 // });
+//
+//
+
+describe("Eval test", function() {
+  it("constructor", function() {
+      var parsed = [
+        new EMOLA.Atom(EMOLA.Atom.DO, null),
+        [new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),
+          [new EMOLA.Atom(EMOLA.Atom.FN, null),
+            [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
+            [new EMOLA.Atom(EMOLA.Atom.MUL, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]]], 
+        [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 100), new EMOLA.Atom(EMOLA.Atom.INT, 2)]
+      ];
+    var hoge = EMOLA.eval(parsed, new EMOLA.DictEnv(null));
+    expect(hoge).toBe(200);
+  });
+});
+

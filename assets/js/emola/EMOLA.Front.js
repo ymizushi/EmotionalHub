@@ -10,6 +10,7 @@ $(document).ready(function(){
        return line != "";
      },
      commandHandle:function(line) {
+       EMOLA.readAndEvalForDrawing(line);
        return [{msg:"=> " + EMOLA.readAndEval(line, EMOLA.Global.env), className:"jquery-console-message-value"} ]
      },
      autofocus: true,
@@ -35,7 +36,7 @@ window.onclick = function () {
 
   var childList = new EMOLA.List([new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2) ,new EMOLA.Atom(EMOLA.Atom.INT, 3)]);
   var testList = new EMOLA.List(
-    [new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Point(400, 200), childList],
+    [new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Point(400, 200), childList],null,
     new EMOLA.Point(400, 200)
   )
   childList.parent = testList;
