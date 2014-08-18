@@ -150,6 +150,7 @@ EMOLA.evalList = function (x, env) {
   };
 }
 
+// TODO: 空白の含む文字列、括弧の含まれる文字列にも対応出来るようにしておく
 EMOLA.tokenize = function (inputStr) {
   return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
     function (str) { return str ? true : false;
@@ -172,50 +173,6 @@ EMOLA.parse = function (tokens) {
     }
   }
   return env[0];
-}
-
-EMOLA.treeParse_a = function (tokens, node) {
-  for (var i=1;i<tokens.length;i++) {
-    if (tokens[i] === '(') {
-      var result = EMOLA.treeParse_a(tokens.slice(i+1), new EMOLA.Node(node, tokens[i+1]));
-      node.addChildren(result[0]);
-      i += result[1] + 1;
-    } else if (tokens[i] === ')') {
-      return [node, i];
-    } else {
-      node.addChildren(tokens[i]);
-    }
-  }
-  return node;
-}
-
-EMOLA.treeParse = function (tokens) {
-  var result = EMOLA.treeParse_a(tokens, new EMOLA.Node(null));
-  return result[0];
-}
-
-EMOLA.parseA = function (tokenReader, node) {
-  while (true) {
-    var token = tokenReader.next();
-    if (token === '(') {
-      EMOLA.parseA(tokenReader, new EMOLA.Node(node));
-    } else if (token === ')') {
-      return node;
-    } else if (token === null) {
-      break;
-    } else {
-      if (node.token === null) {
-        node.token = EMOLA.atomize(token);
-      } else {
-        node.addChildren(EMOLA.atomize(token));
-      }
-    }
-  }
-  return node;
-}
-
-EMOLA.parseB = function (tokenReader) {
-  return EMOLA.parseA(tokenReader, new EMOLA.Node(null));
 }
 
 EMOLA.atomize = function (token) {
@@ -264,7 +221,6 @@ EMOLA.readAndEval = function (str, env) {
   return EMOLA.eval(parsed, env);
 }
 
-;
 EMOLA.readAndEvalForDrawing = function (str, env) {
   if (env === undefined) {
     env = new EMOLA.DictEnv(null);

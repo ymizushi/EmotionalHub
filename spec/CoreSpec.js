@@ -58,29 +58,6 @@ describe("Parser test", function() {
   });
 });
 
-// describe("Tree Test", function() {
-//   it("treeParse", function() {
-//       expect(EMOLA.treeParse(['(', 'do', '(', 'def', 'hoge' , '(', 'fn', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')', ')', '(', 'hoge', 2 , 1, ')', ')'])).toEqual([new EMOLA.Atom(EMOLA.Atom.DO, null),
-//           [
-//             new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),            [new EMOLA.Atom(EMOLA.Atom.FN, null),
-//               [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
-//               [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]
-//             ]
-//           ],
-//           [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Atom(EMOLA.Atom.INT, 1)]
-//         ]);
-//   });
-// });
-
-// describe("Parser2 Test", function() {
-//   it("parse", function() {
-//       var tokenReader = new EMOLA.TokenReader('(defn hoge (x y) (+ x y))');
-//     expect(EMOLA.parseB(tokenReader)).toEqual();
-//   });
-// });
-//
-//
-
 describe("Eval test", function() {
   it("constructor", function() {
       var parsed = [
@@ -95,4 +72,3 @@ describe("Eval test", function() {
     expect(hoge).toBe(200);
   });
 });
-
