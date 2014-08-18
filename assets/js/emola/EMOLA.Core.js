@@ -159,20 +159,21 @@ EMOLA.tokenize = function (inputStr) {
   );
 }
 
-EMOLA.parse = function (tokens) {
-  var env = [];
-  for (var i=0;i<tokens.length;i++) {
-    if (tokens[i] === '(') {
-      var result = EMOLA.parse(tokens.slice(i+1));
-      env.push(result[0]);
-      i += result[1] + 1;
-    } else if (tokens[i] === ')') {
-      return [env, i];
+EMOLA.parse = function (tokenReader) {
+  var syntaxList = [];
+  while(true) {
+    token = tokenReader.next();
+    if (token === '(') {
+      syntaxList.push(EMOLA.parse(tokenReader));
+    } else if (token === ')') {
+      return syntaxList;
+    } else if (token === null) {
+      break;
     } else {
-      env.push(EMOLA.atomize(tokens[i]));
+      syntaxList.push(EMOLA.atomize(token));
     }
   }
-  return env[0];
+  return syntaxList[0];
 }
 
 EMOLA.atomize = function (token) {
@@ -213,12 +214,14 @@ EMOLA.convertSyntaxListForDrawing = function (syntaxList, parentList) {
   return children;
 }
 
-EMOLA.readAndEval = function (str, env) {
-  if (env === undefined) {
-    env = new EMOLA.DictEnv(null);
-  }
-  var parsed = EMOLA.parse(EMOLA.tokenize(str));
-  return EMOLA.eval(parsed, env);
+EMOLA.parseAndEval = function (tokenReader, env) {
+  if (!env) env = new EMOLA.DictEnv(null);
+  return EMOLA.eval(EMOLA.parse(tokenReader), env);
+}
+
+EMOLA.readAndEval = function (line, env) {
+  EMOLA.Global.tokenReader.add(line);
+  return EMOLA.parseAndEval(EMOLA.Global.tokenReader, env);
 }
 
 EMOLA.readAndEvalForDrawing = function (str, env) {

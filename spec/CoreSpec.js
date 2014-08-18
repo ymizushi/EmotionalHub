@@ -34,30 +34,6 @@ describe("Tokenizer test", function() {
   });
 });
 
-describe("Parser test", function() {
-  it("function parser", function() {
-      var result = EMOLA.parse(['(', '-', 2, '(', '+', 2 , 3, ')', ')']);
-      expect(result).toEqual(
-        [new EMOLA.Atom(EMOLA.Atom.MINUS, null),
-          new EMOLA.Atom(EMOLA.Atom.INT, 2),
-            [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2) ,new EMOLA.Atom(EMOLA.Atom.INT, 3)]]
-    );
-
-    var result2 = EMOLA.parse(['(', 'do', '(', 'def', 'hoge' , '(', 'fn', '(', 'x', 'y', ')', '(', '+', 'x', 'y', ')', ')', ')', '(', 'hoge', 2 , 1, ')', ')']);
-    expect(result2).toEqual(
-        [new EMOLA.Atom(EMOLA.Atom.DO, null),
-          [
-            new EMOLA.Atom(EMOLA.Atom.DEF, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'),            [new EMOLA.Atom(EMOLA.Atom.FN, null),
-              [new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')],
-              [new EMOLA.Atom(EMOLA.Atom.PLUS, null), new EMOLA.Atom(EMOLA.Atom.VAR, 'x'), new EMOLA.Atom(EMOLA.Atom.VAR, 'y')]
-            ]
-          ],
-          [new EMOLA.Atom(EMOLA.Atom.VAR, 'hoge'), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Atom(EMOLA.Atom.INT, 1)]
-        ]
-    );
-  });
-});
-
 describe("Eval test", function() {
   it("constructor", function() {
       var parsed = [
