@@ -234,4 +234,3 @@ EMOLA.readAndEvalForDrawing = function (line) {
   var drawingList = EMOLA.convertSyntaxListForDrawing(syntaxList, null);
   drawingList.draw(EMOLA.Global.graphicContext);
 }
-
