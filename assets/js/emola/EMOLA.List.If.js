@@ -1,5 +1,5 @@
 EMOLA.List.If = function () {
-  EMOLA.List.apply(this, arguments)
+  EMOLA.List.apply(this, arguments);
 }
 
 EMOLA.List.If.prototype = new EMOLA.List();

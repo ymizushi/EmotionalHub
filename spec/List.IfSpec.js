@@ -1,4 +1,4 @@
-describe("List.If Spec", function() {
+describe("List.If Spec", function () {
   it("integration", function() {
     var resultTrueTypeIfList = new EMOLA.List.If([new EMOLA.Atom('if'), new EMOLA.Atom('true'), new EMOLA.Atom('int', 1), new EMOLA.Atom('false')]);
     expect(resultTrueTypeIfList.eval(EMOLA.Global.env)).toEqual(1);
