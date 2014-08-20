@@ -17,7 +17,5 @@ EMOLA.List.If.prototype.eval = function (env) {
 }
 
 EMOLA.List.If.prototype.assert = function () {
-  if (this.list.length != 3 || this.list[0] !== EMOLA.Atom.IF) {
-    throw new EMOLA.Exception.InvalidArgumentException();
-  }
+  // TODO:
 }

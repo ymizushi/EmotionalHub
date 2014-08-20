@@ -1,5 +1,5 @@
 describe("List Spec", function() {
-  it("List", function() {
+  it("integration", function() {
     var list = new EMOLA.List([1,2,3,4]);
     expect(list.pop()).toEqual(4);
     expect(list.list).toEqual([1,2,3]);

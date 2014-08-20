@@ -1,6 +1,6 @@
 EMOLA.Atom = function (type, value) {
   this.type = type;
-  this.value = value;
+  this.value = value||null;
 }
 
 /* lang */ 

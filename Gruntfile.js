@@ -28,6 +28,7 @@ module.exports = function(grunt) {
         src: [
           'assets/js/emola/EMOLA.js',
           'assets/js/emola/EMOLA.DictEnv.js',
+          'assets/js/emola/EMOLA.Exception.js',
           'assets/js/emola/EMOLA.Fn.js',
           'assets/js/emola/EMOLA.Node.js',
           'assets/js/emola/EMOLA.Atom.js',
