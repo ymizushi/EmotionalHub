@@ -1,13 +1,13 @@
 EMOLA.List = function (list, parent, point) {
   this.list = list;
-  this.childrenAspectRatio = 0.5;
-  this.radius = 150;
-
-  this.point = point||null;
+  this.radius = 50;
+  this.theta = 0;
   this.nodeColor = new EMOLA.Color(255, 255, 51);
   this.leafColor = new EMOLA.Color(102, 102, 102);
+  this.listColor = new EMOLA.Color(50, 50, 50,0.2);
+
   this.parent = parent||null;
-  this.deltaTheta = 0;
+  this.point = point||null;
 };
 
 EMOLA.List.NODE_RADIUS = 20;
@@ -18,7 +18,7 @@ EMOLA.List.prototype.push = function (element) {
 }
 
 EMOLA.List.prototype.rotate = function (theta) {
-  this.deltaTheta += theta ;
+  this.theta += theta ;
   for (var i=0;i<this.list.length;i++) {
     if (this.list[i] instanceof EMOLA.List) {
       this.list[i].rotate(theta);
@@ -32,14 +32,12 @@ EMOLA.List.prototype.pop = function () {
 
 EMOLA.List.prototype.draw = function (context) {
   var nodeCircle = new EMOLA.Circle(this.point , EMOLA.List.NODE_RADIUS, this.nodeColor);
-  var theta = this.deltaTheta;
 
   for (var i=0;i<this.list.length;i++) {
-    theta += 2 * Math.PI/this.list.length;
-    var point = new EMOLA.Point(this.point.x + this.childrenAspectRatio * this.radius*Math.cos(theta), this.point.y + this.childrenAspectRatio * this.radius*Math.sin(theta));
-    var line = new EMOLA.Line(nodeCircle.point, point);
-    line.draw(context);
+    this.theta += 2 * Math.PI/this.list.length;
+    var point = new EMOLA.Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
     if (this.list[i] instanceof EMOLA.List) {
+      var point = new EMOLA.Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
       this.list[i].point = point;
       this.list[i].draw(context);
     } else {
@@ -47,5 +45,6 @@ EMOLA.List.prototype.draw = function (context) {
       circle.draw(context);
     }
   }
+  (new EMOLA.Circle(this.point , this.radius, this.listColor)).draw(context);
   nodeCircle.draw(context);
 }
