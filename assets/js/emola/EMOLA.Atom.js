@@ -76,3 +76,18 @@ EMOLA.Atom.isAtomToken = function (token) {
 EMOLA.Atom.prototype.equalToType = function (type) {
   return this.type === type;
 }
+
+EMOLA.Atom.prototype.eval = function () {
+  switch (this.type) {
+    case EMOLA.Atom.TRUE:
+      return true;
+    case EMOLA.Atom.FALSE:
+      return false;
+    case EMOLA.Atom.STR:
+      return this.value;
+    case EMOLA.Atom.INT:
+      return Number(this.value);
+    default:
+      throw new EMOLA.Exception.InvalidTypeException();
+  }
+}

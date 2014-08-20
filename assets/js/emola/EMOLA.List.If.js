@@ -1,6 +1,6 @@
 EMOLA.List.If = function (list) {
   this.list = list;
-};
+}
 
 EMOLA.List.If.prototype = new EMOLA.List();
 
@@ -17,7 +17,7 @@ EMOLA.List.If.prototype.eval = function (env) {
 }
 
 EMOLA.List.If.prototype.assert = function () {
-  if (this.list.length != 3) {
-    throw "if: invalid argument";
+  if (this.list.length != 3 || this.list[0] !== EMOLA.Atom.IF) {
+    throw new EMOLA.Exception.InvalidArgumentException();
   }
 }
