@@ -1,5 +1,7 @@
 EMOLA.List = function (list, parent, point) {
   this.list = list;
+
+  // グラフィック要素
   this.radius = 50;
   this.theta = 0;
   this.nodeColor = new EMOLA.Color(255, 255, 51);
