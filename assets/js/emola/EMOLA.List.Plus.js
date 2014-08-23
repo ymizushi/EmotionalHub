@@ -12,8 +12,8 @@ EMOLA.List.Plus.prototype.eval = function (env) {
     }
   );
   return sum;
+
 }
 
 EMOLA.List.Plus.prototype.assert = function () {
 }
-

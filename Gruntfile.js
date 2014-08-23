@@ -2,8 +2,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
-      files: ['assets/js/*.js'],
-      tasks: ['concat:emola', 'jasmine']
+      files: ['assets/js/emola/*.js'],
+      tasks: ['concat', 'jasmine']
     },
 
     jasmine: {
