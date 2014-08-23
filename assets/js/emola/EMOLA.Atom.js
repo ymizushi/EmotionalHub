@@ -17,7 +17,7 @@ EMOLA.Atom.LET = 'let';
 EMOLA.Atom.TRUE = 'true';
 EMOLA.Atom.FALSE = 'false';
 EMOLA.Atom.STR = 'str';
-EMOLA.Atom.INT = 'int';
+EMOLA.Atom.NUMBER = 'number';
 
 /* math */
 EMOLA.Atom.PLUS = '+';
@@ -85,7 +85,7 @@ EMOLA.Atom.prototype.eval = function () {
       return false;
     case EMOLA.Atom.STR:
       return this.value;
-    case EMOLA.Atom.INT:
+    case EMOLA.Atom.NUMBER:
       return Number(this.value);
     default:
       throw new EMOLA.Exception.InvalidTypeException();

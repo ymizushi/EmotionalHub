@@ -13,7 +13,7 @@ EMOLA.eval = function (x, env) {
     } else if (typeof x === 'string') {
       return x; 
     } else if (x instanceof EMOLA.Atom) {
-      if (x.equalToType(EMOLA.Atom.INT)) {
+      if (x.equalToType(EMOLA.Atom.NUMBER)) {
         return Number(x.value);
       } else if (x.equalToType(EMOLA.Atom.VAR)) {
         if (env.find(x.value)) {
@@ -193,7 +193,7 @@ EMOLA.atomize = function (token) {
       return new EMOLA.Atom(EMOLA.Atom.VAR, token);
     }
   } else if (typeof token === 'number') {
-      return new EMOLA.Atom(EMOLA.Atom.INT, token);
+      return new EMOLA.Atom(EMOLA.Atom.NUMBER, token);
   } else {
     throw 'Unknown token';
   }
