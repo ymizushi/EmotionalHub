@@ -19,4 +19,3 @@ EMOLA.List.Minus.prototype.eval = function (env) {
 
 EMOLA.List.Minus.prototype.assert = function () {
 }
-
