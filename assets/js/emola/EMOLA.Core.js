@@ -197,7 +197,7 @@ EMOLA.parseAno = function (tokenReader) {
   while(true) {
     token = tokenReader.next();
     if (token === '(') {
-      syntaxList.push(EMOLA.parse(parseAno));
+      syntaxList.push(EMOLA.parseAno(tokenReader));
     } else if (token === ')') {
       return EMOLA.createListTypeObject(syntaxList);
     } else if (token === null) {
