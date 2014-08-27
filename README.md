@@ -44,3 +44,32 @@ grunt dev
 ```sh
 grunt
 ```
+
+## Emola
+
+### Defiinition of function
+```clojure
+(defn calc (x y)
+  (* x y))
+```
+
+### Defiinition of bindings
+```clojure
+(defn calc (x)
+  (let (y 1)
+    (* x y)))
+```
+
+### If Statement
+```clojure
+(defn calc (x)
+  (if (= x 1)
+    true
+    false))
+```
+
+### Do Statement
+
+### Send Statement
+
+### Drawing Function
