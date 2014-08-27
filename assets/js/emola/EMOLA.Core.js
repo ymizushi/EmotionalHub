@@ -179,6 +179,37 @@ EMOLA.parse = function (tokenReader) {
   return syntaxList[0];
 }
 
+EMOLA.createListTypeObject = function (syntaxList) {
+  var firstList = syntaxList[0];
+  var syntaxMap = {
+    'def':   EMOLA.List.Def,
+    'do':    EMOLA.List.Do,
+    'fn':    EMOLA.List.Fn,
+    'if':    EMOLA.List.If,
+    '-' :    EMOLA.List.Minus,
+    '+' :    EMOLA.List.Plus
+  };
+  var targetFunction = syntaxMap[firstList.type];
+  return new targetFunction(syntaxList);
+}
+
+EMOLA.parseAno = function (tokenReader) {
+  var syntaxList = [];
+  while(true) {
+    token = tokenReader.next();
+    if (token === '(') {
+      syntaxList.push(EMOLA.parse(tokenReader));
+    } else if (token === ')') {
+      return new EMOLA.syntaxList;
+    } else if (token === null) {
+      break;
+    } else {
+      syntaxList.push(EMOLA.atomize(token));
+    }
+  }
+  return syntaxList[0];
+}
+
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
     return true;
