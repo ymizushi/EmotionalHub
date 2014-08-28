@@ -1,12 +1,12 @@
-EMOLA.Fn = function (args, exp, env) {
+EMOLA.Fn = function (args, expList, env) {
   this.args = args;
-  this.exp = exp;
+  this.expList = expList;
   this.env = env;
 };
 
 EMOLA.Fn.prototype.eval = function (env) {
   this.assert();
-  return this.exp.eval(this.env);
+  return this.expList.eval(this.env);
 }
 
 EMOLA.Fn.prototype.assert = function () {
