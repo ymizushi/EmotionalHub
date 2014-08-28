@@ -6,13 +6,11 @@ EMOLA.List.Plus.prototype = new EMOLA.List();
 
 EMOLA.List.Plus.prototype.eval = function (env) {
   this.assert();
-  var sum = this.list.slice(1).reduce(
-    function (previousValue, currentValue, index, array) {
-      return previousValue.eval(env) + currentValue.eval(env);
-    }
-  );
+  var sum = 0;
+  for (var i=1; i<this.list.length;i++) {
+    sum += this.list[i].eval(env);
+  }
   return sum;
-
 }
 
 EMOLA.List.Plus.prototype.assert = function () {

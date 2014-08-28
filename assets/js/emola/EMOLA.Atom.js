@@ -77,7 +77,7 @@ EMOLA.Atom.prototype.equalToType = function (type) {
   return this.type === type;
 }
 
-EMOLA.Atom.prototype.eval = function () {
+EMOLA.Atom.prototype.eval = function (env) {
   switch (this.type) {
     case EMOLA.Atom.TRUE:
       return true;
@@ -87,7 +87,15 @@ EMOLA.Atom.prototype.eval = function () {
       return this.value;
     case EMOLA.Atom.NUMBER:
       return Number(this.value);
+    case EMOLA.Atom.VAR:
+      if (env.find(this.value)) {
+        foundEnv = env.find(this.value);
+        return foundEnv.get(this.value);
+      } else {
+        throw 'target key of environment is not found.';
+      }
     default:
+      console.log(this.type);
       throw new EMOLA.Exception.InvalidTypeException();
   }
 }

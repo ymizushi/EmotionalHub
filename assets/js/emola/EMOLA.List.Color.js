@@ -10,7 +10,7 @@ EMOLA.List.Color.prototype.eval = function (env) {
 }
 
 EMOLA.List.Color.prototype.assert = function () {
-  if (x[1] === undefined || x[2] === undefined || x[3] === undefined || x.length > 4) {
+  if (this.list[1] === undefined || this.list[2] === undefined || this.list[3] === undefined || this.list.length > 4) {
     throw 'color arguments are illegal.';
   }
 }

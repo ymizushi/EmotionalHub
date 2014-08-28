@@ -198,9 +198,9 @@ EMOLA.parse = function (tokenReader) {
 
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
-    return true;
+    return new EMOLA.Atom(EMOLA.Atom.TRUE);
   } else if (token === EMOLA.Atom.FALSE) {
-    return false;
+    return new EMOLA.Atom(EMOLA.Atom.FALSE);
   } else if (typeof token === 'string') {
     if (token[0] === '"' || token[0] === "'") {
       return  new EMOLA.Atom(EMOLA.Atom.STR, token.slice(1,-1));
@@ -236,7 +236,7 @@ EMOLA.convertSyntaxListForDrawing = function (syntaxList, parentList) {
 
 EMOLA.parseAndEval = function (tokenReader, env) {
   if (!env) env = new EMOLA.DictEnv(null);
-  return EMOLA.eval(EMOLA.parseLegacy(tokenReader), env);
+  return EMOLA.parse(tokenReader).eval(env);
 }
 
 EMOLA.readAndEval = function (line, env) {
