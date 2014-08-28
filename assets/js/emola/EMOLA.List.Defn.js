@@ -18,5 +18,3 @@ EMOLA.List.Defn.prototype.assert = function () {
     throw new Error("InvalidArgumentException");
   }
 }
-
-
