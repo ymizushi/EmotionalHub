@@ -6,7 +6,7 @@ EMOLA.List.Send.prototype = new EMOLA.List();
 
 EMOLA.List.Send.prototype.eval = function (env) {
   this.assert();
-  var object = EMOLA.eval(this.list[1], env);
+  var object = this.list[1].eval(env);
   var methodName = this.list[2].value;
   var args = this.list.slice(3).map(function (x) { return x.eval(env) });
   object[methodName].apply(object, args)
