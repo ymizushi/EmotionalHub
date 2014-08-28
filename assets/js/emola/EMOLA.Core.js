@@ -7,40 +7,6 @@ EMOLA.tokenize = function (inputStr) {
   );
 }
 
-EMOLA.parseLegacy = function (tokenReader) {
-  var syntaxList = [];
-  while(true) {
-    token = tokenReader.next();
-    if (token === '(') {
-      syntaxList.push(EMOLA.parseLegacy(tokenReader));
-    } else if (token === ')') {
-      return syntaxList;
-    } else if (token === null) {
-      break;
-    } else {
-      syntaxList.push(EMOLA.atomize(token));
-    }
-  }
-  return syntaxList[0];
-}
-
-EMOLA.parse = function (tokenReader) {
-  var syntaxList = [];
-  while(true) {
-    token = tokenReader.next();
-    if (token === '(') {
-      syntaxList.push(EMOLA.parse(tokenReader));
-    } else if (token === ')') {
-      return EMOLA.List.create(syntaxList);
-    } else if (token === null) {
-      break;
-    } else {
-      syntaxList.push(EMOLA.atomize(token));
-    }
-  }
-  return syntaxList[0];
-}
-
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
     return new EMOLA.Atom(EMOLA.Atom.TRUE);
@@ -60,39 +26,36 @@ EMOLA.atomize = function (token) {
     throw 'Unknown token';
   }
 }
-EMOLA.convertSyntaxListForDrawing = function (syntaxList, parentList) {
-  var point;
-  if (!parentList) {
-    point = new EMOLA.Point(200, 200);
-  } else {
-    point = null;
-  }
-  var children = new EMOLA.List([], parentList, point);
-  for (var i=0;i<syntaxList.length;i++) {
-    if (syntaxList[i] instanceof Array) {
-      var result = EMOLA.convertSyntaxListForDrawing(syntaxList[i], parentList);
-      children.push(result);
+
+EMOLA.parse = function (tokenReader, parentList) {
+  var syntaxList = [];
+  while(true) {
+    token = tokenReader.next();
+    if (!parentList) {
+      point = new EMOLA.Point(200, 200);
     } else {
-      children.push(syntaxList[i]);
+      point = null;
+    }
+    if (token === '(') {
+      syntaxList.push(EMOLA.parse(tokenReader, parentList));
+    } else if (token === ')') {
+      return EMOLA.List.create(syntaxList, parentList, point);
+    } else if (token === null) {
+      break;
+    } else {
+      syntaxList.push(EMOLA.atomize(token));
     }
   }
-  return children;
+  return syntaxList[0];
 }
 
 EMOLA.parseAndEval = function (tokenReader, env) {
   if (!env) env = new EMOLA.DictEnv(null);
-  return EMOLA.parse(tokenReader).eval(env);
+  var parsedList = EMOLA.parse(tokenReader);
+  return parsedList.eval(env);
 }
 
 EMOLA.readAndEval = function (line, env) {
   EMOLA.Global.tokenReader.add(line);
   return EMOLA.parseAndEval(EMOLA.Global.tokenReader, env);
-}
-
-EMOLA.readAndEvalForDrawing = function (line) {
-  env = new EMOLA.DictEnv(null);
-  var tokenReader = new EMOLA.TokenReader(line);
-  var syntaxList = EMOLA.parseLegacy(tokenReader)
-  var drawingList = EMOLA.convertSyntaxListForDrawing(syntaxList, null);
-  drawingList.draw(EMOLA.Global.graphicContext);
 }

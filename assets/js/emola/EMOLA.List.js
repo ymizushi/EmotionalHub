@@ -15,7 +15,7 @@ EMOLA.List = function (list, parent, point) {
 EMOLA.List.NODE_RADIUS = 20;
 EMOLA.List.LEAF_RADIUS = 15;
 
-EMOLA.List.create = function (syntaxList) {
+EMOLA.List.create = function (syntaxList, parentList, point) {
   var firstList = syntaxList[0];
   var syntaxMap = {};
   syntaxMap[EMOLA.Atom.FN] = EMOLA.List.Fn;
@@ -46,7 +46,7 @@ EMOLA.List.create = function (syntaxList) {
   if (!targetFunction) {
     targetFunction = EMOLA.List.Var;
   }
-  return new targetFunction(syntaxList);
+  return new targetFunction(syntaxList, parentList, point);
 }
 
 EMOLA.List.prototype.push = function (element) {

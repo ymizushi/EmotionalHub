@@ -9,10 +9,12 @@ $(document).ready(function() {
        return line != "";
      },
      commandHandle:function(line) {
-       EMOLA.readAndEvalForDrawing(line);
        var result = '';
        try {
-         result = EMOLA.readAndEval(line, EMOLA.Global.env);
+         EMOLA.Global.tokenReader.add(line);
+         var parsedList = EMOLA.parse(EMOLA.Global.tokenReader);
+         parsedList.draw(EMOLA.Global.graphicContext);
+         result = parsedList.eval(EMOLA.Global.env);
        } catch (e) {
          result = "Parse error";
        } 
