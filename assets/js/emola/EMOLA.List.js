@@ -24,7 +24,6 @@ EMOLA.List.create = function (syntaxList) {
   syntaxMap[EMOLA.Atom.DEFN] = EMOLA.List.Defn;
   syntaxMap[EMOLA.Atom.DO] = EMOLA.List.Do;
   syntaxMap[EMOLA.Atom.SEND] = EMOLA.List.Send;
-  syntaxMap[EMOLA.Atom.VAR] = EMOLA.List.Var;
   syntaxMap[EMOLA.Atom.LET] = EMOLA.List.Let;
 
   syntaxMap[EMOLA.Atom.PLUS] = EMOLA.List.Plus;
@@ -44,10 +43,11 @@ EMOLA.List.create = function (syntaxList) {
   syntaxMap[EMOLA.Atom.CLEAR] = EMOLA.List.Clear;
 
   var targetFunction = syntaxMap[firstList.type];
+  if (!targetFunction) {
+    targetFunction = EMOLA.List.Var;
+  }
   return new targetFunction(syntaxList);
 }
-
-
 
 EMOLA.List.prototype.push = function (element) {
   return this.list.push(element);
