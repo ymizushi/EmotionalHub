@@ -251,3 +251,4 @@ EMOLA.readAndEvalForDrawing = function (line) {
   var drawingList = EMOLA.convertSyntaxListForDrawing(syntaxList, null);
   drawingList.draw(EMOLA.Global.graphicContext);
 }
+EMOLA.readAndEval('(do (def hoge (fn (a b c d) (* a b c d))) (hoge 1 2 3 4))', EMOLA.Global.env);

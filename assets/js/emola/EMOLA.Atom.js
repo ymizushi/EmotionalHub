@@ -90,7 +90,7 @@ EMOLA.Atom.prototype.eval = function (env) {
     case EMOLA.Atom.VAR:
       if (env.find(this.value)) {
         foundEnv = env.find(this.value);
-        return foundEnv.get(this.value);
+        return foundEnv.get(this.value).eval(env);
       } else {
         throw 'target key of environment is not found.';
       }
