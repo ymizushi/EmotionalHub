@@ -12,7 +12,7 @@ EMOLA.List.Var.prototype.eval = function (env) {
   for (var i=0;i<func.args.length;i++) {
     func.env.dict[func.args[i].value] = args[i].eval(this.env);
   }
-  return func.exp.eval(func.env);
+  return func.eval(env);
 }
 
 EMOLA.List.Var.prototype.assert = function () {

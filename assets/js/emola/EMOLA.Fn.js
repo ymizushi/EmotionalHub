@@ -4,10 +4,10 @@ EMOLA.Fn = function (args, exp, env) {
   this.env = env;
 };
 
-EMOLA.List.Fn.prototype.eval = function (env) {
+EMOLA.Fn.prototype.eval = function (env) {
   this.assert();
   return this.exp.eval(this.env);
 }
 
-EMOLA.List.Fn.prototype.assert = function () {
+EMOLA.Fn.prototype.assert = function () {
 }
