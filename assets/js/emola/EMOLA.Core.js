@@ -162,12 +162,12 @@ EMOLA.tokenize = function (inputStr) {
   );
 }
 
-EMOLA.parse = function (tokenReader) {
+EMOLA.parseLegacy = function (tokenReader) {
   var syntaxList = [];
   while(true) {
     token = tokenReader.next();
     if (token === '(') {
-      syntaxList.push(EMOLA.parse(tokenReader));
+      syntaxList.push(EMOLA.parseLegacy(tokenReader));
     } else if (token === ')') {
       return syntaxList;
     } else if (token === null) {
@@ -192,12 +192,12 @@ EMOLA.createListTypeObject = function (syntaxList) {
   return new targetFunction(syntaxList);
 }
 
-EMOLA.parseAno = function (tokenReader) {
+EMOLA.parse = function (tokenReader) {
   var syntaxList = [];
   while(true) {
     token = tokenReader.next();
     if (token === '(') {
-      syntaxList.push(EMOLA.parseAno(tokenReader));
+      syntaxList.push(EMOLA.parse(tokenReader));
     } else if (token === ')') {
       return EMOLA.createListTypeObject(syntaxList);
     } else if (token === null) {
@@ -249,7 +249,7 @@ EMOLA.convertSyntaxListForDrawing = function (syntaxList, parentList) {
 
 EMOLA.parseAndEval = function (tokenReader, env) {
   if (!env) env = new EMOLA.DictEnv(null);
-  return EMOLA.eval(EMOLA.parse(tokenReader), env);
+  return EMOLA.eval(EMOLA.parseLegacy(tokenReader), env);
 }
 
 EMOLA.readAndEval = function (line, env) {
@@ -260,7 +260,7 @@ EMOLA.readAndEval = function (line, env) {
 EMOLA.readAndEvalForDrawing = function (line) {
   env = new EMOLA.DictEnv(null);
   var tokenReader = new EMOLA.TokenReader(line);
-  var syntaxList = EMOLA.parse(tokenReader)
+  var syntaxList = EMOLA.parseLegacy(tokenReader)
   var drawingList = EMOLA.convertSyntaxListForDrawing(syntaxList, null);
   drawingList.draw(EMOLA.Global.graphicContext);
 }

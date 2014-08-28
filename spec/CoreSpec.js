@@ -63,7 +63,7 @@ describe("parseAno test", function() {
   it("constructor", function() {
     EMOLA.Global.tokenReader.add("(- 1 2)");
 
-    var result = EMOLA.parseAno(EMOLA.Global.tokenReader).eval(EMOLA.Global.env);
+    var result = EMOLA.parse(EMOLA.Global.tokenReader).eval(EMOLA.Global.env);
     expect(result).toEqual(-1);
     
   });
