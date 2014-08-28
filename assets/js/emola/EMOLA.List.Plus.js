@@ -1,5 +1,6 @@
 EMOLA.List.Plus = function () {
   EMOLA.List.apply(this, arguments);
+  this.listColor = new EMOLA.Color(255, 0, 0, 0.2);
 }
 
 EMOLA.List.Plus.prototype = new EMOLA.List();

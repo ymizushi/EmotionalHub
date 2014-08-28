@@ -1,5 +1,6 @@
 EMOLA.List.Def = function () {
   EMOLA.List.apply(this, arguments);
+  this.listColor = new EMOLA.Color(0, 255, 0, 0.2);
 }
 
 EMOLA.List.Def.prototype = new EMOLA.List();
