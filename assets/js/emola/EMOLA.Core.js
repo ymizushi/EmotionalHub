@@ -179,19 +179,6 @@ EMOLA.parseLegacy = function (tokenReader) {
   return syntaxList[0];
 }
 
-EMOLA.createListTypeObject = function (syntaxList) {
-  var firstList = syntaxList[0];
-  var syntaxMap = {};
-  syntaxMap[EMOLA.Atom.DEF] = EMOLA.List.Def;
-  syntaxMap[EMOLA.Atom.DO] = EMOLA.List.Do;
-  syntaxMap[EMOLA.Atom.FN] = EMOLA.List.Fn;
-  syntaxMap[EMOLA.Atom.IF] = EMOLA.List.If;
-  syntaxMap[EMOLA.Atom.MINUS] = EMOLA.List.Minus;
-  syntaxMap[EMOLA.Atom.PLUS] = EMOLA.List.Plus;
-  var targetFunction = syntaxMap[firstList.type];
-  return new targetFunction(syntaxList);
-}
-
 EMOLA.parse = function (tokenReader) {
   var syntaxList = [];
   while(true) {
@@ -199,7 +186,7 @@ EMOLA.parse = function (tokenReader) {
     if (token === '(') {
       syntaxList.push(EMOLA.parse(tokenReader));
     } else if (token === ')') {
-      return EMOLA.createListTypeObject(syntaxList);
+      return EMOLA.List.create(syntaxList);
     } else if (token === null) {
       break;
     } else {
