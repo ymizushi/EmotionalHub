@@ -14,11 +14,12 @@ $(document).ready(function() {
          EMOLA.Global.tokenReader.add(line);
          var parsedList = EMOLA.parse(EMOLA.Global.tokenReader);
          if (parsedList.draw) {
-           parsedList.draw(EMOLA.Global.graphicContext);
+           EMOLA.Global.drawingManager.add(parsedList);
          }
          result = parsedList.eval(EMOLA.Global.env);
        } catch (e) {
          result = "Parse error";
+         console.log(e);
        } 
        return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
      },
@@ -31,27 +32,24 @@ $(document).ready(function() {
    });
 });
 
-// TODO: 下の二つなんとかする
+EMOLA.Front.drawLoop = function () {
+  EMOLA.Global.graphicContext.clear();
+  EMOLA.Global.drawingManager.draw(EMOLA.Global.graphicContext);
+  setTimeout(EMOLA.Front.drawLoop, 30);
+}
+
+// TODO: 下の2つなんとかする
 window.onkeydown = function () {
   if (EMOLA.Global.graphicContext === null) {
     EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
+    EMOLA.Front.drawLoop();
   }
-}
-
-var testList = EMOLA.External.createTestList();
-EMOLA.Front.drawLoop = function () {
-  EMOLA.Global.graphicContext.clear();
-  testList.rotate(0.01);
-  testList.draw(EMOLA.Global.graphicContext);
-  setTimeout(EMOLA.Front.drawLoop, 10);
 }
 
 window.onclick = function () {
   if (EMOLA.Global.graphicContext === null) {
     EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
   }
-
-  EMOLA.Front.drawLoop();
 }
 
 EMOLA.createContextWrapper = function (canvasId) {

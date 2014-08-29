@@ -32,7 +32,9 @@ EMOLA.parse = function (tokenReader, parentList) {
   while(true) {
     token = tokenReader.next();
     if (!parentList) {
-      point = new EMOLA.Point(200, 200);
+      var x = Math.random()*200;
+      var y = Math.random()*200;
+      point = new EMOLA.Point(parseInt(x), parseInt(y));
     } else {
       point = null;
     }

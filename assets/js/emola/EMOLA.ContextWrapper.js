@@ -1,5 +1,7 @@
 EMOLA.ContextWrapper = function (context) {
   this.context = context;
+  this.width = context.canvas.width;
+  this.height = context.canvas.height;
 };
 
 EMOLA.ContextWrapper.prototype.drawCircle = function (circle) {

@@ -7,7 +7,8 @@ EMOLA.List.Clear.prototype = new EMOLA.List();
 EMOLA.List.Clear.prototype.eval = function (env) {
   this.assert();
   EMOLA.Global.graphicContext.clear();
-  return EMOLA.Global.graphicContext;
+  EMOLA.Global.drawingManager.clear();
+  return null;
 }
 
 EMOLA.List.Clear.prototype.assert = function () {
