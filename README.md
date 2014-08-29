@@ -8,7 +8,8 @@ Emotional Hub provides interactive programming environtment, music sequencer, pr
 This repository is under development.
 
 ### Screenshot
-![alt text](https://github.com/ymizushi/emohub/blob/master/screenshot.png "Screenshot")
+![alt text](https://github.com/ymizushi/emohub/blob/master/screenshot.png "Screenshot1")
+![alt text](https://github.com/ymizushi/emohub/blob/master/screenshot2.png "Screenshot2")
 
 ### Initialize
 ```sh
