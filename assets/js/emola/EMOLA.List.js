@@ -15,40 +15,6 @@ EMOLA.List = function (list, parent, point) {
 EMOLA.List.NODE_RADIUS = 20;
 EMOLA.List.LEAF_RADIUS = 15;
 
-EMOLA.List.create = function (syntaxList, parentList, point) {
-  var firstList = syntaxList[0];
-  var syntaxMap = {};
-  syntaxMap[EMOLA.Atom.FN] = EMOLA.List.Fn;
-  syntaxMap[EMOLA.Atom.IF] = EMOLA.List.If;
-  syntaxMap[EMOLA.Atom.DEF] = EMOLA.List.Def;
-  syntaxMap[EMOLA.Atom.DEFN] = EMOLA.List.Defn;
-  syntaxMap[EMOLA.Atom.DO] = EMOLA.List.Do;
-  syntaxMap[EMOLA.Atom.SEND] = EMOLA.List.Send;
-  syntaxMap[EMOLA.Atom.LET] = EMOLA.List.Let;
-
-  syntaxMap[EMOLA.Atom.PLUS] = EMOLA.List.Plus;
-  syntaxMap[EMOLA.Atom.MINUS] = EMOLA.List.Minus;
-  syntaxMap[EMOLA.Atom.DIV] = EMOLA.List.Div;
-  syntaxMap[EMOLA.Atom.MUL] = EMOLA.List.Mul;
-  syntaxMap[EMOLA.Atom.EQUAL] = EMOLA.List.Equal;
-  syntaxMap[EMOLA.Atom.GREATER] = EMOLA.List.Greater;
-  syntaxMap[EMOLA.Atom.LESS] = EMOLA.List.Less;
-  syntaxMap[EMOLA.Atom.GREATEREQUAL] = EMOLA.List.Greaterequal;
-  syntaxMap[EMOLA.Atom.LESSEQUAL] = EMOLA.List.Lessequal;
-
-  syntaxMap[EMOLA.Atom.DRAW] = EMOLA.List.Draw;
-  syntaxMap[EMOLA.Atom.POINT] = EMOLA.List.Point;
-  syntaxMap[EMOLA.Atom.COLOR] = EMOLA.List.Color;
-  syntaxMap[EMOLA.Atom.CIRCLE] = EMOLA.List.Circle;
-  syntaxMap[EMOLA.Atom.CLEAR] = EMOLA.List.Clear;
-
-  var targetFunction = syntaxMap[firstList.type];
-  if (!targetFunction) {
-    targetFunction = EMOLA.List.Var;
-  }
-  return new targetFunction(syntaxList, parentList, point);
-}
-
 EMOLA.List.prototype.push = function (element) {
   return this.list.push(element);
 }

@@ -6,7 +6,11 @@ EMOLA.List.Var.prototype = new EMOLA.List();
 
 EMOLA.List.Var.prototype.eval = function (env) {
   this.assert();
-  var func = env.find(this.list[0].value).get(this.list[0].value);
+  if (this.list[0] instanceof EMOLA.List.Var) {
+    var func = this.list[0].eval(env);
+  } else {
+    var func = env.find(this.list[0].value).get(this.list[0].value);
+  }
   var realArgsList = this.list.slice(1);
 
   for (var i=0;i<realArgsList.length;i++) {
