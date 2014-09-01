@@ -12,7 +12,9 @@ EMOLA.DrawingManager.prototype.clear = function () {
 
 EMOLA.DrawingManager.prototype.draw = function (context) {
   for (var i=0;i<this.list.length;i++) {
-    this.list[i].rotate(0.01);
+    if (this.list[i].rotate) {
+      this.list[i].rotate(0.01);
+    }
     this.list[i].draw(context);
   }
 }

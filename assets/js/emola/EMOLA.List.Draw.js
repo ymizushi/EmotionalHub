@@ -6,8 +6,9 @@ EMOLA.List.Draw.prototype = new EMOLA.List();
 
 EMOLA.List.Draw.prototype.eval = function (env) {
   this.assert();
+  console.log("hogehoge");
   var figure = this.list[1].eval(env);
-  figure.draw(EMOLA.Global.graphicContext);
+  EMOLA.Global.drawingManager.add(figure);
   return figure;
 }
 
