@@ -2,3 +2,5 @@
 
 (def hoge (quote (+ 1 2))) // グラフィックが固定化
 (eval hoge) //アニメーションする
+
+javascriptでの非同期処理について学習しておく

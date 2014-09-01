@@ -65,6 +65,8 @@ EMOLA.createList = function (syntaxList, parentList, point) {
   syntaxMap[EMOLA.Atom.DO] = EMOLA.List.Do;
   syntaxMap[EMOLA.Atom.SEND] = EMOLA.List.Send;
   syntaxMap[EMOLA.Atom.LET] = EMOLA.List.Let;
+  syntaxMap[EMOLA.Atom.QUOTE] = EMOLA.List.Quote;
+  syntaxMap[EMOLA.Atom.EVAL] = EMOLA.List.Eval;
 
   /* math */
   syntaxMap[EMOLA.Atom.PLUS] = EMOLA.List.Plus;
