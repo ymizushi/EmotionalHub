@@ -46,7 +46,7 @@ grunt dev
 grunt
 ```
 
-## Emola
+## Emola Language Specification
 
 ### Defiinition of function
 ```clojure
@@ -54,11 +54,11 @@ grunt
   (* x y))
 ```
 
-### Defiinition of bindings
+### bindings
 ```clojure
 (defn calc (x)
-  (let (y 1)
-    (* x y)))
+  (let (y 1 z 2)
+    (* x y z)))
 ```
 
 ### If Statement
@@ -70,7 +70,21 @@ grunt
 ```
 
 ### Do Statement
+```clojure
+(do 
+  (def hoge 1)
+  (+ hoge 1))
+```
 
 ### Send Statement
+```clojure
+(do
+  (def hoge (point 100 200))
+  (send hoge move (point 200 300)))
+```
 
-### Drawing Function
+## Graphic Function
+### clear
+```clojure
+(clear)
+```
