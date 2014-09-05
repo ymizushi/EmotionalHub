@@ -28,3 +28,10 @@ EMOLA.ContextWrapper.prototype.drawLine = function (line) {
   this.context.lineTo(line.to.x, line.to.y);
   this.context.stroke();
 }
+
+EMOLA.ContextWrapper.prototype.drawString = function (line) {
+  this.context.beginPath();
+  this.context.moveTo(line.from.x, line.from.y);
+  this.context.lineTo(line.to.x, line.to.y);
+  this.context.stroke();
+}
