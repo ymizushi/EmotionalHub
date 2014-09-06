@@ -76,6 +76,20 @@ module.exports = function(grunt) {
         dest: 'public/js/build/emola.js'
       }
     },
+
+    typescript: {
+      base: {
+        src: ['assets/typescript/**/*.ts'],
+        dest: 'public/js/build/emola-ts.js',
+        options: {
+          module: 'amd', //or commonjs
+          target: 'es5', //or es3
+          basePath: 'assets/typescript',
+          sourceMap: true,
+          declaration: true
+        }
+      }
+    },
  
     // ファイル圧縮の設定
     uglify: {
@@ -93,6 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-typescript');
   // デフォルトタスクの設定
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('dev', ['concat', 'jasmine']);
