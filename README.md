@@ -7,45 +7,13 @@ Emotional Hub provides interactive programming environment, music sequencer, pre
 
 This repository is under development.
 
-### Screenshot
+## Screenshot
 ![alt text](https://github.com/ymizushi/emohub/blob/master/description/screenshot.png "Screenshot1")
 ![alt text](https://github.com/ymizushi/emohub/blob/master/description/screenshot2.png "Screenshot2")
 
-### Initialize
-```sh
-git clone git@github.com:ymizushi/emohub.git
-brew install npm
-npm link
-```
-
-### Test
-```sh
-grunt jasmine
-```
-
-### Watching modified file
-```sh
-grunt watch
-```
-
-### Development command
-```sh
-grunt dev
-```
-
-### Compile *.ts
-```sh
-grunt ts
-```
-
-### Building for production
-```sh
-grunt
-```
-
 ## Emola Language Specification
 
-### arithmetic operator    
+### Arithmetic operator    
 ```clojure
 (+ 1 1 1) # Emola=> 3
 (- 2 1 1) # Emola=> 0
@@ -54,13 +22,10 @@ grunt
 (/ 1 3)   # Emola=> 0.3333333333333333 
 (= 2 2)   # Emola=> true 
 (= 2 1)   # Emola=> false 
-(=>= 1 1) # Emola=> true 
-(=> 1 1)  # Emola=> false 
-(=> 2 1)  # Emola=> true 
+(=> 1 1)  # Emola=> true 
+(> 1 1)   # Emola=> false 
 (<= 1 1)  # Emola=> true 
 (< 1 1)   # Emola=> false 
-(< 2 1)   # Emola=> false 
-(< 1 1)   # Emola=> true 
 ```
 
 ### Binding
@@ -120,8 +85,7 @@ hoge
   (send hoge move (point 200 300)))
 ```
 
-## Graphic Function
-### clear
+### Clear graphic context
 ```clojure
 (clear)
 ```
@@ -138,3 +102,37 @@ hoge
 
 ### Create Line
 ```clojure
+
+## Development setting
+
+### Initialize
+```sh
+git clone git@github.com:ymizushi/emohub.git
+brew install npm
+npm link
+```
+
+### Test
+```sh
+grunt jasmine
+```
+
+### Watching modified file
+```sh
+grunt watch
+```
+
+### Development command
+```sh
+grunt dev
+```
+
+### Compile *.ts
+```sh
+grunt ts
+```
+
+### Building for production
+```sh
+grunt
+```
