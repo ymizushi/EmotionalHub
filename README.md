@@ -15,17 +15,17 @@ This repository is under development.
 
 ### Arithmetic operator    
 ```clojure
-(+ 1 1 1) # Emola=> 3
-(- 2 1 1) # Emola=> 0
-(* 2 2 2) # Emola=> 8
-(/ 4 2 2) # Emola=> 1
-(/ 1 3)   # Emola=> 0.3333333333333333 
-(= 2 2)   # Emola=> true 
-(= 2 1)   # Emola=> false 
-(=> 1 1)  # Emola=> true 
-(> 1 1)   # Emola=> false 
-(<= 1 1)  # Emola=> true 
-(< 1 1)   # Emola=> false 
+(+ 1 1 1) ; Emola=> 3
+(- 2 1 1) ; Emola=> 0
+(* 2 2 2) ; Emola=> 8
+(/ 4 2 2) ; Emola=> 1
+(/ 1 3)   ; Emola=> 0.3333333333333333 
+(= 2 2)   ; Emola=> true 
+(= 2 1)   ; Emola=> false 
+(=> 1 1)  ; Emola=> true 
+(> 1 1)   ; Emola=> false 
+(<= 1 1)  ; Emola=> true 
+(< 1 1)   ; Emola=> false 
 ```
 
 ### Binding
