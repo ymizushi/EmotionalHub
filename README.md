@@ -112,6 +112,8 @@ hoge
 git clone git@github.com:ymizushi/emohub.git
 brew install npm
 npm link
+npm install -g bower
+bower install
 ```
 
 ### Test
