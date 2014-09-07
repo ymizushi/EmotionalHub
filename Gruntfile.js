@@ -2,8 +2,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
-      files: ['assets/js/emola/*.js'],
-      tasks: ['concat', 'jasmine']
+      files: ['assets/js/emola/*.js', 'assets/typescript/**/*.ts'],
+      tasks: ['concat']
     },
 
     jasmine: {
@@ -40,30 +40,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.Figure.js',
           'assets/js/emola/EMOLA.Circle.js',
           'assets/js/emola/EMOLA.List.js',
-          'assets/js/emola/EMOLA.List.If.js',
-          'assets/js/emola/EMOLA.List.Do.js',
-          'assets/js/emola/EMOLA.List.Let.js',
-          'assets/js/emola/EMOLA.List.Eval.js',
-          'assets/js/emola/EMOLA.List.Def.js',
-          'assets/js/emola/EMOLA.List.Defn.js',
-          'assets/js/emola/EMOLA.List.Send.js',
-          'assets/js/emola/EMOLA.List.Fn.js',
-          'assets/js/emola/EMOLA.List.Var.js',
-          'assets/js/emola/EMOLA.List.Quote.js',
-          'assets/js/emola/EMOLA.List.Plus.js',
-          'assets/js/emola/EMOLA.List.Minus.js',
-          'assets/js/emola/EMOLA.List.Mul.js',
-          'assets/js/emola/EMOLA.List.Div.js',
-          'assets/js/emola/EMOLA.List.Equal.js',
-          'assets/js/emola/EMOLA.List.Greater.js',
-          'assets/js/emola/EMOLA.List.Greaterequal.js',
-          'assets/js/emola/EMOLA.List.Less.js',
-          'assets/js/emola/EMOLA.List.Lessequal.js',
-          'assets/js/emola/EMOLA.List.Point.js',
-          'assets/js/emola/EMOLA.List.Color.js',
-          'assets/js/emola/EMOLA.List.Circle.js',
-          'assets/js/emola/EMOLA.List.Draw.js',
-          'assets/js/emola/EMOLA.List.Clear.js',
+          'assets/js/emola/EMOLA.List.*.js',
           'assets/js/emola/EMOLA.Line.js',
           'assets/js/emola/EMOLA.TokenReader.js',
           'assets/js/emola/EMOLA.ContextWrapper.js',
@@ -97,8 +74,8 @@ module.exports = function(grunt) {
           banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'public/js/build/emohub.js',
-        dest: 'public/js/build/emohub.min.js'
+        src: 'public/js/build/emola.js',
+        dest: 'public/js/build/emola.min.js'
       }
     }
   });
@@ -111,4 +88,5 @@ module.exports = function(grunt) {
   // デフォルトタスクの設定
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('dev', ['concat', 'jasmine']);
+  grunt.registerTask('ts', ['typescript']);
 };

@@ -1,0 +1,20 @@
+{
+  "name": "Emotional Hub",
+  "description": "Interactive Programming Environment.",
+  "manifest_version": 2,
+  "minimum_chrome_version": "23",
+  "version": "0.1",
+  "offline_enabled": true,
+  "app": {
+    "background": {
+      "scripts": ["chromeapp.js"]
+    }
+  },
+  "permissions" : [
+    "clipboardWrite"
+  ],
+  "icons": {
+    "16": "public/image/icon-16x16.png",
+    "128": "public/image/icon-128x128.png" 
+  }
+}
