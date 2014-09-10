@@ -32,9 +32,8 @@ EMOLA.ContextWrapper.prototype.drawLine = function (line) {
   this.context.stroke();
 };
 
-EMOLA.ContextWrapper.prototype.drawString = function (line) {
-  this.context.beginPath();
-  this.context.moveTo(line.from.x, line.from.y);
-  this.context.lineTo(line.to.x, line.to.y);
-  this.context.stroke();
+EMOLA.ContextWrapper.prototype.drawText = function (textObject) {
+  this.context.fillStyle = 'rgb(' + textObject.color.r + ' ,' + textObject.color.g + ' ,' + textObject.color.b + ')';
+  this.context.fillText(textObject.text, textObject.point.x, textObject.point.y);
 };
+

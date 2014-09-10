@@ -17,7 +17,7 @@ EMOLA.List.LEAF_RADIUS = 15;
 
 EMOLA.List.prototype.push = function (element) {
   return this.list.push(element);
-}
+};
 
 EMOLA.List.prototype.rotate = function (theta) {
   this.theta += theta ;
@@ -46,10 +46,13 @@ EMOLA.List.prototype.draw = function (context) {
       var circle = new EMOLA.Circle(point, EMOLA.List.LEAF_RADIUS, this.leafColor);
       circle.draw(context);
     }
+
   }
   (new EMOLA.Circle(this.point , this.radius, this.listColor)).draw(context);
   nodeCircle.draw(context);
-}
+  var text = new EMOLA.Text("List", this.point, new EMOLA.Color(200,200,200));
+  text.draw(context);
+};
 
 EMOLA.List.prototype.isMet = function (point) {
   if (
