@@ -18,3 +18,4 @@ EMOLA.Circle.prototype.move = function (point, radius, color) {
 EMOLA.Circle.prototype.draw = function (context) {
   context.drawCircle(this);
 }
+

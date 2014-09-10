@@ -50,3 +50,14 @@ EMOLA.List.prototype.draw = function (context) {
   (new EMOLA.Circle(this.point , this.radius, this.listColor)).draw(context);
   nodeCircle.draw(context);
 }
+
+EMOLA.List.prototype.isMet = function (point) {
+  if (
+    this.point.x - EMOLA.List.NODE_RADIUS <=  point.x && point.x <=this.point.x + EMOLA.List.NODE_RADIUS
+    && 
+    this.point.y - EMOLA.List.NODE_RADIUS <=  point.y && point.y <=this.point.y + EMOLA.List.NODE_RADIUS
+  ) {
+    return true;
+  }
+  return false;
+}
