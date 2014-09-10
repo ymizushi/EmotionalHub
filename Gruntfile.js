@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 
     typescript: {
       base: {
-        src: ['assets/typescript/**/*.ts'],
+        src: ['assets/typescript/emola/**/*.ts'],
         dest: 'public/js/build/emola-ts.js',
         options: {
           module: 'amd', //or commonjs

@@ -8,3 +8,4 @@ _SPECRUNNER.html
 public/js/lib
 tags
 .idea
+assets/typescript/**/*.js
