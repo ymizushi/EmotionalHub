@@ -24,7 +24,7 @@ This repository is under development.
 (/ 1 3)   ; Emola=> 0.3333333333333333 
 (= 2 2)   ; Emola=> true 
 (= 2 1)   ; Emola=> false 
-(=> 1 1)  ; Emola=> true 
+(>= 1 1)  ; Emola=> true 
 (> 1 1)   ; Emola=> false 
 (<= 1 1)  ; Emola=> true 
 (< 1 1)   ; Emola=> false 
