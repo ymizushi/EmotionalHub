@@ -1,4 +1,7 @@
 # Emotional Hub
+================================
+[![Build Status](https://travis-ci.org/ymizushi/emohub.png?branch=master)](https://travis-ci.org/ymizushi/ymizushi-info)
+
 The interactive programming environment with Emola.
 
 (Emola is a kind of LISP programming language designed by Yuta Mizushima)
