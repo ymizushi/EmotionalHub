@@ -71,4 +71,8 @@ EMOLA.List.prototype.isMet = function (point) {
     return true;
   }
   return false;
-}
+};
+
+EMOLA.List.prototype.add = function (listObject) {
+  this.list.push(listObject);
+};

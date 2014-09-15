@@ -6,6 +6,14 @@ EMOLA.DrawingManager.prototype.add = function (drawing) {
   this.list.push(drawing);
 };
 
+EMOLA.DrawingManager.prototype.remove = function (drawing) {
+  for (var i in this.list) {
+    if (this.list[i] == drawing) {
+      this.list.splice(i,1);
+    }
+  }
+};
+
 EMOLA.DrawingManager.prototype.clear = function () {
   this.list = [];
 };

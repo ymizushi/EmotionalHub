@@ -77,7 +77,14 @@ window.onmousedown = function (event) {
 
 window.onmouseup = function (event) {
   EMOLA.Global.drugging = false;
-  drugging = null;
+  if (drugging) {
+    var drawing = getDrawing();
+    if (drawing && drugging != drawing) {
+      drawing.add(drugging);
+      EMOLA.Global.drawingManager.remove(drugging);
+    }
+    drugging = null;
+  }
 };
 
 window.onmousemove = function (event) {
