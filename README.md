@@ -1,5 +1,4 @@
 # Emotional Hub
-================================
 [![Build Status](https://travis-ci.org/ymizushi/emohub.png?branch=master)](https://travis-ci.org/ymizushi/emohub)
 
 The interactive programming environment with Emola.
