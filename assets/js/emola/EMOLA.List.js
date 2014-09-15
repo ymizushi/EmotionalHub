@@ -42,16 +42,24 @@ EMOLA.List.prototype.draw = function (context) {
       var point = new EMOLA.Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
       this.list[i].point = point;
       this.list[i].draw(context);
+
     } else {
       var circle = new EMOLA.Circle(point, EMOLA.List.LEAF_RADIUS, this.leafColor);
       circle.draw(context);
+
+      var text;
+      if (this.list[i].value) {
+        text = this.list[i].value;
+      } else {
+        text = this.list[i].type;
+      }
+      var text = new EMOLA.Text(text, point, new EMOLA.Color(200,200,200));
+      text.draw(context);
     }
 
   }
   (new EMOLA.Circle(this.point , this.radius, this.listColor)).draw(context);
   nodeCircle.draw(context);
-  var text = new EMOLA.Text("List", this.point, new EMOLA.Color(200,200,200));
-  text.draw(context);
 };
 
 EMOLA.List.prototype.isMet = function (point) {
