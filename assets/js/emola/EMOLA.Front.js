@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 
 EMOLA.Front.drawLoop = function () {
-  setTimeout(EMOLA.Front.drawLoop, 30);
+  setTimeout(EMOLA.Front.drawLoop, 15);
   EMOLA.Global.graphicContext.clear();
   EMOLA.Global.drawingManager.draw(EMOLA.Global.graphicContext);
 };
