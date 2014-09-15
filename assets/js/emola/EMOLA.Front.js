@@ -53,26 +53,36 @@ window.onkeydown = function (event) {
 window.onclick = function (event) {
 };
 
+function getDrawing() {
+  var point = getPosition();
+  return EMOLA.Global.drawingManager.getDrawing(point);
+}
+
+function getPosition() {
+  var clientX = event.clientX;
+  var clientY = event.clientY;
+  var offsetLeft = EMOLA.Global.graphicContext.offsetLeft;
+  var offsetTop = EMOLA.Global.graphicContext.offsetTop;
+  return new EMOLA.Point(clientX-offsetLeft, clientY-offsetTop);
+}
+
+var drugging = null;
 window.onmousedown = function (event) {
   EMOLA.Global.drugging = true;
+  var drawing = getDrawing();
+  if (drawing) {
+    drugging = drawing;
+  }
 };
 
 window.onmouseup = function (event) {
   EMOLA.Global.drugging = false;
+  drugging = null;
 };
 
 window.onmousemove = function (event) {
-  if (EMOLA.Global.drugging) {
-    var clientX = event.clientX;
-    var clientY = event.clientY;
-    var offsetLeft = EMOLA.Global.graphicContext.offsetLeft;
-    var offsetTop = EMOLA.Global.graphicContext.offsetTop;
-    var point = new EMOLA.Point(clientX-offsetLeft, clientY-offsetTop);
-
-    var drawing = EMOLA.Global.drawingManager.getDrawing(point);
-    if (drawing) {
-      drawing.point = point;
-    }
+  if (drugging) {
+    drugging.point = getPosition();
   }
 };
 
