@@ -1,6 +1,8 @@
 EMOLA.Front = {};
 
 $(document).ready(function() {
+   var socket = new EMOLA.Socket(new WebSocket("ws://localhost:5000")) 
+
   if (EMOLA.Global.graphicContext === null) {
     EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
     if(EMOLA.Global.graphicContext !== null) {

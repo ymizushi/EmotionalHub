@@ -46,6 +46,7 @@ module.exports = function(grunt) {
           'assets/js/emola/EMOLA.TokenReader.js',
           'assets/js/emola/EMOLA.ContextWrapper.js',
           'assets/js/emola/EMOLA.DrawingManager.js',
+          'assets/js/emola/EMOLA.Socket.js',
           'assets/js/emola/EMOLA.Global.js',
           'assets/js/emola/EMOLA.Core.js',
           'assets/js/emola/EMOLA.External.js',
