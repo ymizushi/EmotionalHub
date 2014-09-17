@@ -1,9 +1,11 @@
-EMOLA.DrawingManager = function () {
+EMOLA.DrawingManager = function (socket) {
   this.list = [];
+  this.socket = socket;
 };
 
 EMOLA.DrawingManager.prototype.add = function (drawing) {
   this.list.push(drawing);
+  this.socket.send("hoge");
 };
 
 EMOLA.DrawingManager.prototype.remove = function (drawing) {
