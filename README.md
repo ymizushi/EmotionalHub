@@ -20,6 +20,9 @@ https://docs.google.com/drawings/d/1gh6Fzs61AxsI4xbTUMgXuV3o8YkWVjGqIxYlALNQhRc
 Emotional Hub Components(Client side)
 https://docs.google.com/drawings/d/1imRUTv_ILlSOW3gvipSyi4quXv08q3CdYAaR6rB85JM
 
+Emotional Hub Components(View side)
+https://docs.google.com/drawings/d/1RwGYKqnmMIhU7JJBnRr_bN44PopG6dXDCAtYqp_CAro
+
 ## Emola Language Specification
 
 ### Arithmetic operator    
