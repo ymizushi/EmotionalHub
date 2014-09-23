@@ -4,4 +4,4 @@ node_js:
 before_install:
   - npm install -g grunt-cli
 script:
-  - cd ./emhub-js && grunt jasmine"
+  - cd emhub-js && grunt jasmine"
