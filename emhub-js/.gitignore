@@ -1,0 +1,11 @@
+*.un~
+build
+node_modules
+assets/js/tags
+_SPECRUNNER.html
+.grunt
+.DS_Store
+public/js/lib
+tags
+.idea
+assets/typescript/**/*.js
