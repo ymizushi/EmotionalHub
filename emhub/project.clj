@@ -1,6 +1,6 @@
 (defproject emhub "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "The interactive programming environment for education and entertainment."
+  :url "https://github.com/ymizushi/EmotionalHub"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [lib-noir "0.8.9"]
                  [ring-server "0.3.1"]
