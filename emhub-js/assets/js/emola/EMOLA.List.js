@@ -45,7 +45,6 @@ EMOLA.List.prototype.draw = function (context) {
 
     } else {
       var circle = new EMOLA.Circle(point, EMOLA.List.LEAF_RADIUS, this.leafColor);
-      console.log(circle);
       circle.draw(context);
 
       var text;

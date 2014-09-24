@@ -66,32 +66,35 @@ function getPosition() {
   return new EMOLA.Point(clientX-offsetLeft, clientY-offsetTop);
 }
 
-var drugging = null;
-window.onmousedown = function (event) {
-  EMOLA.Global.drugging = true;
-  var drawing = getDrawing();
-  if (drawing) {
-    drugging = drawing;
-  }
-};
 
-window.onmouseup = function (event) {
-  EMOLA.Global.drugging = false;
-  if (drugging) {
+(function () {
+  var drugging = null;
+  window.onmousedown = function (event) {
+    EMOLA.Global.drugging = true;
     var drawing = getDrawing();
-    if (drawing && drugging != drawing) {
-      drawing.add(drugging);
-      EMOLA.Global.drawingManager.remove(drugging);
+    if (drawing) {
+      drugging = drawing;
     }
-    drugging = null;
-  }
-};
-
-window.onmousemove = function (event) {
-  if (drugging) {
-    drugging.point = getPosition();
-  }
-};
+  };
+  
+  window.onmouseup = function (event) {
+    EMOLA.Global.drugging = false;
+    if (drugging) {
+      var drawing = getDrawing();
+      if (drawing && drugging != drawing) {
+        drawing.add(drugging);
+        EMOLA.Global.drawingManager.remove(drugging);
+      }
+      drugging = null;
+    }
+  };
+  
+  window.onmousemove = function (event) {
+    if (drugging) {
+      drugging.point = getPosition();
+    }
+  };
+})();
 
 EMOLA.createContextWrapper = function (canvasId) {
   var canvas = document.getElementById(canvasId);
