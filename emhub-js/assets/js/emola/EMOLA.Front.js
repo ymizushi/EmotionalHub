@@ -53,9 +53,9 @@ window.onkeydown = function (event) {
 window.onclick = function (event) {
 };
 
-function getDrawing() {
+function getDrawing(drawing) {
   var point = getPosition();
-  return EMOLA.Global.drawingManager.getDrawing(point);
+  return EMOLA.Global.drawingManager.getDrawing(point, drawing);
 }
 
 function getPosition() {
@@ -69,6 +69,7 @@ function getPosition() {
 
 (function () {
   var drugging = null;
+  var drawing = null;
   window.onmousedown = function (event) {
     EMOLA.Global.drugging = true;
     var drawing = getDrawing();
@@ -80,7 +81,7 @@ function getPosition() {
   window.onmouseup = function (event) {
     EMOLA.Global.drugging = false;
     if (drugging) {
-      var drawing = getDrawing();
+      var drawing = getDrawing(drugging);
       if (drawing && drugging != drawing) {
         drawing.add(drugging);
         EMOLA.Global.drawingManager.remove(drugging);

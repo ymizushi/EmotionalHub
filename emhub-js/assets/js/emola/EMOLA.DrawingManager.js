@@ -29,11 +29,22 @@ EMOLA.DrawingManager.prototype.draw = function (context) {
   }
 };
 
-EMOLA.DrawingManager.prototype.getDrawing = function (point) {
+EMOLA.DrawingManager.prototype.getDrawing = function (point, drawing) {
   for (var index in this.list) {
     var element = this.list[index];
-    if (element.isMet(point)) {
+    if (element.isMet(point) && element !== drawing ) {
       return element;
     }
   }
+};
+
+EMOLA.DrawingManager.prototype.getDrawingList = function () {
+  metDrawingList = [];
+  for (var index in this.list) {
+    var element = this.list[index];
+    if (element.isMet(point)) {
+      metDrawingList.push(element);
+    }
+  }
+  return metDrawingList;
 };
