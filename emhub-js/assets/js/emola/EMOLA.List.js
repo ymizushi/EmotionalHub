@@ -42,7 +42,6 @@ EMOLA.List.prototype.draw = function (context) {
       point = new EMOLA.Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
       this.list[i].point = point;
       this.list[i].draw(context);
-
     } else {
       var circle = new EMOLA.Circle(point, EMOLA.List.LEAF_RADIUS, this.leafColor);
       circle.draw(context);
@@ -70,6 +69,23 @@ EMOLA.List.prototype.isMet = function (point) {
     return true;
   }
   return false;
+};
+
+EMOLA.List.prototype.getRootList = function (point) {
+  if (this.isMet(point)) {
+    return this;
+  }
+  return null;
+};
+
+EMOLA.List.prototype.getLeafList = function (point) {
+  for (var index in this.list) {
+    var leafList = this.list[index];
+    if (leafList.isMet(point)) {
+      return leafList;
+    }
+  }
+  return null;
 };
 
 EMOLA.List.prototype.add = function (listObject) {

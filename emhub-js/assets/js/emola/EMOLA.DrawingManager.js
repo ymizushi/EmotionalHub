@@ -38,13 +38,12 @@ EMOLA.DrawingManager.prototype.getDrawing = function (point, drawing) {
   }
 };
 
-EMOLA.DrawingManager.prototype.getDrawingList = function () {
-  metDrawingList = [];
+EMOLA.DrawingManager.prototype.getListObject = function (point, drawing) {
   for (var index in this.list) {
     var element = this.list[index];
-    if (element.isMet(point)) {
-      metDrawingList.push(element);
+    if (element.isMet(point) && element !== drawing ) {
+      return element;
     }
   }
-  return metDrawingList;
 };
+
