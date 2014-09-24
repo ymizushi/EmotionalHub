@@ -5,7 +5,7 @@ var EMOLA;
             this.r = r||0;
             this.g = g||0;
             this.b = b||0;
-            this.a = a||0;
+            this.a = a||1;
         }
         Color.prototype.move = function (color) {
             this.r = color.r;
