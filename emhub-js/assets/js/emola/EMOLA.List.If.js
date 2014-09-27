@@ -4,15 +4,15 @@ EMOLA.List.If = function () {
 
 EMOLA.List.If.prototype = new EMOLA.List();
 
-EMOLA.List.If.prototype.eval = function (env) {
+EMOLA.List.If.prototype.evalSyntax = function (env) {
   this.assert();
   var testExp = this.list[1];
   var thenExp = this.list[2];
   var elseExp = this.list[3];
-  if (testExp.eval(env)) {
-    return thenExp.eval(env);
+  if (testExp.evalSyntax(env)) {
+    return thenExp.evalSyntax(env);
   } else {
-    return elseExp.eval(env);
+    return elseExp.evalSyntax(env);
   }
 }
 

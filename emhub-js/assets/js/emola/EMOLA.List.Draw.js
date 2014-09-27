@@ -4,9 +4,9 @@ EMOLA.List.Draw = function () {
 
 EMOLA.List.Draw.prototype = new EMOLA.List();
 
-EMOLA.List.Draw.prototype.eval = function (env) {
+EMOLA.List.Draw.prototype.evalSyntax = function (env) {
   this.assert();
-  var figure = this.list[1].eval(env);
+  var figure = this.list[1].evalSyntax(env);
   EMOLA.Global.drawingManager.add(figure);
   return figure;
 }

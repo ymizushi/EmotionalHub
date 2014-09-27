@@ -23,7 +23,7 @@ $(document).ready(function() {
         if (parsedList.draw) {
           EMOLA.Global.drawingManager.add(parsedList);
         }
-        result = parsedList.eval(EMOLA.Global.env);
+        result = parsedList.evalSyntax(EMOLA.Global.env);
       } catch (e) {
         result = "Parse error";
         console.log(e);

@@ -24,7 +24,7 @@ describe("createListTypeObject test", function() {
     var result = EMOLA.createList([new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom(EMOLA.Atom.NUMBER, 2)]);
     var expected = new EMOLA.List.Minus([new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom(EMOLA.Atom.NUMBER, 2)]);
     expect(result).toEqual(expected);
-    expect(expected.eval(new EMOLA.DictEnv(null))).toEqual(-1);
+    expect(expected.evalSyntax(new EMOLA.DictEnv(null))).toEqual(-1);
     
   });
 });
@@ -33,7 +33,7 @@ describe("parseAno test", function() {
   it("constructor", function() {
     EMOLA.Global.tokenReader.add("(- 1 2)");
 
-    var result = EMOLA.parse(EMOLA.Global.tokenReader).eval(EMOLA.Global.env);
+    var result = EMOLA.parse(EMOLA.Global.tokenReader).evalSyntax(EMOLA.Global.env);
     expect(result).toEqual(-1);
     
   });

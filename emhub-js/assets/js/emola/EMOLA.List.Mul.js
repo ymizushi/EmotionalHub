@@ -5,11 +5,11 @@ EMOLA.List.Mul = function () {
 
 EMOLA.List.Mul.prototype = new EMOLA.List();
 
-EMOLA.List.Mul.prototype.eval = function (env) {
+EMOLA.List.Mul.prototype.evalSyntax = function (env) {
   this.assert();
   var sum = 1;
   for (var i=1; i<this.list.length; i++) {
-    sum *= this.list[i].eval(env);
+    sum *= this.list[i].evalSyntax(env);
   }
   return sum;
 }

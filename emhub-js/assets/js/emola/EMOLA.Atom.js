@@ -13,7 +13,7 @@ EMOLA.Atom.SEND = 'send';
 EMOLA.Atom.VAR = 'var';
 EMOLA.Atom.LET = 'let';
 EMOLA.Atom.QUOTE = 'quote';
-EMOLA.Atom.EVAL = 'eval';
+EMOLA.Atom.EVAL = 'evalSyntax';
 
 /* type */
 EMOLA.Atom.TRUE = 'true';
@@ -81,7 +81,7 @@ EMOLA.Atom.prototype.equalToType = function (type) {
   return this.type === type;
 }
 
-EMOLA.Atom.prototype.eval = function (env) {
+EMOLA.Atom.prototype.evalSyntax = function (env) {
   switch (this.type) {
     case EMOLA.Atom.TRUE:
       return true;
@@ -94,8 +94,8 @@ EMOLA.Atom.prototype.eval = function (env) {
     case EMOLA.Atom.VAR:
       if (env.find(this.value)) {
         foundValue = env.find(this.value).get(this.value);
-        if (foundValue.eval) {
-          return foundValue.eval(env);
+        if (foundValue.evalSyntax) {
+          return foundValue.evalSyntax(env);
         } else {
           return foundValue;
         }

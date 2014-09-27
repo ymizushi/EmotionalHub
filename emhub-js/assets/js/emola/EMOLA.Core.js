@@ -96,7 +96,7 @@ EMOLA.createList = function (syntaxList, parentList, point) {
 EMOLA.parseAndEval = function (tokenReader, env) {
   if (!env) env = new EMOLA.DictEnv(null);
   var parsedList = EMOLA.parse(tokenReader);
-  return parsedList.eval(env);
+  return parsedList.evalSyntax(env);
 }
 
 EMOLA.readAndEval = function (line, env) {

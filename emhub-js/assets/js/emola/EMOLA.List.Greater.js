@@ -4,9 +4,9 @@ EMOLA.List.Greater = function () {
 
 EMOLA.List.Greater.prototype = new EMOLA.List();
 
-EMOLA.List.Greater.prototype.eval = function (env) {
+EMOLA.List.Greater.prototype.evalSyntax = function (env) {
   this.assert();
-  return this.list[1].eval(env) > this.list[2].eval(env);
+  return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
 }
 
 EMOLA.List.Greater.prototype.assert = function () {

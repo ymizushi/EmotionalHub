@@ -4,9 +4,9 @@ EMOLA.List.Equal = function () {
 
 EMOLA.List.Equal.prototype = new EMOLA.List();
 
-EMOLA.List.Equal.prototype.eval = function (env) {
+EMOLA.List.Equal.prototype.evalSyntax = function (env) {
   this.assert();
-  return this.list[1].eval(env) === this.list[2].eval(env);
+  return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
 }
 
 EMOLA.List.Equal.prototype.assert = function () {

@@ -4,9 +4,9 @@ EMOLA.List.Greaterequal = function () {
 
 EMOLA.List.Greaterequal.prototype = new EMOLA.List();
 
-EMOLA.List.Greaterequal.prototype.eval = function (env) {
+EMOLA.List.Greaterequal.prototype.evalSyntax = function (env) {
   this.assert();
-  return this.list[1].eval(env) >= this.list[2].eval(env);
+  return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
 }
 
 EMOLA.List.Greaterequal.prototype.assert = function () {

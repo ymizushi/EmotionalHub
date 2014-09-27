@@ -5,7 +5,7 @@ EMOLA.List.Defn = function () {
 EMOLA.List.Defn.prototype = new EMOLA.List();
 
 // (defn hoge (x y) (+ x y))
-EMOLA.List.Defn.prototype.eval = function (env) {
+EMOLA.List.Defn.prototype.evalSyntax = function (env) {
   this.assert();
   var symbol = this.list[1];
   var args = this.list[2].list;

@@ -5,7 +5,7 @@ EMOLA.List.Quote = function () {
 
 EMOLA.List.Quote.prototype = new EMOLA.List();
 
-EMOLA.List.Quote.prototype.eval = function (env) {
+EMOLA.List.Quote.prototype.evalSyntax = function (env) {
   this.assert();
   var list = this.list[1];
   return new EMOLA.Quote(list);
