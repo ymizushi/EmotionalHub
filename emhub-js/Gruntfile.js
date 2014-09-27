@@ -19,7 +19,16 @@ module.exports = function(grunt) {
         }
       }
     },
-
+    tsd : {
+      refresh: {
+        options: {
+          command: 'reinstall',
+          latest: true,
+          config: './tsd.json',
+          opts: {}
+        }
+      }
+    },
     concat: {
       options: {
         separator: ';'
@@ -59,7 +68,7 @@ module.exports = function(grunt) {
     typescript: {
       base: {
         src: ['assets/typescript/emola/**/*.ts'],
-        dest: 'public/js/build/emola-ts.js',
+        dest: 'public/js/build/emola.js',
         options: {
           module: 'amd', //or commonjs
           target: 'es5', //or es3
@@ -87,6 +96,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-tsd');
   // デフォルトタスクの設定
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('dev', ['concat', 'jasmine']);

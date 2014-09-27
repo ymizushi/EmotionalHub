@@ -37,7 +37,8 @@ EMOLA.parse = function (tokenReader, parentList) {
     if (!parentList) {
       var x = Math.random()*200;
       var y = Math.random()*200;
-      var point = new EMOLA.Point(parseInt(x), parseInt(y));
+      // var point = new EMOLA.Point(parseInt(x), parseInt(y));
+      var point = null;
     } else {
       var point = null;
     }

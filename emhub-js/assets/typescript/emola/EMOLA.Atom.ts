@@ -1,7 +1,49 @@
-EMOLA.Atom = function (type, value) {
-  this.type = type;
-  this.value = value||null;
-}
+module EMOLA {
+    export class Atom {
+/* lang */ 
+        FN    :string = 'fn';
+        IF    :string = 'if';
+        DEF   :string = 'def';
+        DEFN  :string = 'defn';
+        DO    :string = 'do';
+        SEND  :string = 'send';
+        VAR   :string = 'var';
+        LET   :string = 'let';
+        QUOTE :string = 'quote';
+        EVAL  :string = 'eval';
+
+        /* type */
+        TRUE   :string= 'true';
+        FALSE  :string = 'false';
+        STR    :string = 'str';
+        NUMBER :string = 'number';
+
+        /* math */
+        PLUS         :string= '+';
+        MINUS        :string= '-';
+        DIV          :string= '/';
+        MUL          :string= '*';
+        EQUAL        :string= '=';
+        GREATER      :string= '>';
+        LESS         :string= '<';
+        GREATEREQUAL :string= '>=';
+        LESSEQUAL    :string= '<=';
+
+        /* visual */
+        DRAW   :string = 'draw';
+        POINT  :string = 'point';
+        COLOR  :string = 'color';
+        CIRCLE :string = 'circle';
+        CLEAR  :string = 'clear';
+
+        type: any;
+        value: any;
+        constructor(type: any, value:any) {
+            this.type = type;
+            this.value = value;
+        }
+    }
+
 
 /* lang */ 
 EMOLA.Atom.FN = 'fn';
