@@ -46,13 +46,6 @@ EMOLA.Front.drawLoop = function () {
   EMOLA.Global.drawingManager.draw(EMOLA.Global.graphicContext);
 };
 
-
-window.onkeydown = function (event) {
-};
-
-window.onclick = function (event) {
-};
-
 function getDrawing(drawing) {
   var point = getPosition();
   return EMOLA.Global.drawingManager.getDrawing(point, drawing);
@@ -65,7 +58,6 @@ function getPosition() {
   var offsetTop = EMOLA.Global.graphicContext.offsetTop;
   return new EMOLA.Point(clientX-offsetLeft, clientY-offsetTop);
 }
-
 
 (function () {
   var drugging = null;
@@ -94,6 +86,11 @@ function getPosition() {
     if (drugging) {
       drugging.point = getPosition();
     }
+  };
+  window.onkeydown = function (event) {
+  };
+  
+  window.onclick = function (event) {
   };
 })();
 
