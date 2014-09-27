@@ -19,6 +19,17 @@ EMOLA.List.prototype.push = function (element) {
   return this.list.push(element);
 };
 
+EMOLA.List.prototype.remove = function (listObject) {
+  for (var index in this.list) {
+    if (this.list[index] == listObject) {
+      this.list.splice(index,1);
+    }
+    if (this.list[index] instanceof EMOLA.List) {
+      this.list[index].remove(listObject);
+    }
+  }
+};
+
 EMOLA.List.prototype.rotate = function (theta) {
   this.theta += theta ;
   for (var i=0;i<this.list.length;i++) {
@@ -71,18 +82,16 @@ EMOLA.List.prototype.isMet = function (point) {
   return false;
 };
 
-EMOLA.List.prototype.getRootList = function (point) {
+EMOLA.List.prototype.getListObject = function (point) {
+  console.log(this);
+  console.log(point);
   if (this.isMet(point)) {
     return this;
   }
-  return null;
-};
-
-EMOLA.List.prototype.getLeafList = function (point) {
   for (var index in this.list) {
-    var leafList = this.list[index];
-    if (leafList.isMet(point)) {
-      return leafList;
+    var leafListObject = this.list[index];
+    if (leafListObject instanceof EMOLA.List && leafListObject.getListObject(point)) {
+      return leafListObject;
     }
   }
   return null;

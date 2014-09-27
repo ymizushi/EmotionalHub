@@ -1,48 +1,56 @@
 EMOLA.DrawingManager = function (socket) {
-  this.list = [];
-  this.socket = socket;
+  this._list = [];
+  this._socket = socket;
 };
 
 EMOLA.DrawingManager.prototype.add = function (drawing) {
-  this.list.push(drawing);
-  this.socket.send("hoge");
+  this._list.push(drawing);
+  this._socket.send("hoge");
 };
 
 EMOLA.DrawingManager.prototype.remove = function (drawing) {
-  for (var i in this.list) {
-    if (this.list[i] == drawing) {
-      this.list.splice(i,1);
+  for (var i in this._list) {
+    if (this._list[i] == drawing) {
+      this._list.splice(i,1);
+    }
+    if (this._list[i] instanceof EMOLA.List) {
+      this._list[i].remove(drawing);
     }
   }
 };
 
 EMOLA.DrawingManager.prototype.clear = function () {
-  this.list = [];
+  this._list = [];
 };
 
 EMOLA.DrawingManager.prototype.draw = function (context) {
-  for (var i=0;i<this.list.length;i++) {
-    if (this.list[i].rotate) {
-      this.list[i].rotate(0.01);
+  for (var i=0;i<this._list.length;i++) {
+    if (this._list[i].rotate) {
+      this._list[i].rotate(0.01);
     }
-    this.list[i].draw(context);
+    this._list[i].draw(context);
   }
 };
 
+/**
+ * @param {EMOLA.Point} point - .
+ * @param {EMOLA.List} drawing - .
+ */
 EMOLA.DrawingManager.prototype.getDrawing = function (point, drawing) {
-  for (var index in this.list) {
-    var element = this.list[index];
-    if (element.isMet(point) && element !== drawing ) {
-      return element;
+  for (var index in this._list) {
+    var emlistObject = this._list[index];
+    if (emlistObject.isMet(point) && emlistObject !== drawing ) {
+      return emlistObject;
     }
   }
 };
 
 EMOLA.DrawingManager.prototype.getListObject = function (point, drawing) {
-  for (var index in this.list) {
-    var element = this.list[index];
-    if (element.isMet(point) && element !== drawing ) {
-      return element;
+  for (var index in this._list) {
+    var listObject = this._list[index];
+    var targetListObject = listObject.getListObject(point);
+    if (targetListObject && targetListObject !== drawing ) {
+      return targetListObject;
     }
   }
 };

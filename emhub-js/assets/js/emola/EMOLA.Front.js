@@ -48,7 +48,7 @@ EMOLA.Front.drawLoop = function () {
 
 function getDrawing(drawing) {
   var point = getPosition();
-  return EMOLA.Global.drawingManager.getDrawing(point, drawing);
+  return EMOLA.Global.drawingManager.getListObject(point, drawing);
 }
 
 function getPosition() {
@@ -76,7 +76,7 @@ function getPosition() {
       var drawing = getDrawing(drugging);
       if (drawing && drugging != drawing) {
         drawing.add(drugging);
-        EMOLA.Global.drawingManager.remove(drugging);
+        // EMOLA.Global.drawingManager.remove(drugging);
       }
       drugging = null;
     }
