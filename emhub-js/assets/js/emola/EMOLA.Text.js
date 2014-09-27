@@ -6,5 +6,5 @@ EMOLA.Text = function (text, point, color) {
 
 EMOLA.Text.prototype.draw = function (context) {
   context.drawText(this);
-}
+};
 

@@ -1,7 +1,7 @@
 EMOLA.List.Mul = function () {
   EMOLA.List.apply(this, arguments);
   this.listColor = new EMOLA.Color(0, 200, 50, 0.2);
-}
+};
 
 EMOLA.List.Mul.prototype = new EMOLA.List();
 
@@ -12,7 +12,8 @@ EMOLA.List.Mul.prototype.evalSyntax = function (env) {
     sum *= this.list[i].evalSyntax(env);
   }
   return sum;
-}
+};
 
 EMOLA.List.Mul.prototype.assert = function () {
-}
+};
+

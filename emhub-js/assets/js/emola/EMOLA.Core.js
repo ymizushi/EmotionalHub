@@ -4,11 +4,11 @@ EMOLA.tokenize = function (inputStr) {
     function (str) { return str ? true : false;
   }).map(
     function (ele) {
-      parsedFloat = parseFloat(ele);
+      var parsedFloat = parseFloat(ele);
       return isNaN(parsedFloat) ? ele : parsedFloat;
     }
   );
-}
+};
 
 EMOLA.atomize = function (token) {
   if (token === EMOLA.Atom.TRUE) {
@@ -28,12 +28,13 @@ EMOLA.atomize = function (token) {
   } else {
     throw 'Unknown token';
   }
-}
+};
 
 EMOLA.parse = function (tokenReader, parentList) {
   var syntaxList = [];
   while(true) {
-    token = tokenReader.next();
+    var token = tokenReader.next();
+    var point;
     if (!parentList) {
       var x = Math.random()*200;
       var y = Math.random()*200;
@@ -52,7 +53,7 @@ EMOLA.parse = function (tokenReader, parentList) {
     }
   }
   return syntaxList[0];
-}
+};
 
 EMOLA.createList = function (syntaxList, parentList, point) {
   var firstList = syntaxList[0];
@@ -91,15 +92,15 @@ EMOLA.createList = function (syntaxList, parentList, point) {
     targetFunction = EMOLA.List.Var;
   }
   return new targetFunction(syntaxList, parentList, point);
-}
+};
 
 EMOLA.parseAndEval = function (tokenReader, env) {
   if (!env) env = new EMOLA.DictEnv(null);
   var parsedList = EMOLA.parse(tokenReader);
   return parsedList.evalSyntax(env);
-}
+};
 
 EMOLA.readAndEval = function (line, env) {
   EMOLA.Global.tokenReader.add(line);
   return EMOLA.parseAndEval(EMOLA.Global.tokenReader, env);
-}
+};

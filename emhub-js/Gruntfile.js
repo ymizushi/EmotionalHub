@@ -22,13 +22,12 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: ';'
+        separator: ''
       },
       dist: {
         src: [
           'assets/js/emola/EMOLA.js',
           'assets/js/emola/EMOLA.DictEnv.js',
-          'assets/js/emola/EMOLA.Exception.js',
           'assets/js/emola/EMOLA.Fn.js',
           'assets/js/emola/EMOLA.Quote.js',
           'assets/js/emola/EMOLA.Node.js',

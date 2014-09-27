@@ -1,6 +1,6 @@
 EMOLA.List.Let = function () {
   EMOLA.List.apply(this, arguments);
-}
+};
 
 EMOLA.List.Let.prototype = new EMOLA.List();
 
@@ -14,8 +14,8 @@ EMOLA.List.Let.prototype.evalSyntax = function (env) {
     newEnv.update(lets[i].value, lets[i+1].evalSyntax(newEnv));
   }
   return expList.evalSyntax(newEnv);
-}
+};
 
 EMOLA.List.Let.prototype.assert = function () {
-}
+};
 

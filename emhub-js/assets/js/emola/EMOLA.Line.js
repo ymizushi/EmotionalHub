@@ -5,5 +5,5 @@ EMOLA.Line = function (from, to) {
 
 EMOLA.Line.prototype.draw = function (context) {
   context.drawLine(this);
-}
+};
 

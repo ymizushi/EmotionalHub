@@ -12,8 +12,8 @@ EMOLA.Rect.prototype.move = function (point, size, color) {
   this.color.r = color.r;
   this.color.g = color.g;
   this.color.b = color.b;
-}
+};
 
 EMOLA.Rect.prototype.draw = function (context) {
   context.drawRect(this);
-}
+};

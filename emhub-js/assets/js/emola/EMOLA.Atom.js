@@ -1,7 +1,7 @@
 EMOLA.Atom = function (type, value) {
   this.type = type;
   this.value = value||null;
-}
+};
 
 /* lang */ 
 EMOLA.Atom.FN = 'fn';
@@ -41,7 +41,7 @@ EMOLA.Atom.CLEAR = 'clear';
 
 EMOLA.Atom.isAtom = function (atom) {
   return atom instanceof EMOLA.Atom;
-}
+};
 
 EMOLA.Atom.getAtoms = function () {
   return [
@@ -70,16 +70,16 @@ EMOLA.Atom.getAtoms = function () {
     EMOLA.Atom.COLOR,
     EMOLA.Atom.CIRCLE,
     EMOLA.Atom.CLEAR
-  ]
-}
+  ];
+};
 
 EMOLA.Atom.isAtomToken = function (token) {
   return EMOLA.Atom.getAtoms().indexOf(token) >= 0;
-}
+};
 
 EMOLA.Atom.prototype.equalToType = function (type) {
   return this.type === type;
-}
+};
 
 EMOLA.Atom.prototype.evalSyntax = function (env) {
   switch (this.type) {
@@ -93,7 +93,7 @@ EMOLA.Atom.prototype.evalSyntax = function (env) {
       return Number(this.value);
     case EMOLA.Atom.VAR:
       if (env.find(this.value)) {
-        foundValue = env.find(this.value).get(this.value);
+        var foundValue = env.find(this.value).get(this.value);
         if (foundValue.evalSyntax) {
           return foundValue.evalSyntax(env);
         } else {
@@ -102,8 +102,9 @@ EMOLA.Atom.prototype.evalSyntax = function (env) {
       } else {
         throw 'target key of environment is not found.';
       }
+      break;
     default:
       console.log(this.type);
       throw new EMOLA.Exception.InvalidTypeException();
   }
-}
+};

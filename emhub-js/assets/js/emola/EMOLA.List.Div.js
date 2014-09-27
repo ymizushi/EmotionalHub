@@ -1,6 +1,6 @@
 EMOLA.List.Div = function () {
   EMOLA.List.apply(this, arguments);
-}
+};
 
 EMOLA.List.Div.prototype = new EMOLA.List();
 
@@ -15,8 +15,7 @@ EMOLA.List.Div.prototype.evalSyntax = function (env) {
     }
   }
   return sum;
-}
+};
 
 EMOLA.List.Div.prototype.assert = function () {
-}
-
+};

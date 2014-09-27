@@ -1,7 +1,7 @@
 EMOLA.List.Minus = function () {
   EMOLA.List.apply(this, arguments);
   this.listColor = new EMOLA.Color(50, 0, 0, 0.2);
-}
+};
 
 EMOLA.List.Minus.prototype = new EMOLA.List();
 
@@ -16,7 +16,7 @@ EMOLA.List.Minus.prototype.evalSyntax = function (env) {
     }
   }
   return sum;
-}
+};
 
 EMOLA.List.Minus.prototype.assert = function () {
-}
+};
