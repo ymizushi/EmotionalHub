@@ -4,7 +4,8 @@ EMOLA.External.createTestList = function () {
   var testList = new EMOLA.List(
     [new EMOLA.Atom(EMOLA.Atom.MINUS, null), new EMOLA.Atom(EMOLA.Atom.INT, 2), new EMOLA.Point(400, 200), childList],null,
     new EMOLA.Point(400, 200)
-  )
+  );
   childList.parent = testList;
   return testList;
-}
+};
+

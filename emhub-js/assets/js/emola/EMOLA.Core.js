@@ -87,11 +87,11 @@ EMOLA.createList = function (syntaxList, parentList, point) {
   syntaxMap[EMOLA.Atom.CIRCLE] = EMOLA.List.Circle;
   syntaxMap[EMOLA.Atom.CLEAR] = EMOLA.List.Clear;
 
-  var targetFunction = syntaxMap[firstList.type];
-  if (!targetFunction) {
-    targetFunction = EMOLA.List.Var;
+  var TargetFunction = syntaxMap[firstList.type];
+  if (!TargetFunction) {
+    TargetFunction = EMOLA.List.Var;
   }
-  return new targetFunction(syntaxList, parentList, point);
+  return new TargetFunction(syntaxList, parentList, point);
 };
 
 EMOLA.parseAndEval = function (tokenReader, env) {

@@ -8,6 +8,8 @@ EMOLA.Socket = function () {
   };
   this.socket = socket;
 };
+
 EMOLA.Socket.prototype.send = function (message) {
   this.socket.send(message);
 };
+
