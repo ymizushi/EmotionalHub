@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       files: ['assets/js/emola/*.js', 'assets/typescript/**/*.ts'],
-      tasks: ['concat']
+      tasks: ['ts']
     },
 
     jasmine: {
