@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/jquery/jquery.d.ts" />
 /// <reference path="shape.ts" />
 /// <reference path="lang.ts" />
-/// <reference path="syntax-list.ts" />
 
 module EMOLA {
   var EMOLA:any
@@ -134,8 +133,8 @@ module EMOLA {
   
   EMOLA.List.Clear.prototype.evalSyntax = function (env) {
     this.assert();
-    EMOLA.Global.graphicContext.clear();
-    EMOLA.Global.drawingManager.clear();
+    Global.graphicContext.clear();
+    Global.drawingManager.clear();
     return null;
   };
   
@@ -250,7 +249,7 @@ module EMOLA {
   EMOLA.List.Draw.prototype.evalSyntax = function (env) {
     this.assert();
     var figure = this.list[1].evalSyntax(env);
-    EMOLA.Global.drawingManager.add(figure);
+    Global.drawingManager.add(figure);
     return figure;
   };
   
@@ -656,16 +655,17 @@ module EMOLA {
       this.socket.send(message)
     }
   }
+
+  class Global {
+    static env = new DictEnv(null);
+    static tokenReader = new TokenReader();
+    static graphicContext = null;
+    static socket = new Socket();
+    static drawingManager = new DrawingManager(Global.socket);
+    static lastClickedPoint = null;
+    static drugging = false;
+  }
   
-  EMOLA.Global = {};
-  EMOLA.Global.env = new DictEnv(null);
-  EMOLA.Global.tokenReader = new TokenReader();
-  EMOLA.Global.graphicContext = null;
-  EMOLA.Global.socket = new EMOLA.Socket();
-  EMOLA.Global.drawingManager = new DrawingManager(EMOLA.Global.socket);
-  EMOLA.Global.lastClickedPoint = null;
-  EMOLA.Global.drugging = false;
-  // TODO: 空白の含む文字列、括弧の含まれる文字列にも対応出来るようにしておく
   EMOLA.tokenize = function (inputStr) {
     return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
       function (str) { return str ? true : false;
@@ -768,8 +768,8 @@ module EMOLA {
   };
   
   EMOLA.readAndEval = function (line, env) {
-    EMOLA.Global.tokenReader.add(line);
-    return EMOLA.parseAndEval(EMOLA.Global.tokenReader, env);
+    Global.tokenReader.add(line);
+    return EMOLA.parseAndEval(Global.tokenReader, env);
   };
   EMOLA.External = {};
   EMOLA.External.createTestList = function () {
@@ -785,9 +785,9 @@ module EMOLA {
   EMOLA.Front = {};
   
   $(document).ready(function() {
-    if (EMOLA.Global.graphicContext === null) {
-      EMOLA.Global.graphicContext = EMOLA.createContextWrapper('canvas');
-      if(EMOLA.Global.graphicContext !== null) {
+    if (Global.graphicContext === null) {
+      Global.graphicContext = EMOLA.createContextWrapper('canvas');
+      if(Global.graphicContext !== null) {
         EMOLA.Front.drawLoop();
       }
     }
@@ -802,12 +802,12 @@ module EMOLA {
       commandHandle:function(line) {
         var result = '';
         try {
-          EMOLA.Global.tokenReader.add(line);
-          var parsedList = EMOLA.parse(EMOLA.Global.tokenReader);
+          Global.tokenReader.add(line);
+          var parsedList = EMOLA.parse(Global.tokenReader);
           if (parsedList.draw) {
-            EMOLA.Global.drawingManager.add(parsedList);
+            Global.drawingManager.add(parsedList);
           }
-          result = parsedList.evalSyntax(EMOLA.Global.env);
+          result = parsedList.evalSyntax(Global.env);
         } catch (e) {
           result = "Parse error";
           console.log(e);
@@ -826,20 +826,20 @@ module EMOLA {
   
   EMOLA.Front.drawLoop = function () {
     setTimeout(EMOLA.Front.drawLoop, 15);
-    EMOLA.Global.graphicContext.clear();
-    EMOLA.Global.drawingManager.draw(EMOLA.Global.graphicContext);
+    Global.graphicContext.clear();
+    Global.drawingManager.draw(Global.graphicContext);
   };
   
   function getDrawing(drawing=null) {
     var point = getPosition();
-    return EMOLA.Global.drawingManager.getListObject(point, drawing);
+    return Global.drawingManager.getListObject(point, drawing);
   }
   
   function getPosition() {
     var clientX = event.clientX;
     var clientY = event.clientY;
-    var offsetLeft = EMOLA.Global.graphicContext.offsetLeft;
-    var offsetTop = EMOLA.Global.graphicContext.offsetTop;
+    var offsetLeft = Global.graphicContext.offsetLeft;
+    var offsetTop = Global.graphicContext.offsetTop;
     return new Point(clientX-offsetLeft, clientY-offsetTop);
   }
   
@@ -847,7 +847,7 @@ module EMOLA {
     var drugging = null;
     var drawing = null;
     window.onmousedown = function (event) {
-      EMOLA.Global.drugging = true;
+      Global.drugging = true;
       var drawing = getDrawing();
       if (drawing) {
         drugging = drawing;
@@ -855,12 +855,12 @@ module EMOLA {
     };
     
     window.onmouseup = function (event) {
-      EMOLA.Global.drugging = false;
+      Global.drugging = false;
       if (drugging) {
         var drawing = getDrawing(drugging);
         if (drawing && drugging != drawing) {
           drawing.add(drugging);
-          // EMOLA.Global.drawingManager.remove(drugging);
+          // Global.drawingManager.remove(drugging);
         }
         drugging = null;
       }
