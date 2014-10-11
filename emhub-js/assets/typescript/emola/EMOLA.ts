@@ -507,7 +507,7 @@ module EMOLA {
   EMOLA.List.Quote.prototype.evalSyntax = function (env) {
     this.assert();
     var list = this.list[1];
-    return new EMOLA.Quote(list);
+    return new Quote(list);
   };
   
   EMOLA.List.Quote.prototype.assert = function () {
@@ -578,63 +578,64 @@ module EMOLA {
       return this.tokenizedList.shift()
     }
   }
-  
-  EMOLA.DrawingManager = function (socket) {
-    this._list = [];
-    this._socket = socket;
-  };
-  
-  EMOLA.DrawingManager.prototype.add = function (drawing) {
-    this._list.push(drawing);
-    this._socket.send("hoge");
-  };
-  
-  EMOLA.DrawingManager.prototype.remove = function (drawing) {
-    for (var i in this._list) {
-      if (this._list[i] == drawing) {
-        this._list.splice(i,1);
-      }
-      if (this._list[i] instanceof EMOLA.List) {
-        this._list[i].remove(drawing);
+
+  class DrawingManager {
+    _list: any
+    _socket: any
+
+    constructor(socket) {
+      this._list = []
+      this._socket = socket
+    }
+    
+    add = function (drawing) {
+      this._list.push(drawing)
+      this._socket.send("hoge")
+    };
+    
+    remove(drawing) {
+      for (var i in this._list) {
+        if (this._list[i] == drawing) {
+          this._list.splice(i,1)
+        }
+        if (this._list[i] instanceof EMOLA.List) {
+          this._list[i].remove(drawing)
+        }
       }
     }
-  };
-  
-  EMOLA.DrawingManager.prototype.clear = function () {
-    this._list = [];
-  };
-  
-  EMOLA.DrawingManager.prototype.draw = function (context) {
-    for (var i=0;i<this._list.length;i++) {
-      if (this._list[i].rotate) {
-        this._list[i].rotate(0.01);
-      }
-      this._list[i].draw(context);
+    
+    clear() {
+      this._list = []
     }
-  };
-  
-  /**
-   * @param {Point} point - .
-   * @param {EMOLA.List} drawing - .
-   */
-  EMOLA.DrawingManager.prototype.getDrawing = function (point, drawing) {
-    for (var index in this._list) {
-      var emlistObject = this._list[index];
-      if (emlistObject.isMet(point) && emlistObject !== drawing ) {
-        return emlistObject;
+    
+    draw(context) {
+      for (var i=0;i<this._list.length;i++) {
+        if (this._list[i].rotate) {
+          this._list[i].rotate(0.01)
+        }
+        this._list[i].draw(context)
       }
     }
-  };
-  
-  EMOLA.DrawingManager.prototype.getListObject = function (point, drawing) {
-    for (var index in this._list) {
-      var listObject = this._list[index];
-      var targetListObject = listObject.getListObject(point);
-      if (targetListObject && targetListObject !== drawing ) {
-        return targetListObject;
+    
+    getDrawing(point, drawing) {
+      for (var index in this._list) {
+        var emlistObject = this._list[index]
+        if (emlistObject.isMet(point) && emlistObject !== drawing ) {
+          return emlistObject
+        }
       }
     }
-  };
+    
+    getListObject(point, drawing) {
+      for (var index in this._list) {
+        var listObject = this._list[index]
+        var targetListObject = listObject.getListObject(point)
+        if (targetListObject && targetListObject !== drawing ) {
+          return targetListObject
+        }
+      }
+    }
+  }
   
   EMOLA.Socket = function () {
     var socket = new WebSocket("ws://localhost:5000");
@@ -656,7 +657,7 @@ module EMOLA {
   EMOLA.Global.tokenReader = new TokenReader();
   EMOLA.Global.graphicContext = null;
   EMOLA.Global.socket = new EMOLA.Socket();
-  EMOLA.Global.drawingManager = new EMOLA.DrawingManager(EMOLA.Global.socket);
+  EMOLA.Global.drawingManager = new DrawingManager(EMOLA.Global.socket);
   EMOLA.Global.lastClickedPoint = null;
   EMOLA.Global.drugging = false;
   // TODO: 空白の含む文字列、括弧の含まれる文字列にも対応出来るようにしておく
