@@ -6,557 +6,424 @@ module EMOLA {
   var EMOLA:any
   EMOLA = {}
 
-  EMOLA.List = function (list, parent, point) {
-    this.list = list;
-  
-    // グラフィック要素
-    this.radius = 50;
-    this.theta = 0;
-    this.nodeColor = new Color(255, 255, 51);
-    this.leafColor = new Color(102, 102, 102);
-    this.listColor = new Color(50, 50, 50,0.2);
-  
-    this.parent = parent||null;
-    this.point = point||null;
-  };
-  
-  EMOLA.List.NODE_RADIUS = 20;
-  EMOLA.List.LEAF_RADIUS = 15;
-  
-  EMOLA.List.prototype.push = function (element) {
-    return this.list.push(element);
-  };
-  
-  EMOLA.List.prototype.remove = function (listObject) {
-    for (var index in this.list) {
-      if (this.list[index] == listObject) {
-        this.list.splice(index,1);
-      }
-      if (this.list[index] instanceof EMOLA.List) {
-        this.list[index].remove(listObject);
-      }
-    }
-  };
-  
-  EMOLA.List.prototype.rotate = function (theta) {
-    this.theta += theta ;
-    for (var i=0;i<this.list.length;i++) {
-      if (this.list[i] instanceof EMOLA.List) {
-        this.list[i].rotate(theta);
-      } 
-    }
-  };
-  
-  EMOLA.List.prototype.pop = function () {
-    return this.list.pop();
-  };
-  
-  EMOLA.List.prototype.draw = function (context) {
-    var nodeCircle = new Circle(this.point , EMOLA.List.NODE_RADIUS, this.nodeColor);
-  
-    for (var i=0;i<this.list.length;i++) {
-      this.theta += 2 * Math.PI/this.list.length;
-      var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
-      if (this.list[i] instanceof EMOLA.List) {
-        point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
-        this.list[i].point = point;
-        this.list[i].draw(context);
-      } else {
-        var circle = new Circle(point, EMOLA.List.LEAF_RADIUS, this.leafColor);
-        circle.draw(context);
-  
-        var text;
-        if (this.list[i].value) {
-          text = this.list[i].value;
-        } else {
-          text = this.list[i].type;
-        }
-        text = new Text(text, point, new Color(200,200,200));
-        text.draw(context);
-      }
-  
-    }
-    (new Circle(this.point , this.radius, this.listColor)).draw(context);
-    nodeCircle.draw(context);
-  };
-  
-  EMOLA.List.prototype.isMet = function (point) {
-    if (
-      this.point.x - EMOLA.List.NODE_RADIUS <=  point.x && point.x <=this.point.x + EMOLA.List.NODE_RADIUS && 
-      this.point.y - EMOLA.List.NODE_RADIUS <=  point.y && point.y <=this.point.y + EMOLA.List.NODE_RADIUS
-    ) {
-      return true;
-    }
-    return false;
-  };
-  
-  EMOLA.List.prototype.getListObject = function (point) {
-    console.log(this);
-    console.log(point);
-    if (this.isMet(point)) {
-      return this;
-    }
-    for (var index in this.list) {
-      var leafListObject = this.list[index];
-      if (leafListObject instanceof EMOLA.List && leafListObject.getListObject(point)) {
-        return leafListObject;
-      }
-    }
-    return null;
-  };
-  
-  EMOLA.List.prototype.add = function (listObject) {
-    this.list.push(listObject);
-  };
-  EMOLA.List.Circle = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Circle.prototype = new EMOLA.List();
-  
-  EMOLA.List.Circle.prototype.evalSyntax = function (env) {
-    this.assert();
-    var point = this.list[1];
-    var radius = this.list[2];
-    var color = this.list[3];
-    return new Circle(point.evalSyntax(env), radius.evalSyntax(env), color.evalSyntax(env));
-  };
-  
-  EMOLA.List.Circle.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Clear = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Clear.prototype = new EMOLA.List();
-  
-  EMOLA.List.Clear.prototype.evalSyntax = function (env) {
-    this.assert();
-    Global.graphicContext.clear();
-    Global.drawingManager.clear();
-    return null;
-  };
-  
-  EMOLA.List.Clear.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Color = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Color.prototype = new EMOLA.List();
-  
-  EMOLA.List.Color.prototype.evalSyntax = function (env) {
-    this.assert();
-    return new Color(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env), this.list[3].evalSyntax(env));
-  };
-  
-  EMOLA.List.Color.prototype.assert = function () {
-    if (this.list[1] === undefined || this.list[2] === undefined || this.list[3] === undefined || this.list.length > 4) {
-      throw 'color arguments are illegal.';
-    }
-  };
-  
-  EMOLA.List.Def = function () {
-    EMOLA.List.apply(this, arguments);
-    this.listColor = new Color(0, 255, 0, 0.2);
-  };
-  
-  EMOLA.List.Def.prototype = new EMOLA.List();
-  
-  EMOLA.List.Def.prototype.evalSyntax = function (env) {
-    this.assert();
-    var keyName = this.list[1].value;
-    var value = this.list[2].evalSyntax(env);
-    env.update(keyName, value);
-    return null;
-  };
-  
-  EMOLA.List.Def.prototype.assert = function () {
-    if (this.list.length !== 3) {
-      throw new Error("InvalidArgumentException");
-    }
-    if (this.list[1].type !== Atom.VAR) {
-      throw new Error("InvalidAtomTypeException");
-    }
-  };
-  
-  EMOLA.List.Defn = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Defn.prototype = new EMOLA.List();
-  
-  // (defn hoge (x y) (+ x y))
-  EMOLA.List.Defn.prototype.evalSyntax = function (env) {
-    this.assert();
-    var symbol = this.list[1];
-    var args = this.list[2].list;
-    var expList = this.list[3];
-    env.update(symbol.value, new Fn(args, expList, new DictEnv(env)));
-    return null;
-  };
-  
-  EMOLA.List.Defn.prototype.assert = function () {
-    if (this.list.length !== 4) {
-      throw new Error("InvalidArgumentException");
-    }
-  };
-  EMOLA.List.Div = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Div.prototype = new EMOLA.List();
-  
-  EMOLA.List.Div.prototype.evalSyntax = function (env) {
-    this.assert();
-    var sum = 1;
-    for (var i=1;i < this.list.length;i++) {
-      if (i === 1) {
-        sum = this.list[i].evalSyntax(env);
-      } else {
-        sum /= this.list[i].evalSyntax(env);
-      }
-    }
-    return sum;
-  };
-  
-  EMOLA.List.Div.prototype.assert = function () {
-  };
-  EMOLA.List.Do = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Do.prototype = new EMOLA.List();
-  
-  EMOLA.List.Do.prototype.evalSyntax = function (env) {
-    this.assert();
-    var expList = this.list.slice(1);
-    var result = expList.map(function (elem) { return elem.evalSyntax(env);});
-    return result[result.length-1]; // 配列の最後の要素を取り出す
-  };
-  
-  EMOLA.List.Do.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Draw = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Draw.prototype = new EMOLA.List();
-  
-  EMOLA.List.Draw.prototype.evalSyntax = function (env) {
-    this.assert();
-    var figure = this.list[1].evalSyntax(env);
-    Global.drawingManager.add(figure);
-    return figure;
-  };
-  
-  EMOLA.List.Draw.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Equal = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Equal.prototype = new EMOLA.List();
-  
-  EMOLA.List.Equal.prototype.evalSyntax = function (env) {
-    this.assert();
-    return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
-  };
-  
-  EMOLA.List.Equal.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Eval = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Eval.prototype = new EMOLA.List();
-  
-  EMOLA.List.Eval.prototype.evalSyntax = function (env) {
-    this.assert();
-    if (this.list[1].type === Atom.VAR) {
-      var value = this.list[1].value;
-      var quote = env.find(value).get(value);
-      return quote.evalSyntax(env);
+  class List {
+    static NODE_RADIUS = 20
+    static LEAF_RADIUS = 15
+
+    radius: number
+    theta: number
+    nodeColor: Color
+    leafColor: Color
+    listColor: Color
+    parent: List
+    point: Point
+    list: any
+
+    constructor(list, parent=null, point=null) {
+      this.list = list;
     
+      // グラフィック要素
+      this.radius = 50;
+      this.theta = 0;
+      this.nodeColor = new Color(255, 255, 51);
+      this.leafColor = new Color(102, 102, 102);
+      this.listColor = new Color(50, 50, 50,0.2);
+    
+      this.parent = parent||null;
+      this.point = point||null;
     }
-    return this.list[1].evalSyntax(env).evalSyntax(env);
-  };
-  
-  EMOLA.List.Eval.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Fn = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Fn.prototype = new EMOLA.List();
-  
-  EMOLA.List.Fn.prototype.evalSyntax = function (env) {
-    var args = this.list[1].list; // directで見てる
-    var expList = this.list[2];
-    return new Fn(args, expList, env);
-  };
-  
-  EMOLA.List.Fn.prototype.assert = function () {
-  };
-  EMOLA.List.Greater = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Greater.prototype = new EMOLA.List();
-  
-  EMOLA.List.Greater.prototype.evalSyntax = function (env) {
-    this.assert();
-    return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
-  };
-  
-  EMOLA.List.Greater.prototype.assert = function () {
-  };
-  EMOLA.List.Greaterequal = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Greaterequal.prototype = new EMOLA.List();
-  
-  EMOLA.List.Greaterequal.prototype.evalSyntax = function (env) {
-    this.assert();
-    return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
-  };
-  
-  EMOLA.List.Greaterequal.prototype.assert = function () {
-  };
-  
-  EMOLA.List.If = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.If.prototype = new EMOLA.List();
-  
-  EMOLA.List.If.prototype.evalSyntax = function (env) {
-    this.assert();
-    var testExp = this.list[1];
-    var thenExp = this.list[2];
-    var elseExp = this.list[3];
-    if (testExp.evalSyntax(env)) {
-      return thenExp.evalSyntax(env);
-    } else {
-      return elseExp.evalSyntax(env);
+    
+    push(element) {
+      return this.list.push(element);
     }
-  };
-  
-  EMOLA.List.If.prototype.assert = function () {
-    if (this.list.length !== 4) {
-      throw new Error("InvalidArgumentException");
-    }
-  };
-  
-  EMOLA.List.Less = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Less.prototype = new EMOLA.List();
-  
-  EMOLA.List.Less.prototype.evalSyntax = function (env) {
-    this.assert();
-    return this.list[1].evalSyntax(env) < this.list[2].evalSyntax(env);
-  };
-  
-  EMOLA.List.Less.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Lessequal = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Lessequal.prototype = new EMOLA.List();
-  
-  EMOLA.List.Lessequal.prototype.evalSyntax = function (env) {
-    this.assert();
-    return this.list[1].evalSyntax(env) <= this.list[2].evalSyntax(env);
-  };
-  
-  EMOLA.List.Lessequal.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Let = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Let.prototype = new EMOLA.List();
-  
-  // (let (x 1) (+ x 1 1))
-  EMOLA.List.Let.prototype.evalSyntax = function (env) {
-    this.assert();
-    var lets = this.list[1].list;
-    var expList = this.list[2];
-    var newEnv = new DictEnv(env);
-    for (var i=0;i<lets.length;i=i+2) {
-      newEnv.update(lets[i].value, lets[i+1].evalSyntax(newEnv));
-    }
-    return expList.evalSyntax(newEnv);
-  };
-  
-  EMOLA.List.Let.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Minus = function () {
-    EMOLA.List.apply(this, arguments);
-    this.listColor = new Color(50, 0, 0, 0.2);
-  };
-  
-  EMOLA.List.Minus.prototype = new EMOLA.List();
-  
-  EMOLA.List.Minus.prototype.evalSyntax = function (env) {
-    this.assert();
-    var sum = 0;
-    for (var i=1;i < this.list.length;i++) {
-      if (i === 1) {
-        sum = this.list[i].evalSyntax(env);
-      } else {
-        sum -= this.list[i].evalSyntax(env);
+    
+    remove(listObject) {
+      for (var index in this.list) {
+        if (this.list[index] == listObject) {
+          this.list.splice(index,1);
+        }
+        if (this.list[index] instanceof List) {
+          this.list[index].remove(listObject);
+        }
       }
     }
-    return sum;
-  };
-  
-  EMOLA.List.Minus.prototype.assert = function () {
-  };
-  EMOLA.List.Mul = function () {
-    EMOLA.List.apply(this, arguments);
-    this.listColor = new Color(0, 200, 50, 0.2);
-  };
-  
-  EMOLA.List.Mul.prototype = new EMOLA.List();
-  
-  EMOLA.List.Mul.prototype.evalSyntax = function (env) {
-    this.assert();
-    var sum = 1;
-    for (var i=1; i<this.list.length; i++) {
-      sum *= this.list[i].evalSyntax(env);
+    
+    rotate(theta) {
+      this.theta += theta ;
+      for (var i=0;i<this.list.length;i++) {
+        if (this.list[i] instanceof List) {
+          this.list[i].rotate(theta);
+        } 
+      }
     }
-    return sum;
-  };
-  
-  EMOLA.List.Mul.prototype.assert = function () {
-  };
-  
-  EMOLA.List.NestList = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.NestList.prototype = new EMOLA.List();
-  
-  EMOLA.List.NestList.prototype.evalSyntax = function (env) {
-    this.assert();
-    var func = this.list[0].evalSyntax(env);
-    var args = this.list[0].slice(1);
-    return func.exec(args, env);
-  };
-  
-  EMOLA.List.NestList.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Plus = function () {
-    EMOLA.List.apply(this, arguments);
-    this.listColor = new Color(255, 0, 0, 0.2);
-  };
-  
-  EMOLA.List.Plus.prototype = new EMOLA.List();
-  
-  EMOLA.List.Plus.prototype.evalSyntax = function (env) {
-    this.assert();
-    var sum = 0;
-    for (var i=1; i<this.list.length;i++) {
-      sum += this.list[i].evalSyntax(env);
+    
+    pop() {
+      return this.list.pop();
     }
-    return sum;
-  };
-  
-  EMOLA.List.Plus.prototype.assert = function () {
-  };
-  EMOLA.List.Point = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Point.prototype = new EMOLA.List();
-  
-  EMOLA.List.Point.prototype.evalSyntax = function (env) {
-    this.assert();
-    return new Point(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env));
-  };
-  
-  EMOLA.List.Point.prototype.assert = function () {
-    if (this.list[1] === undefined || this.list[2] === undefined || this.list.length > 3) {
-      throw 'point arguments are illegal.';
+    
+    draw(context) {
+      var nodeCircle = new Circle(this.point , List.NODE_RADIUS, this.nodeColor);
+    
+      for (var i=0;i<this.list.length;i++) {
+        this.theta += 2 * Math.PI/this.list.length;
+        var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
+        if (this.list[i] instanceof List) {
+          point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
+          this.list[i].point = point;
+          this.list[i].draw(context);
+        } else {
+          var circle = new Circle(point, List.LEAF_RADIUS, this.leafColor);
+          circle.draw(context);
+    
+          var text;
+          if (this.list[i].value) {
+            text = this.list[i].value;
+          } else {
+            text = this.list[i].type;
+          }
+          text = new Text(text, point, new Color(200,200,200));
+          text.draw(context);
+        }
+    
+      }
+      (new Circle(this.point , this.radius, this.listColor)).draw(context);
+      nodeCircle.draw(context);
     }
-  };
-  
-  EMOLA.List.Quote = function () {
-    EMOLA.List.apply(this, arguments);
-    this.listColor = new Color(0, 100, 0, 0.2);
-  };
-  
-  EMOLA.List.Quote.prototype = new EMOLA.List();
-  
-  EMOLA.List.Quote.prototype.evalSyntax = function (env) {
-    this.assert();
-    var list = this.list[1];
-    return new Quote(list);
-  };
-  
-  EMOLA.List.Quote.prototype.assert = function () {
-    if (this.list[0].type !== Atom.QUOTE) {
-      throw new Error("InvalidAtomTypeException");
+    
+    isMet(point) {
+      if (
+        this.point.x - List.NODE_RADIUS <=  point.x && point.x <=this.point.x + List.NODE_RADIUS && 
+        this.point.y - List.NODE_RADIUS <=  point.y && point.y <=this.point.y + List.NODE_RADIUS
+      ) {
+        return true;
+      }
+      return false;
     }
-  };
-  
-  EMOLA.List.Send = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Send.prototype = new EMOLA.List();
-  
-  EMOLA.List.Send.prototype.evalSyntax = function (env) {
-    this.assert();
-    var object = this.list[1].evalSyntax(env);
-    var methodName = this.list[2].value;
-    var args = this.list.slice(3).map(function (x) { return x.evalSyntax(env);});
-    object[methodName].apply(object, args);
-    return object;
-  };
-  
-  EMOLA.List.Send.prototype.assert = function () {
-  };
-  
-  EMOLA.List.Var = function () {
-    EMOLA.List.apply(this, arguments);
-  };
-  
-  EMOLA.List.Var.prototype = new EMOLA.List();
-  
-  EMOLA.List.Var.prototype.evalSyntax = function (env) {
-    this.assert();
-    var func;
-    if (this.list[0] instanceof EMOLA.List.Var) {
-      func = this.list[0].evalSyntax(env);
-    } else {
-      func = env.find(this.list[0].value).get(this.list[0].value);
+    
+    getListObject(point) {
+      if (this.isMet(point)) {
+        return this;
+      }
+      for (var index in this.list) {
+        var leafListObject = this.list[index];
+        if (leafListObject instanceof List && leafListObject.getListObject(point)) {
+          return leafListObject;
+        }
+      }
+      return null;
     }
-    var realArgsList = this.list.slice(1);
-  
-    for (var i=0;i<realArgsList.length;i++) {
-      func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
+    
+    add(listObject) {
+      this.list.push(listObject);
     }
-    return func.evalSyntax(env);
-  };
+  }
+
+  class CircleList extends List {
+    evalSyntax(env) {
+      var point = this.list[1]
+      var radius = this.list[2]
+      var color = this.list[3]
+      return new Circle(point.evalSyntax(env), radius.evalSyntax(env), color.evalSyntax(env))
+    }
+  }
+
+  class ClearList extends List {
+    evalSyntax(env) {
+      Global.graphicContext.clear()
+      Global.drawingManager.clear()
+      return null
+    }
+  }
+
+  class ColorList extends List {
+    evalSyntax(env) {
+      this.assert()
+      return new Color(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env), this.list[3].evalSyntax(env))
+    }
+    
+    assert() {
+      if (this.list[1] === undefined || this.list[2] === undefined || this.list[3] === undefined || this.list.length > 4) {
+        throw 'color arguments are illegal.'
+      }
+    }
+  }
+
+  class DefList extends List {
+    constructor(list, parent, point) {
+      super(list, parent, point)
+      this.listColor = new Color(0, 255, 0, 0.2)
+    }
+    
+    evalSyntax(env) {
+      this.assert()
+      var keyName = this.list[1].value
+      var value = this.list[2].evalSyntax(env)
+      env.update(keyName, value)
+      return null
+    }
+    
+    assert() {
+      if (this.list.length !== 3) {
+        throw new Error("InvalidArgumentException")
+      }
+      if (this.list[1].type !== Atom.VAR) {
+        throw new Error("InvalidAtomTypeException")
+      }
+    }
+  }
+
+  class DefnList extends List {
+    // (defn hoge (x y) (+ x y))
+    evalSyntax(env) {
+      this.assert()
+      var symbol = this.list[1]
+      var args = this.list[2].list
+      var expList = this.list[3]
+      env.update(symbol.value, new Fn(args, expList, new DictEnv(env)))
+      return null
+    }
+    
+    assert() {
+      if (this.list.length !== 4) {
+        throw new Error("InvalidArgumentException")
+      }
+    }
+  }
   
-  EMOLA.List.Var.prototype.assert = function () {
-  };
+  class DivList extends List {
+    evalSyntax(env) {
+      var sum = 1
+      for (var i=1;i < this.list.length;i++) {
+        if (i === 1) {
+          sum = this.list[i].evalSyntax(env)
+        } else {
+          sum /= this.list[i].evalSyntax(env)
+        }
+      }
+      return sum
+    }
+  }
+
+  class DoList extends List {
+    evalSyntax(env) {
+      var expList = this.list.slice(1);
+      var result = expList.map(function (elem) { return elem.evalSyntax(env);});
+      return result[result.length-1]; // 配列の最後の要素を取り出す
+    }
+  }
+  
+  class DrawList extends List {
+    evalSyntax(env) {
+      var figure = this.list[1].evalSyntax(env);
+      Global.drawingManager.add(figure);
+      return figure;
+    }
+  }
+
+  class EqualList extends List {
+    evalSyntax(env) {
+      return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
+    }
+  }
+
+  class EvalList extends List {
+    evalSyntax(env) {
+      if (this.list[1].type === Atom.VAR) {
+        var value = this.list[1].value;
+        var quote = env.find(value).get(value);
+        return quote.evalSyntax(env);
+      }
+      return this.list[1].evalSyntax(env).evalSyntax(env);
+    }
+  }
+
+  class FnList extends List {
+    evalSyntax(env) {
+      var args = this.list[1].list; // directで見てる
+      var expList = this.list[2];
+      return new Fn(args, expList, env);
+    }
+  }
+
+  class GreaterList extends List {
+    evalSyntax(env) {
+      return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
+    }
+  }
+
+  class GreaterEqualList extends List {
+    evalSyntax(env) {
+      return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
+    }
+  }
+
+  class IfList extends List {
+    evalSyntax(env) {
+      this.assert();
+      var testExp = this.list[1];
+      var thenExp = this.list[2];
+      var elseExp = this.list[3];
+      if (testExp.evalSyntax(env)) {
+        return thenExp.evalSyntax(env);
+      } else {
+        return elseExp.evalSyntax(env);
+      }
+    }
+
+    assert() {
+      if (this.list.length !== 4) {
+        throw new Error("InvalidArgumentException");
+      }
+    }
+  }
+  
+  class LessList extends List {
+    evalSyntax(env) {
+      return this.list[1].evalSyntax(env) < this.list[2].evalSyntax(env);
+    }
+  }
+  
+  class LessEqualList extends List {
+    evalSyntax(env) {
+      return this.list[1].evalSyntax(env) <= this.list[2].evalSyntax(env);
+    }
+  }
+  
+  class LetList extends List {
+    // (let (x 1) (+ x 1 1))
+    evalSyntax(env) {
+      var lets = this.list[1].list;
+      var expList = this.list[2];
+      var newEnv = new DictEnv(env);
+      for (var i=0;i<lets.length;i=i+2) {
+        newEnv.update(lets[i].value, lets[i+1].evalSyntax(newEnv));
+      }
+      return expList.evalSyntax(newEnv);
+    }
+  }
+
+  class MinusList extends List {
+    constructor(list, parent, point) {
+      super(list, parent, point)
+      this.listColor = new Color(50, 0, 0, 0.2);
+    }
+
+    evalSyntax(env) {
+      var sum = 0;
+      for (var i=1;i < this.list.length;i++) {
+        if (i === 1) {
+          sum = this.list[i].evalSyntax(env);
+        } else {
+          sum -= this.list[i].evalSyntax(env);
+        }
+      }
+      return sum;
+    }
+  }
+
+  class MulList extends List {
+    constructor(list, parent, point) {
+      super(list, parent, point)
+      this.listColor = new Color(0, 200, 50, 0.2);
+    }
+  
+    evalSyntax(env) {
+      var sum = 1;
+      for (var i=1; i<this.list.length; i++) {
+        sum *= this.list[i].evalSyntax(env);
+      }
+      return sum;
+    }
+  }
+
+  class NestList extends List {
+    evalSyntax(env) {
+      var func = this.list[0].evalSyntax(env);
+      var args = this.list[0].slice(1);
+      return func.exec(args, env);
+    }
+  }
+  
+  class PlusList extends List {
+    constructor(list, parent, point) {
+      super(list, parent, point)
+      this.listColor = new Color(255, 0, 0, 0.2);
+    }
+  
+    evalSyntax(env) {
+      var sum = 0;
+      for (var i=1; i<this.list.length;i++) {
+        sum += this.list[i].evalSyntax(env);
+      }
+      return sum;
+    }
+  }
+  
+  class PointList extends List {
+    evalSyntax(env) {
+      this.assert()
+      return new Point(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env));
+    }
+    assert() {
+      if (this.list[1] === undefined || this.list[2] === undefined || this.list.length > 3) {
+        throw 'point arguments are illegal.';
+      }
+    }
+  }
+
+  class QuoteList extends List {
+    constructor(list, parent, point) {
+      super(list, parent, point)
+      this.listColor = new Color(0, 100, 0, 0.2);
+    }
+    evalSyntax(env) {
+      this.assert();
+      var list = this.list[1];
+      return new Quote(list);
+    }
+    
+    assert() {
+      if (this.list[0].type !== Atom.QUOTE) {
+        throw new Error("InvalidAtomTypeException");
+      }
+    }
+  }
+  
+  class SendList extends List {
+    evalSyntax(env) {
+      this.assert();
+      var object = this.list[1].evalSyntax(env);
+      var methodName = this.list[2].value;
+      var args = this.list.slice(3).map(function (x) { return x.evalSyntax(env);});
+      object[methodName].apply(object, args);
+      return object;
+    }
+    
+    assert() {
+    }
+  }
+
+
+  class VarList extends List {
+    evalSyntax(env) {
+      this.assert();
+      var func;
+      if (this.list[0] instanceof VarList) {
+        func = this.list[0].evalSyntax(env);
+      } else {
+        func = env.find(this.list[0].value).get(this.list[0].value);
+      }
+      var realArgsList = this.list.slice(1);
+    
+      for (var i=0;i<realArgsList.length;i++) {
+        func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
+      }
+      return func.evalSyntax(env);
+    }
+    
+    assert() {
+    }
+  }
 
   class TokenReader {
     tokenizedList: any
@@ -567,7 +434,7 @@ module EMOLA {
     }
     
     add(line) {
-      this.tokenizedList = this.tokenizedList.concat(EMOLA.tokenize(line))
+      this.tokenizedList = this.tokenizedList.concat(Core.tokenize(line))
     }
     
     next() {
@@ -597,7 +464,7 @@ module EMOLA {
         if (this._list[i] == drawing) {
           this._list.splice(i,1)
         }
-        if (this._list[i] instanceof EMOLA.List) {
+        if (this._list[i] instanceof List) {
           this._list[i].remove(drawing)
         }
       }
@@ -665,17 +532,19 @@ module EMOLA {
     static lastClickedPoint = null;
     static drugging = false;
   }
-  
-  EMOLA.tokenize = function (inputStr) {
-    return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
-      function (str) { return str ? true : false;
-    }).map(
-      function (ele) {
-        var parsedFloat = parseFloat(ele);
-        return isNaN(parsedFloat) ? ele : parsedFloat;
-      }
-    );
-  };
+
+  class Core {
+    static tokenize(inputStr) {
+      return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
+        function (str) { return str ? true : false
+      }).map(
+        function (ele) {
+          var parsedFloat = parseFloat(ele)
+          return isNaN(parsedFloat) ? ele : parsedFloat
+        }
+      )
+    }
+  }
   
   EMOLA.atomize = function (token) {
     if (token === Atom.TRUE) {
@@ -726,37 +595,37 @@ module EMOLA {
     var firstList = syntaxList[0];
     var syntaxMap = {};
     /* lang */
-    syntaxMap[Atom.FN] = EMOLA.List.Fn;
-    syntaxMap[Atom.IF] = EMOLA.List.If;
-    syntaxMap[Atom.DEF] = EMOLA.List.Def;
-    syntaxMap[Atom.DEFN] = EMOLA.List.Defn;
-    syntaxMap[Atom.DO] = EMOLA.List.Do;
-    syntaxMap[Atom.SEND] = EMOLA.List.Send;
-    syntaxMap[Atom.LET] = EMOLA.List.Let;
-    syntaxMap[Atom.QUOTE] = EMOLA.List.Quote;
-    syntaxMap[Atom.EVAL] = EMOLA.List.Eval;
+    syntaxMap[Atom.FN] = FnList;
+    syntaxMap[Atom.IF] = IfList;
+    syntaxMap[Atom.DEF] = DefList;
+    syntaxMap[Atom.DEFN] = DefnList;
+    syntaxMap[Atom.DO] = DoList;
+    syntaxMap[Atom.SEND] = SendList;
+    syntaxMap[Atom.LET] = LetList;
+    syntaxMap[Atom.QUOTE] = QuoteList;
+    syntaxMap[Atom.EVAL] = EvalList;
   
     /* math */
-    syntaxMap[Atom.PLUS] = EMOLA.List.Plus;
-    syntaxMap[Atom.MINUS] = EMOLA.List.Minus;
-    syntaxMap[Atom.DIV] = EMOLA.List.Div;
-    syntaxMap[Atom.MUL] = EMOLA.List.Mul;
-    syntaxMap[Atom.EQUAL] = EMOLA.List.Equal;
-    syntaxMap[Atom.GREATER] = EMOLA.List.Greater;
-    syntaxMap[Atom.LESS] = EMOLA.List.Less;
-    syntaxMap[Atom.GREATEREQUAL] = EMOLA.List.Greaterequal;
-    syntaxMap[Atom.LESSEQUAL] = EMOLA.List.Lessequal;
+    syntaxMap[Atom.PLUS] = PlusList;
+    syntaxMap[Atom.MINUS] = MinusList;
+    syntaxMap[Atom.DIV] = DivList;
+    syntaxMap[Atom.MUL] = MulList;
+    syntaxMap[Atom.EQUAL] = EqualList;
+    syntaxMap[Atom.GREATER] = GreaterList;
+    syntaxMap[Atom.LESS] = LessList;
+    syntaxMap[Atom.GREATEREQUAL] = GreaterEqualList;
+    syntaxMap[Atom.LESSEQUAL] = LessEqualList;
   
     /* graphic */
-    syntaxMap[Atom.DRAW] = EMOLA.List.Draw;
-    syntaxMap[Atom.POINT] = EMOLA.List.Point;
-    syntaxMap[Atom.COLOR] = EMOLA.List.Color;
-    syntaxMap[Atom.CIRCLE] = EMOLA.List.Circle;
-    syntaxMap[Atom.CLEAR] = EMOLA.List.Clear;
+    syntaxMap[Atom.DRAW] = DrawList;
+    syntaxMap[Atom.POINT] = PointList;
+    syntaxMap[Atom.COLOR] = ColorList;
+    syntaxMap[Atom.CIRCLE] = CircleList;
+    syntaxMap[Atom.CLEAR] = ClearList;
   
     var TargetFunction = syntaxMap[firstList.type];
     if (!TargetFunction) {
-      TargetFunction = EMOLA.List.Var;
+      TargetFunction = VarList;
     }
     return new TargetFunction(syntaxList, parentList, point);
   };
@@ -773,8 +642,8 @@ module EMOLA {
   };
   EMOLA.External = {};
   EMOLA.External.createTestList = function () {
-    var childList = new EMOLA.List([new Atom(Atom.PLUS, null), new Atom(Atom.NUMBER, 2) ,new Atom(Atom.NUMBER, 3)]);
-    var testList = new EMOLA.List(
+    var childList = new List([new Atom(Atom.PLUS, null), new Atom(Atom.NUMBER, 2) ,new Atom(Atom.NUMBER, 3)]);
+    var testList = new List(
       [new Atom(Atom.MINUS, null), new Atom(Atom.NUMBER, 2), new Point(400, 200), childList],null,
       new Point(400, 200)
     );
