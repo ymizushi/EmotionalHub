@@ -544,102 +544,102 @@ module EMOLA {
         }
       )
     }
+
+    static atomize(token) {
+      if (token === Atom.TRUE) {
+        return new Atom(Atom.TRUE);
+      } else if (token === Atom.FALSE) {
+        return new Atom(Atom.FALSE);
+      } else if (typeof token === 'string') {
+        if (token[0] === '"' || token[0] === "'") {
+          return  new Atom(Atom.STR, token.slice(1,-1));
+        } else if (Atom.isAtomToken(token)) {
+          return  new Atom(token, null);
+        }  else {
+          return new Atom(Atom.VAR, token);
+        }
+      } else if (typeof token === 'number') {
+          return new Atom(Atom.NUMBER, token);
+      } else {
+        throw 'Unknown token';
+      }
+    }
+
+    static parse(tokenReader, parentList=null) {
+      var syntaxList = [];
+      while(true) {
+        var token = tokenReader.next();
+        var point;
+        if (!parentList) {
+          var x = Math.random()*200;
+          var y = Math.random()*200;
+          point = new Point(Math.floor(x), Math.floor(y));
+        } else {
+          point = null;
+        }
+        if (token === '(') {
+          syntaxList.push(Core.parse(tokenReader, parentList));
+        } else if (token === ')') {
+          return Core.createList(syntaxList, parentList, point);
+        } else if (token === null) {
+          break;
+        } else {
+          syntaxList.push(Core.atomize(token));
+        }
+      }
+      return syntaxList[0];
+    } 
+    static createList(syntaxList, parentList, point) {
+      var firstList = syntaxList[0];
+      var syntaxMap = {};
+      /* lang */
+      syntaxMap[Atom.FN] = FnList;
+      syntaxMap[Atom.IF] = IfList;
+      syntaxMap[Atom.DEF] = DefList;
+      syntaxMap[Atom.DEFN] = DefnList;
+      syntaxMap[Atom.DO] = DoList;
+      syntaxMap[Atom.SEND] = SendList;
+      syntaxMap[Atom.LET] = LetList;
+      syntaxMap[Atom.QUOTE] = QuoteList;
+      syntaxMap[Atom.EVAL] = EvalList;
+    
+      /* math */
+      syntaxMap[Atom.PLUS] = PlusList;
+      syntaxMap[Atom.MINUS] = MinusList;
+      syntaxMap[Atom.DIV] = DivList;
+      syntaxMap[Atom.MUL] = MulList;
+      syntaxMap[Atom.EQUAL] = EqualList;
+      syntaxMap[Atom.GREATER] = GreaterList;
+      syntaxMap[Atom.LESS] = LessList;
+      syntaxMap[Atom.GREATEREQUAL] = GreaterEqualList;
+      syntaxMap[Atom.LESSEQUAL] = LessEqualList;
+    
+      /* graphic */
+      syntaxMap[Atom.DRAW] = DrawList;
+      syntaxMap[Atom.POINT] = PointList;
+      syntaxMap[Atom.COLOR] = ColorList;
+      syntaxMap[Atom.CIRCLE] = CircleList;
+      syntaxMap[Atom.CLEAR] = ClearList;
+    
+      var TargetFunction = syntaxMap[firstList.type];
+      if (!TargetFunction) {
+        TargetFunction = VarList;
+      }
+      return new TargetFunction(syntaxList, parentList, point);
+    }
+    
+    static parseAndEval(tokenReader, env) {
+      if (!env) env = new DictEnv(null);
+      var parsedList = Core.parse(tokenReader);
+      return parsedList.evalSyntax(env);
+    }
+    
+    static readAndEval(line, env) {
+      Global.tokenReader.add(line);
+      return Core.parseAndEval(Global.tokenReader, env);
+    }
   }
   
-  EMOLA.atomize = function (token) {
-    if (token === Atom.TRUE) {
-      return new Atom(Atom.TRUE);
-    } else if (token === Atom.FALSE) {
-      return new Atom(Atom.FALSE);
-    } else if (typeof token === 'string') {
-      if (token[0] === '"' || token[0] === "'") {
-        return  new Atom(Atom.STR, token.slice(1,-1));
-      } else if (Atom.isAtomToken(token)) {
-        return  new Atom(token, null);
-      }  else {
-        return new Atom(Atom.VAR, token);
-      }
-    } else if (typeof token === 'number') {
-        return new Atom(Atom.NUMBER, token);
-    } else {
-      throw 'Unknown token';
-    }
-  };
-  
-  EMOLA.parse = function (tokenReader, parentList) {
-    var syntaxList = [];
-    while(true) {
-      var token = tokenReader.next();
-      var point;
-      if (!parentList) {
-        var x = Math.random()*200;
-        var y = Math.random()*200;
-        point = new Point(Math.floor(x), Math.floor(y));
-      } else {
-        point = null;
-      }
-      if (token === '(') {
-        syntaxList.push(EMOLA.parse(tokenReader, parentList));
-      } else if (token === ')') {
-        return EMOLA.createList(syntaxList, parentList, point);
-      } else if (token === null) {
-        break;
-      } else {
-        syntaxList.push(EMOLA.atomize(token));
-      }
-    }
-    return syntaxList[0];
-  };
-  
-  EMOLA.createList = function (syntaxList, parentList, point) {
-    var firstList = syntaxList[0];
-    var syntaxMap = {};
-    /* lang */
-    syntaxMap[Atom.FN] = FnList;
-    syntaxMap[Atom.IF] = IfList;
-    syntaxMap[Atom.DEF] = DefList;
-    syntaxMap[Atom.DEFN] = DefnList;
-    syntaxMap[Atom.DO] = DoList;
-    syntaxMap[Atom.SEND] = SendList;
-    syntaxMap[Atom.LET] = LetList;
-    syntaxMap[Atom.QUOTE] = QuoteList;
-    syntaxMap[Atom.EVAL] = EvalList;
-  
-    /* math */
-    syntaxMap[Atom.PLUS] = PlusList;
-    syntaxMap[Atom.MINUS] = MinusList;
-    syntaxMap[Atom.DIV] = DivList;
-    syntaxMap[Atom.MUL] = MulList;
-    syntaxMap[Atom.EQUAL] = EqualList;
-    syntaxMap[Atom.GREATER] = GreaterList;
-    syntaxMap[Atom.LESS] = LessList;
-    syntaxMap[Atom.GREATEREQUAL] = GreaterEqualList;
-    syntaxMap[Atom.LESSEQUAL] = LessEqualList;
-  
-    /* graphic */
-    syntaxMap[Atom.DRAW] = DrawList;
-    syntaxMap[Atom.POINT] = PointList;
-    syntaxMap[Atom.COLOR] = ColorList;
-    syntaxMap[Atom.CIRCLE] = CircleList;
-    syntaxMap[Atom.CLEAR] = ClearList;
-  
-    var TargetFunction = syntaxMap[firstList.type];
-    if (!TargetFunction) {
-      TargetFunction = VarList;
-    }
-    return new TargetFunction(syntaxList, parentList, point);
-  };
-  
-  EMOLA.parseAndEval = function (tokenReader, env) {
-    if (!env) env = new DictEnv(null);
-    var parsedList = EMOLA.parse(tokenReader);
-    return parsedList.evalSyntax(env);
-  };
-  
-  EMOLA.readAndEval = function (line, env) {
-    Global.tokenReader.add(line);
-    return EMOLA.parseAndEval(Global.tokenReader, env);
-  };
   EMOLA.External = {};
   EMOLA.External.createTestList = function () {
     var childList = new List([new Atom(Atom.PLUS, null), new Atom(Atom.NUMBER, 2) ,new Atom(Atom.NUMBER, 3)]);
@@ -672,7 +672,7 @@ module EMOLA {
         var result = '';
         try {
           Global.tokenReader.add(line);
-          var parsedList = EMOLA.parse(Global.tokenReader);
+          var parsedList = Core.parse(Global.tokenReader);
           if (parsedList.draw) {
             Global.drawingManager.add(parsedList);
           }

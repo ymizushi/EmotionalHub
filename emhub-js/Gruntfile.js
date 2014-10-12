@@ -88,6 +88,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-typescript');
   // デフォルトタスクの設定
   grunt.registerTask('default', ['concat', 'uglify']);
-  grunt.registerTask('dev', ['concat', 'jasmine']);
+  grunt.registerTask('js', ['concat', 'jasmine']);
   grunt.registerTask('ts', ['typescript']);
 };
