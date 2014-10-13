@@ -29,8 +29,8 @@ module EMOLA {
       this.leafColor = new Color(102, 102, 102);
       this.listColor = new Color(50, 50, 50,0.2);
     
-      this.parent = parent||null;
-      this.point = point||null;
+      this.parent = parent;
+      this.point = point;
     }
     
     push(element) {
@@ -524,13 +524,14 @@ module EMOLA {
   }
 
   class Global {
-    static env = new DictEnv(null);
-    static tokenReader = new TokenReader();
-    static graphicContext = null;
-    static socket = new Socket();
-    static drawingManager = new DrawingManager(Global.socket);
-    static lastClickedPoint = null;
-    static drugging = false;
+    static env = new DictEnv(null)
+    static tokenReader = new TokenReader()
+    static graphicContext = null
+    static socket = new Socket()
+    static drawingManager = new DrawingManager(Global.socket)
+    static lastClickedPoint = null
+    static drugging = false
+    static clickPoint = new Point(0, 0)
   }
 
   class Core {
@@ -589,6 +590,7 @@ module EMOLA {
       }
       return syntaxList[0];
     } 
+
     static createList(syntaxList, parentList, point) {
       var firstList = syntaxList[0];
       var syntaxMap = {};
@@ -638,37 +640,56 @@ module EMOLA {
       Global.tokenReader.add(line);
       return Core.parseAndEval(Global.tokenReader, env);
     }
+
+    static createContextWrapper = function (canvasId) {
+      var canvas:any = document.getElementById(canvasId)
+      if (!canvas || !canvas.getContext) {
+        return null
+      }
+      return new ContextWrapper(canvas.getContext('2d'))
+    }
   }
   
-  EMOLA.External = {};
-  EMOLA.External.createTestList = function () {
-    var childList = new List([new Atom(Atom.PLUS, null), new Atom(Atom.NUMBER, 2) ,new Atom(Atom.NUMBER, 3)]);
-    var testList = new List(
-      [new Atom(Atom.MINUS, null), new Atom(Atom.NUMBER, 2), new Point(400, 200), childList],null,
-      new Point(400, 200)
-    );
-    childList.parent = testList;
-    return testList;
-  };
+
+  class ConsoleManager {
+    callbackList: any
+    commandContainer: any
+
+    constructor(htmlString: string, func) {
+      this.commandContainer = $(htmlString)
+      this.callbackList = func;
+
+      $('body').append(this.commandContainer);
+      this.commandContainer.console({
+        promptLabel: 'Emola> ',
+        commandValidate: function(line) {
+          return line !== "";
+        },
+        commandHandle:this.callbackList,
+        autofocus: true,
+        animateScroll: true,
+        promptHistory: true,
+        charInsertTrigger: function(keycode,line) {
+          return true;
+        }
+      })
+    }
+    addCallback(callback) {
+      this.callbackList = callback
+    }
+  }
   
   EMOLA.Front = {};
   
   $(document).ready(function() {
     if (Global.graphicContext === null) {
-      Global.graphicContext = EMOLA.createContextWrapper('canvas');
+      Global.graphicContext = Core.createContextWrapper('canvas');
       if(Global.graphicContext !== null) {
         EMOLA.Front.drawLoop();
       }
     }
   
-    var commandContainer = $('<div class="console">');
-    $('body').append(commandContainer);
-    commandContainer.console({
-      promptLabel: 'Emola> ',
-      commandValidate: function(line) {
-        return line !== "";
-      },
-      commandHandle:function(line) {
+    var consoleManager = new ConsoleManager('<div class="console">', function (line) {
         var result = '';
         try {
           Global.tokenReader.add(line);
@@ -682,76 +703,59 @@ module EMOLA {
           console.log(e);
         } 
         return [{ msg:"=> " + result, className:"jquery-console-message-value"} ];
-      },
-      autofocus: true,
-      animateScroll: true,
-      promptHistory: true,
-      charInsertTrigger:function(keycode,line) {
-        return true;
-      }
-    });
+      })
   });
-  
+
+  class EventManager {
+  }
   
   EMOLA.Front.drawLoop = function () {
-    setTimeout(EMOLA.Front.drawLoop, 15);
-    Global.graphicContext.clear();
-    Global.drawingManager.draw(Global.graphicContext);
+    setTimeout(EMOLA.Front.drawLoop, 15)
+    Global.graphicContext.clear()
+    Global.drawingManager.draw(Global.graphicContext)
   };
   
-  function getDrawing(drawing=null) {
-    var point = getPosition();
-    return Global.drawingManager.getListObject(point, drawing);
+  function getDrawingObject(drawing=null) {
+    var point = getPosition()
+    return Global.drawingManager.getListObject(point, drawing)
   }
   
   function getPosition() {
-    var clientX = event.clientX;
-    var clientY = event.clientY;
-    var offsetLeft = Global.graphicContext.offsetLeft;
-    var offsetTop = Global.graphicContext.offsetTop;
-    return new Point(clientX-offsetLeft, clientY-offsetTop);
+    return new Point(event.offsetX, event.offsetY)
   }
   
   (function () {
-    var drugging = null;
-    var drawing = null;
-    window.onmousedown = function (event) {
-      Global.drugging = true;
-      var drawing = getDrawing();
+    var druggingObject = null
+    var drawing = null
+
+    $(window).mousedown(function (event) {
+      Global.drugging = true
+      var drawing = getDrawingObject()
       if (drawing) {
-        drugging = drawing;
+        druggingObject = drawing
       }
-    };
-    
-    window.onmouseup = function (event) {
-      Global.drugging = false;
-      if (drugging) {
-        var drawing = getDrawing(drugging);
-        if (drawing && drugging != drawing) {
-          drawing.add(drugging);
-          // Global.drawingManager.remove(drugging);
+    })
+
+    $(window).mouseup(
+      function (event) {
+        Global.drugging = false
+        if (druggingObject) {
+          var drawing = getDrawingObject(druggingObject)
+          if (drawing && druggingObject != drawing) {
+            drawing.add(druggingObject)
+            // Global.drawingManager.remove(druggingObject);
+          }
+          druggingObject = null
         }
-        drugging = null;
       }
-    };
+    )
     
-    window.onmousemove = function (event) {
-      if (drugging) {
-        drugging.point = getPosition();
+    $(window).mousemove(
+      function (event) {
+        if (druggingObject) {
+          druggingObject.point = getPosition()
+        }
       }
-    };
-    window.onkeydown = function (event) {
-    };
-    
-    window.onclick = function (event) {
-    };
-  })();
-  
-  EMOLA.createContextWrapper = function (canvasId) {
-    var canvas:any = document.getElementById(canvasId);
-    if (!canvas || !canvas.getContext) {
-      return null;
-    }
-    return new ContextWrapper(canvas.getContext('2d'));
-  };
+    )
+  })()
 }
