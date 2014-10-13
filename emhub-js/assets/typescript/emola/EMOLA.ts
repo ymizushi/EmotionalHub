@@ -760,10 +760,12 @@ module EMOLA {
   }
   
   function getPosition(e) {
-    var x = e.offsetX == undefined ? e.layerX: e.offsetX;
-    var y = e.offsetY == undefined ? e.layerY: e.offsetY;
-    console.log(e)
-    console.log(e.layerX)
+    var pageX = e.pageX;
+    var pageY = e.pageY;
+    var rect = e.target.getBoundingClientRect();
+
+    var x = pageX - rect.left;
+    var y = pageY - rect.top;
     return new Point(x, y)
   }
   
