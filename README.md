@@ -1,5 +1,5 @@
 # Emotional Hub
-[![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.png?branch=master)](https://travis-ci.org/ymizushi/emohub)
+[![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.png?branch=master)](https://travis-ci.org/ymizushi/EmotionalHub)
 
 The interactive programming environment with Emola.
 
@@ -10,8 +10,8 @@ Emotional Hub provides interactive programming environment, music sequencer, pre
 This repository is under development.
 
 ## Screenshot
-![alt text](https://github.com/ymizushi/emohub/blob/master/description/screenshot.png "Screenshot1")
-![alt text](https://github.com/ymizushi/emohub/blob/master/description/screenshot2.png "Screenshot2")
+![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot.png "Screenshot1")
+![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot2.png "Screenshot2")
 
 ## System
 Emotional Hub Components(Server side)
