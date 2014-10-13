@@ -532,6 +532,7 @@ module EMOLA {
     static lastClickedPoint = null
     static drugging = false
     static clickPoint = new Point(0, 0)
+    static event = null
   }
 
   class Core {
@@ -707,7 +708,45 @@ module EMOLA {
   });
 
   class EventManager {
+    constructor() {
+      (function () {
+        var druggingObject = null
+        var drawing = null
+
+        $(window).mousedown(function (e) {
+          Global.drugging = true
+          var drawing = getDrawingObject(null, e)
+          if (drawing) {
+            druggingObject = drawing
+          }
+        })
+
+        $(window).mouseup(
+          function (e) {
+            Global.drugging = false
+            if (druggingObject) {
+              var drawing = getDrawingObject(druggingObject, e)
+              if (drawing && druggingObject != drawing) {
+                drawing.add(druggingObject)
+                // Global.drawingManager.remove(druggingObject);
+              }
+              druggingObject = null
+            }
+          }
+        )
+        
+        $(window).mousemove(
+          function (e) {
+            if (druggingObject) {
+              druggingObject.point = getPosition(e)
+            }
+          }
+        )
+      })()
+    }
   }
+
+  var eventManager = new EventManager()
   
   EMOLA.Front.drawLoop = function () {
     setTimeout(EMOLA.Front.drawLoop, 15)
@@ -715,47 +754,18 @@ module EMOLA {
     Global.drawingManager.draw(Global.graphicContext)
   };
   
-  function getDrawingObject(drawing=null) {
-    var point = getPosition()
+  function getDrawingObject(drawing, e) {
+    var point = getPosition(e)
     return Global.drawingManager.getListObject(point, drawing)
   }
   
-  function getPosition() {
-    return new Point(event.offsetX, event.offsetY)
+  function getPosition(e) {
+    var x = e.offsetX == undefined ? e.layerX: e.offsetX;
+    var y = e.offsetY == undefined ? e.layerY: e.offsetY;
+    console.log(e)
+    console.log(e.layerX)
+    return new Point(x, y)
   }
   
-  (function () {
-    var druggingObject = null
-    var drawing = null
-
-    $(window).mousedown(function (event) {
-      Global.drugging = true
-      var drawing = getDrawingObject()
-      if (drawing) {
-        druggingObject = drawing
-      }
-    })
-
-    $(window).mouseup(
-      function (event) {
-        Global.drugging = false
-        if (druggingObject) {
-          var drawing = getDrawingObject(druggingObject)
-          if (drawing && druggingObject != drawing) {
-            drawing.add(druggingObject)
-            // Global.drawingManager.remove(druggingObject);
-          }
-          druggingObject = null
-        }
-      }
-    )
-    
-    $(window).mousemove(
-      function (event) {
-        if (druggingObject) {
-          druggingObject.point = getPosition()
-        }
-      }
-    )
-  })()
+  
 }
