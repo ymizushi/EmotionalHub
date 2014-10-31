@@ -1,4 +1,4 @@
-module EMOLA {
+module emola {
   export class Color {
     r: number
     g: number

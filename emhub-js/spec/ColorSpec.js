@@ -1,6 +1,7 @@
 describe("Color test", function() {
   it("constructor", function() {
-    var color = new EMOLA.Color(100, 200, 300);
-    expect(EMOLA.readAndEval('(color 100 200 300)')).toEqual(color);
+    var color = new emola.Color(100, 200, 300);
+    // expect(emola.readAndEval('(color 100 200 300)')).toEqual(color);
+    expect(emola.Core.readAndEval('(color 100 200 300)')).toEqual(color);
   });
 });

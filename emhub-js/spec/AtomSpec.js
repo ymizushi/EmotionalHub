@@ -1,19 +1,19 @@
 describe("Atom test", function() {
   it("constructor", function() {
-    var atom = new EMOLA.Atom(EMOLA.Atom.FN, 'hoge');
+    var atom = new emola.Atom(emola.Atom.FN, 'hoge');
     expect(atom.type).toBe('fn');
     expect(atom.value).toBe('hoge');
   });
 
   it("static isAtom", function() {
-    var result = EMOLA.Atom.isAtom(new EMOLA.Atom(EMOLA.Atom.FN, 'hoge'));
+    var result = emola.Atom.isAtom(new emola.Atom(emola.Atom.FN, 'hoge'));
     expect(result).toBe(true);
   });
 
   it("equalToType", function() {
-    var atom = new EMOLA.Atom(EMOLA.Atom.STR, 'hoge');
-    expect(atom.equalToType(EMOLA.Atom.STR)).toBe(true);
-    expect(atom.equalToType(EMOLA.Atom.IF)).toBe(false);
+    var atom = new emola.Atom(emola.Atom.STR, 'hoge');
+    expect(atom.equalToType(emola.Atom.STR)).toBe(true);
+    expect(atom.equalToType(emola.Atom.IF)).toBe(false);
   });
 });
 

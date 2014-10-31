@@ -2,9 +2,9 @@
 /// <reference path="shape.ts" />
 /// <reference path="lang.ts" />
 
-module EMOLA {
-  var EMOLA:any
-  EMOLA = {}
+module emola {
+  var emola:any
+  emola = {}
 
   class List {
     static NODE_RADIUS = 20
@@ -680,13 +680,13 @@ module EMOLA {
     }
   }
   
-  EMOLA.Front = {};
+  emola.Front = {};
   
   $(document).ready(function() {
     if (Global.graphicContext === null) {
       Global.graphicContext = Core.createContextWrapper('canvas');
       if(Global.graphicContext !== null) {
-        EMOLA.Front.drawLoop();
+        emola.Front.drawLoop();
       }
     }
   
@@ -748,8 +748,8 @@ module EMOLA {
 
   var eventManager = new EventManager()
   
-  EMOLA.Front.drawLoop = function () {
-    setTimeout(EMOLA.Front.drawLoop, 15)
+  emola.Front.drawLoop = function () {
+    setTimeout(emola.Front.drawLoop, 15)
     Global.graphicContext.clear()
     Global.drawingManager.draw(Global.graphicContext)
   };

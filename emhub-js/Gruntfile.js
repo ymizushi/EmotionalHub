@@ -90,4 +90,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('js', ['concat', 'jasmine']);
   grunt.registerTask('ts', ['typescript']);
+  grunt.registerTask('ts-test', ['typescript','jasmine']);
 };
