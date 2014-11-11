@@ -1,6 +1,6 @@
 describe("TokenReader Test", function() {
   it("add and next", function() {
-      var tokenReader = new EMOLA.TokenReader('(defn hoge (x y)');
+      var tokenReader = new emola.TokenReader('(defn hoge (x y)');
       expect(tokenReader.next()).toEqual('(');
       expect(tokenReader.next()).toEqual('defn');
       expect(tokenReader.next()).toEqual('hoge');

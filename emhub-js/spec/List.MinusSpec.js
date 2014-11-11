@@ -1,6 +1,6 @@
 describe("List.Minus Spec", function () {
   it("integration", function() {
-    var minusList = new EMOLA.List.Minus([new EMOLA.Atom(EMOLA.Atom.MINUS), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom(EMOLA.Atom.NUMBER, 2)]);
-    expect(minusList.evalSyntax(EMOLA.Global.env)).toEqual(-1);
+    var minusList = new emola.MinusList([new emola.Atom(emola.Atom.MINUS), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom(emola.Atom.NUMBER, 2)]);
+    expect(minusList.evalSyntax(emola.Global.env)).toEqual(-1);
   });
 });

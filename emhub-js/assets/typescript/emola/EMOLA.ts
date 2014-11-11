@@ -6,7 +6,7 @@ module emola {
   var emola:any
   emola = {}
 
-  class List {
+  export class List {
     static NODE_RADIUS = 20
     static LEAF_RADIUS = 15
 
@@ -204,7 +204,7 @@ module emola {
     }
   }
 
-  class DoList extends List {
+  export class DoList extends List {
     evalSyntax(env) {
       var expList = this.list.slice(1);
       var result = expList.map(function (elem) { return elem.evalSyntax(env);});
@@ -212,7 +212,7 @@ module emola {
     }
   }
   
-  class DrawList extends List {
+  export class DrawList extends List {
     evalSyntax(env) {
       var figure = this.list[1].evalSyntax(env);
       Global.drawingManager.add(figure);
@@ -220,13 +220,13 @@ module emola {
     }
   }
 
-  class EqualList extends List {
+  export class EqualList extends List {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
     }
   }
 
-  class EvalList extends List {
+  export class EvalList extends List {
     evalSyntax(env) {
       if (this.list[1].type === Atom.VAR) {
         var value = this.list[1].value;
@@ -237,7 +237,7 @@ module emola {
     }
   }
 
-  class FnList extends List {
+  export class FnList extends List {
     evalSyntax(env) {
       var args = this.list[1].list; // directで見てる
       var expList = this.list[2];
@@ -245,19 +245,19 @@ module emola {
     }
   }
 
-  class GreaterList extends List {
+  export class GreaterList extends List {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
     }
   }
 
-  class GreaterEqualList extends List {
+  export class GreaterEqualList extends List {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
     }
   }
 
-  class IfList extends List {
+  export class IfList extends List {
     evalSyntax(env) {
       this.assert();
       var testExp = this.list[1];
@@ -302,7 +302,7 @@ module emola {
     }
   }
 
-  class MinusList extends List {
+  export class MinusList extends List {
     constructor(list, parent, point) {
       super(list, parent, point)
       this.listColor = new Color(50, 0, 0, 0.2);
@@ -344,7 +344,7 @@ module emola {
     }
   }
   
-  class PlusList extends List {
+  export class PlusList extends List {
     constructor(list, parent, point) {
       super(list, parent, point)
       this.listColor = new Color(255, 0, 0, 0.2);
@@ -425,7 +425,7 @@ module emola {
     }
   }
 
-  class TokenReader {
+  export class TokenReader {
     tokenizedList: any
 
     constructor(line=null) {
@@ -523,7 +523,7 @@ module emola {
     }
   }
 
-  class Global {
+  export class Global {
     static env = new DictEnv(null)
     static tokenReader = new TokenReader()
     static graphicContext = null
@@ -535,7 +535,7 @@ module emola {
     static event = null
   }
 
-  class Core {
+  export class Core {
     static tokenize(inputStr) {
       return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
         function (str) { return str ? true : false

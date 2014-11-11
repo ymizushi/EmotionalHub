@@ -1,13 +1,13 @@
-describe("List.If Spec", function () {
+describe("IfList Spec", function () {
   it("integration", function() {
-    var resultTrueTypeIfList = new EMOLA.List.If([new EMOLA.Atom('if'), new EMOLA.Atom('true'), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom('false')]);
-    expect(resultTrueTypeIfList.evalSyntax(EMOLA.Global.env)).toEqual(1);
+    var resultTrueTypeIfList = new emola.IfList([new emola.Atom('if'), new emola.Atom('true'), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom('false')]);
+    expect(resultTrueTypeIfList.evalSyntax(emola.Global.env)).toEqual(1);
 
-    var resultFalseTypeIfList = new EMOLA.List.If([new EMOLA.Atom('if'), new EMOLA.Atom('false'), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom('false')]);
-    expect(resultFalseTypeIfList.evalSyntax(EMOLA.Global.env)).toEqual(false);
+    var resultFalseTypeIfList = new emola.IfList([new emola.Atom('if'), new emola.Atom('false'), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom('false')]);
+    expect(resultFalseTypeIfList.evalSyntax(emola.Global.env)).toEqual(false);
 
-    var resultTrueTypeIfNestedList = new EMOLA.List.If([new EMOLA.Atom('if'), new EMOLA.Atom('true'), new EMOLA.List.If([new EMOLA.Atom('if'), new EMOLA.Atom('true'), new EMOLA.Atom(EMOLA.Atom.NUMBER, 10), new EMOLA.Atom('false')]), new EMOLA.Atom('false')]);
-    expect(resultTrueTypeIfNestedList.evalSyntax(EMOLA.Global.env)).toEqual(10);
+    var resultTrueTypeIfNestedList = new emola.IfList([new emola.Atom('if'), new emola.Atom('true'), new emola.IfList([new emola.Atom('if'), new emola.Atom('true'), new emola.Atom(emola.Atom.NUMBER, 10), new emola.Atom('false')]), new emola.Atom('false')]);
+    expect(resultTrueTypeIfNestedList.evalSyntax(emola.Global.env)).toEqual(10);
   });
 });
 

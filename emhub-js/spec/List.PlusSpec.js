@@ -1,7 +1,7 @@
-describe("List.Plus Spec", function () {
+describe("PlusList Spec", function () {
   it("integration", function() {
-    var plusList = new EMOLA.List.Plus([new EMOLA.Atom('+'), new EMOLA.Atom(EMOLA.Atom.NUMBER, 1), new EMOLA.Atom(EMOLA.Atom.NUMBER, 2)]);
-    expect(plusList.evalSyntax(EMOLA.Global.env)).toEqual(3);
+    var plusList = new emola.PlusList([new emola.Atom('+'), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom(emola.Atom.NUMBER, 2)]);
+    expect(plusList.evalSyntax(emola.Global.env)).toEqual(3);
   });
 });
 
