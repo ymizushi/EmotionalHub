@@ -1,29 +1,38 @@
-<html>
-<head>
-  <title>REPL</title>
-  <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" media="screen" href="stylesheet/emola.css" />
-  <script src="js/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-  <script src="js/lib/jquery-console/jquery.console.js" type="text/javascript"></script>
-  <script src="js/build/emola.js" type="text/javascript"></script>
-</head>
-<body>
-  <noscript>
-    <p>
-      <strong>Javascriptの実行をを許可してください.</strong>
-    </p>
-  </noscript>
-  <h1>Emola REPL</h1>
-  <ul>
-      <li>開発中の教育プラットフォームで使用する言語のデモです</li>
-      <li>Chromeで動かすのにはちょっとコツが居るので、FirefoxかSafari推奨</li>
-      <li>いまのところ<a href="https://github.com/ymizushi/EmotionalHub#emola-language-specification">Emola Language Specification</a>にある例文ぐらいは動く</li>
-      <li>コンソールにプログラムを記述すると、その構文木がグラフとしてCanvasに描画される</li>
-      <li>構文木のノードはドラッグ＆ドロップで合成出来る</li>
-      <li>Javascriptで書いていたが、TypeScriptに移行した</li>
-      <li>ノードを評価するとアニメーション、WebSocketで複数人プログラミング、Web共有、サウンド合成などが今後できるようになる予定</li>
-  </ul>
-  <canvas id="canvas" width="1300" height="400">図形を表示するにはブラウザが必要</canvas>
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <title>EmotionalHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="mizushi@gmail.com">
+    <link href="stylesheet/emola.css" rel="stylesheet" />
+    <link href="stylesheet/bootstrap.css" rel="stylesheet" />
+  </head>
 
-</body>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">EmotionalHub</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <canvas id="canvas" width="1300" height="400">HTML5対応のブラウザでのみ動作します.</canvas>
+
+    <noscript>
+      <p>
+        <strong>Javascriptの実行をを許可してください.</strong>
+      </p>
+    </noscript>
+    <script src="js/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="js/lib/jquery-console/jquery.console.js" type="text/javascript"></script>
+    <script src="js/build/emola.js" type="text/javascript"></script>
+  </body>
 </html>
