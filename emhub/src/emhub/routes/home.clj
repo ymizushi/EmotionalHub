@@ -10,6 +10,10 @@
 (defn about-page []
   (layout/render "about.html"))
 
+(defn login-page []
+  (layout/render "login.html"))
+
 (defroutes home-routes
   (GET "/" [] (home-page))
+  (GET "/login" [] (login-page))
   (GET "/about" [] (about-page)))
