@@ -660,7 +660,7 @@ module emola {
       this.commandContainer = $(htmlString)
       this.callbackList = func;
 
-      $('body').append(this.commandContainer);
+      $('#emola-console').append(this.commandContainer);
       this.commandContainer.console({
         promptLabel: 'Emola> ',
         commandValidate: function(line) {
