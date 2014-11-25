@@ -1,11 +1,11 @@
 # Emotional Hub
 [![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.png?branch=master)](https://travis-ci.org/ymizushi/EmotionalHub)
 
-The interactive programming platform with Emola.
+EmotionalHub is the interactive programming platform with Emola.
 
 Emola is a kind of LISP programming language designed by Yuta Mizushima.
 
-Emotional Hub provides interactive programming environment for entertainment and education.
+EmotionalHub provides interactive programming for entertainment and education.
 
 This repository is under development.
 
