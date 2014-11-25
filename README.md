@@ -1,11 +1,11 @@
 # Emotional Hub
 [![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.png?branch=master)](https://travis-ci.org/ymizushi/EmotionalHub)
 
-The interactive programming environment with Emola.
+The interactive programming platform with Emola.
 
-(Emola is a kind of LISP programming language designed by Yuta Mizushima)
+Emola is a kind of LISP programming language designed by Yuta Mizushima.
 
-Emotional Hub provides interactive programming environment, music sequencer, presentation tool, and so on.
+Emotional Hub provides interactive programming environment for entertainment and education.
 
 This repository is under development.
 
@@ -115,7 +115,6 @@ hoge
 ### Create Line
 ```clojure
 ```
-
 
 ## Development setting
 
