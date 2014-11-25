@@ -1,5 +1,5 @@
 {
-  "name": "Emola",
+  "name": "EmotionalHub",
   "version": "0.0.2",
   "main": "Gruntfile.js",
   "devDependencies": {
@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ymizushi/emohub.git"
+    "url": "git://github.com/ymizushi/EmotionalHub.git"
   },
   "author": "Yuta Mizushima",
   "license": "MIT License",
   "bugs": {
-    "url": "https://github.com/ymizushi/emohub/issues"
+    "url": "https://github.com/ymizushi/EmotionalHub/issues"
   },
-  "homepage": "https://github.com/ymizushi/emohub"
+  "homepage": "https://github.com/ymizushi/EmotionalHub"
 }
