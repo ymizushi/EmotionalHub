@@ -454,10 +454,10 @@ module emola {
       this._socket = socket
     }
     
-    add = function (drawing) {
+    add(drawing) {
       this._list.push(drawing)
       this._socket.send("hoge")
-    };
+    }
     
     remove(drawing) {
       for (var i in this._list) {
@@ -746,7 +746,7 @@ module emola {
     }
   }
 
-  var eventManager = new EventManager()
+  new EventManager()
   
   emola.Front.drawLoop = function () {
     setTimeout(emola.Front.drawLoop, 15)
@@ -768,6 +768,4 @@ module emola {
     var y = pageY - rect.top;
     return new Point(x, y)
   }
-  
-  
 }
