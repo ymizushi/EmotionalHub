@@ -379,6 +379,10 @@ module emola {
     evalSyntax(env) {
       this.assert();
       var list = this.list[1];
+      if (list.draw) {
+        Global.drawingManager.add(list);
+      }
+  
       return new Quote(list);
     }
     
@@ -695,9 +699,9 @@ module emola {
         try {
           Global.tokenReader.add(line);
           var parsedList = Core.parse(Global.tokenReader);
-          if (parsedList.draw) {
-            Global.drawingManager.add(parsedList);
-          }
+          // if (parsedList.draw) {
+          //   Global.drawingManager.add(parsedList);
+          // }
           result = parsedList.evalSyntax(Global.env);
         } catch (e) {
           result = "Parse error";
