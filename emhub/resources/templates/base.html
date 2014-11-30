@@ -21,57 +21,18 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">EmotionalHub</a>
+          <a class="brand" href="/">EmotionalHub</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
+              <li><a href="/about">About</a></li>
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="span9">
-          <canvas id="canvas" width="870" height="500">HTML5対応のブラウザでのみ動作します.</canvas>
-          <div id="emola-console"></div>
-        </div>
-        <div class="span1">
-          <h4>AA</h4>
-          <h4>BB</h4>
-          <h4>CC</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-          <h4>DD</h4>
-        </div>
-      </div>
-      <footer>
-        <p>&copy; ymizushi 2014</p>
-      </footer>
-    </div>
-
+    {% block content %}
+    {% endblock %}
     <noscript>
       <p>
         <strong>Javascriptの実行をを許可してください.</strong>
