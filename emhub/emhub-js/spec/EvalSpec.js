@@ -64,8 +64,8 @@ describe("Lang Eval test", function() {
   });
 
   it("quote", function() {
-      expect(emola.Core.readAndEval('(evalSyntax (quote (+ 1 2)))')).toEqual(3);
-      expect(emola.Core.readAndEval('(do (def hoge (quote (+ 1 2))) (evalSyntax hoge))')).toEqual(3);
+      expect(emola.Core.readAndEval('(eval (quote (+ 1 2)))')).toEqual(3);
+      expect(emola.Core.readAndEval('(do (def hoge (quote (+ 1 2))) (eval hoge))')).toEqual(3);
   });
 
   it("send", function() {

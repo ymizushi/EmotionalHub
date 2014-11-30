@@ -44,13 +44,18 @@ module emola {
 
   export class Quote {
     list: any
+    env: DictEnv
 
     constructor(list) {
       this.list = list
     }
     
-    evalSyntax(env: DictEnv) {
-      return this.list.evalSyntax(env)
+    evalSyntax(env) {
+      this.env = env
+      return this
+    }
+    exec() {
+      return this.list.evalSyntax(this.env)
     }
   }
 
@@ -84,7 +89,7 @@ module emola {
     static VAR = 'var';
     static LET = 'let';
     static QUOTE = 'quote';
-    static EVAL = 'evalSyntax';
+    static EVAL = 'eval';
     
     /* type */
     static TRUE = 'true';

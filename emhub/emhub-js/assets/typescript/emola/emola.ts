@@ -229,11 +229,11 @@ module emola {
   export class EvalList extends List {
     evalSyntax(env) {
       if (this.list[1].type === Atom.VAR) {
-        var value = this.list[1].value;
-        var quote = env.find(value).get(value);
-        return quote.evalSyntax(env);
+        var value = this.list[1].value
+        var quote = env.find(value).get(value)
+        return quote.exec()
       }
-      return this.list[1].evalSyntax(env).evalSyntax(env);
+      return this.list[1].exec(env)
     }
   }
 
@@ -372,18 +372,25 @@ module emola {
   }
 
   class QuoteList extends List {
+    env: DictEnv
+
     constructor(list, parent, point) {
       super(list, parent, point)
       this.listColor = new Color(0, 100, 0, 0.2);
     }
-    evalSyntax(env) {
+
+    exec () {
       this.assert();
       var list = this.list[1];
       if (list.draw) {
         Global.drawingManager.add(list);
       }
-  
-      return new Quote(list);
+      return list.evalSyntax(this.env)
+    
+    }
+    evalSyntax(env) {
+      this.env = env
+      return this
     }
     
     assert() {
@@ -460,7 +467,7 @@ module emola {
     
     add(drawing) {
       this._list.push(drawing)
-      this._socket.send("hoge")
+      // this._socket.send("hoge")
     }
     
     remove(drawing) {
