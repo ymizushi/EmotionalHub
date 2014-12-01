@@ -779,4 +779,14 @@ module emola {
     var y = pageY - rect.top;
     return new Point(x, y)
   }
+
+  export class MouseInput {
+    constructor() {
+    }
+  }
+
+  export class KeyboardInput {
+    constructor() {
+    }
+  }
 }

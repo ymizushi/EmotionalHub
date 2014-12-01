@@ -1,5 +1,5 @@
 # emhub
-Emotional Hub Web server.
+EmotionalHub Web server.
 
 ## Prerequisites
 You will need [Leiningen][1] 2.0 or above installed.
