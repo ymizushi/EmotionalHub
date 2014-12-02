@@ -794,35 +794,46 @@ module emola {
   export interface Druggable {
   }
 
+  export class InputManager {
+    clicked(): Point {
+      return new Point(1 ,2)
+    }
+  
+  }
+
   export interface Widget {
-    x: int
-    y: int
-    width: int
-    height: int
+    x: number
+    y: number
+    width: number
+    height: number
 
     clicked(inputManager: InputManager): Point
-    drugged(inputManager: InputManager): Widget
   }
 
   export interface SyntaxNode {
   }
 
-  export class PaletteWidget<T> extends Widget {
-    syntaxNodeType: T
+  export class PaletteWidget implements Widget {
+    x = 0
+    y = 0
+    width = 0
+    height = 0
 
-    constructor(syntaxNodeType: T) {
-      this.syntaxNode = syntaxNode
+    syntaxNodeType: any
+
+    constructor(syntaxNodeType: any) {
+      this.syntaxNodeType = syntaxNodeType
     }
 
-    clicked(inputManager: InputManager): syntaxNode {
+    clicked(inputManager: InputManager): Point {
       var clickedPoint: Point = inputManager.clicked()
-      if (this.exists?(clickedPoint)) {
-        return syntaxNodeType.create()
+      if (this.exists(clickedPoint)) {
+        return clickedPoint
       }
       return null
     }
 
-    exists?(point: Point) {
+    exists(point: Point): boolean {
       if (this.x <= point.x && point.x <= this.x+this.width
           && this.y <= point.y && point.y <= this.y + this.height) {
         return true
@@ -832,23 +843,33 @@ module emola {
     }
   }
 
-  export class Palette extends Widget {
-    palleteWidgetList: PalleteWidget[]
+  export class Palette implements Widget {
+    x = 0
+    y = 0
+    width = 100
+    height = 100
+
+    paletteWidgetList: PaletteWidget[]
 
     constructor(palleteWidgetList=[]) {
-      this.palleteWidgetList = palleteWidgetList
+      this.paletteWidgetList = palleteWidgetList
     }
 
-    add(palleteWidget: PalleteWidget) {
-      this.palleteWidgetList.push(palleteWidget)
+    clicked(inputManager: InputManager): Point {
+      var clickedPoint: Point = inputManager.clicked()
+      return clickedPoint
+    }
+
+    add(paletteWidget: PaletteWidget) {
+      this.paletteWidgetList.push(paletteWidget)
     }
   }
 
   export class CanvasWindow {
-    x: int
-    y: int
-    width: int
-    height: int
+    x: number
+    y: number
+    width: number
+    height: number
     pallete: Palette
 
     constructor(pallete: Palette) {
