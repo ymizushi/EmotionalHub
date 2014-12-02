@@ -789,4 +789,71 @@ module emola {
     constructor() {
     }
   }
+
+
+  export interface Druggable {
+  }
+
+  export interface Widget {
+    x: int
+    y: int
+    width: int
+    height: int
+
+    clicked(inputManager: InputManager): Point
+    drugged(inputManager: InputManager): Widget
+  }
+
+  export interface SyntaxNode {
+  }
+
+  export class PaletteWidget<T> extends Widget {
+    syntaxNodeType: T
+
+    constructor(syntaxNodeType: T) {
+      this.syntaxNode = syntaxNode
+    }
+
+    clicked(inputManager: InputManager): syntaxNode {
+      var clickedPoint: Point = inputManager.clicked()
+      if (this.exists?(clickedPoint)) {
+        return syntaxNodeType.create()
+      }
+      return null
+    }
+
+    exists?(point: Point) {
+      if (this.x <= point.x && point.x <= this.x+this.width
+          && this.y <= point.y && point.y <= this.y + this.height) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
+  export class Palette extends Widget {
+    palleteWidgetList: PalleteWidget[]
+
+    constructor(palleteWidgetList=[]) {
+      this.palleteWidgetList = palleteWidgetList
+    }
+
+    add(palleteWidget: PalleteWidget) {
+      this.palleteWidgetList.push(palleteWidget)
+    }
+  }
+
+  export class CanvasWindow {
+    x: int
+    y: int
+    width: int
+    height: int
+    pallete: Palette
+
+    constructor(pallete: Palette) {
+      this.pallete = pallete
+    }
+  }
+
 }
