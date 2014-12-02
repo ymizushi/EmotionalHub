@@ -720,13 +720,29 @@ module emola {
 
   class EventManager {
     constructor() {
+
+      function getPosition(e:any):any {
+        var pageX = e.pageX;
+        var pageY = e.pageY;
+        var rect = e.target.getBoundingClientRect();
+
+        var x = pageX - rect.left;
+        var y = pageY - rect.top;
+        return new Point(x, y)
+      }
+
+      function getDrawingObject(drawing:any , e:any):any {
+        var point = getPosition(e)
+        return Global.drawingManager.getListObject(point, drawing)
+      }
+
       (function () {
         var druggingObject = null
         var drawing = null
 
         $(window).mousedown(function (e) {
           Global.drugging = true
-          var drawing = this.getDrawingObject(null, e)
+          var drawing = getDrawingObject(null, e)
           if (drawing) {
             druggingObject = drawing
           }
@@ -736,7 +752,7 @@ module emola {
           function (e) {
             Global.drugging = false
             if (druggingObject) {
-              var drawing = this.getDrawingObject(druggingObject, e)
+              var drawing = getDrawingObject(druggingObject, e)
               if (drawing && druggingObject != drawing) {
                 drawing.add(druggingObject)
                 // Global.drawingManager.remove(druggingObject);
@@ -749,27 +765,13 @@ module emola {
         $(window).mousemove(
           function (e) {
             if (druggingObject) {
-              druggingObject.point = this.getPosition(e)
+              druggingObject.point = getPosition(e)
             }
           }
         )
       })()
     }
 
-    getDrawingObject(drawing:any , e:any):any {
-      var point = this.getPosition(e)
-      return Global.drawingManager.getListObject(point, drawing)
-    }
-
-    getPosition(e:any):any {
-      var pageX = e.pageX;
-      var pageY = e.pageY;
-      var rect = e.target.getBoundingClientRect();
-
-      var x = pageX - rect.left;
-      var y = pageY - rect.top;
-      return new Point(x, y)
-    }
   }
 
   new EventManager()
