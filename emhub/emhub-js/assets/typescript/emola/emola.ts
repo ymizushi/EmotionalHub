@@ -726,7 +726,7 @@ module emola {
 
         $(window).mousedown(function (e) {
           Global.drugging = true
-          var drawing = getDrawingObject(null, e)
+          var drawing = this.getDrawingObject(null, e)
           if (drawing) {
             druggingObject = drawing
           }
@@ -736,7 +736,7 @@ module emola {
           function (e) {
             Global.drugging = false
             if (druggingObject) {
-              var drawing = getDrawingObject(druggingObject, e)
+              var drawing = this.getDrawingObject(druggingObject, e)
               if (drawing && druggingObject != drawing) {
                 drawing.add(druggingObject)
                 // Global.drawingManager.remove(druggingObject);
@@ -749,11 +749,26 @@ module emola {
         $(window).mousemove(
           function (e) {
             if (druggingObject) {
-              druggingObject.point = getPosition(e)
+              druggingObject.point = this.getPosition(e)
             }
           }
         )
       })()
+    }
+
+    getDrawingObject(drawing:any , e:any):any {
+      var point = this.getPosition(e)
+      return Global.drawingManager.getListObject(point, drawing)
+    }
+
+    getPosition(e:any):any {
+      var pageX = e.pageX;
+      var pageY = e.pageY;
+      var rect = e.target.getBoundingClientRect();
+
+      var x = pageX - rect.left;
+      var y = pageY - rect.top;
+      return new Point(x, y)
     }
   }
 
@@ -763,21 +778,6 @@ module emola {
     setTimeout(emola.Front.drawLoop, 15)
     Global.graphicContext.clear()
     Global.drawingManager.draw(Global.graphicContext)
-  };
-  
-  function getDrawingObject(drawing, e) {
-    var point = getPosition(e)
-    return Global.drawingManager.getListObject(point, drawing)
-  }
-  
-  function getPosition(e) {
-    var pageX = e.pageX;
-    var pageY = e.pageY;
-    var rect = e.target.getBoundingClientRect();
-
-    var x = pageX - rect.left;
-    var y = pageY - rect.top;
-    return new Point(x, y)
   }
 
   export class MouseInput {
