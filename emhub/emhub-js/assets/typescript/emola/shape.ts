@@ -4,12 +4,14 @@ module emola {
     g: number
     b: number
     a: number
+
     constructor(r=0, g=0, b=0, a=1) {
       this.r = r
       this.g = g
       this.b = b
       this.a = a
     }
+
     move(color: Color) {
       this.r = color.r
       this.g = color.g
@@ -21,6 +23,7 @@ module emola {
   export class Point {
     x: number
     y: number
+
     constructor(x: number, y: number) {
       this.x = x
       this.y = y
@@ -49,13 +52,9 @@ module emola {
     }
     
     move(point: Point, size: Size, color: Color) {
-      this.point.x = point.x
-      this.point.y = point.y
-      this.size.width = size.width
-      this.size.height = size.height
-      this.color.r = color.r
-      this.color.g = color.g
-      this.color.b = color.b
+      this.point.move(point)
+      this.size.move(size)
+      this.color.move(color)
     }
     
     draw(context: ContextWrapper) {
@@ -72,9 +71,9 @@ module emola {
       this.height = height
     }
     
-    move(width, height) {
-      this.width = width
-      this.height = height
+    move(size: Size) {
+      this.width = size.width
+      this.height = size.height
     }
   }
 
@@ -89,49 +88,37 @@ module emola {
       this.color = color
     }
 
-    draw(context) {
+    draw(context: ContextWrapper) {
       context.drawText(this)
     }
   }
 
-  export class Figure {
+  export interface Figure {
     point: Point
-    width: number
-    height: number
-
-    constructor(point: Point, width: number, height: number) {
-      this.point = point
-      this.width = width
-      this.height = height
-    }
-    move(point: Point, width: number, height: number) {
-      this.point.move(point)
-      this.width = width
-      this.height = height
-    }
+    size: Size
   }
 
-  export class Circle extends Figure {
+  export class Circle implements Figure {
+    point = new Point(0,0)
+    size = new Size(100,100)
     radius: number
     color: Color
 
-    constructor(point, radius, color) {
-      super(point, 2*radius, 2*radius)
+    constructor(point: Point, radius: number, color: Color) {
+      this.point = point
+      this.size =new Size(2*radius, 2*radius)
+
       this.radius = radius
       this.color = color
     }
   
-    move(point, radius, color) {
-      this.point.x = point.x
-      this.point.y = point.y
+    move(point:Point, radius, color) {
+      this.point.move(point)
       this.radius = radius
-      this.color.r = color.r
-      this.color.g = color.g
-      this.color.b = color.b
-      this.color.a = color.a
+      this.color.move(color)
     }
   
-    draw(context) {
+    draw(context: ContextWrapper) {
       context.drawCircle(this)
     }
     isMet(point: Point) {
