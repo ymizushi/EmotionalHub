@@ -11,7 +11,8 @@
     "grunt-typescript": "~0.3.8",
     "typescript-tools": "~0.3.1",
     "jslint": "",
-    "jshint": ""
+    "jshint": "",
+    "bower": ""
   },
   "peerDependencies": {
     "grunt": "0.4.2"
