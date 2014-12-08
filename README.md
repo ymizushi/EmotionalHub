@@ -118,7 +118,8 @@ hoge
 
 ### Initialize
 ```sh
-./setup.sh
+cd emhub/emhub-js/
+./setup_js.sh
 ```
 
 ### Test
