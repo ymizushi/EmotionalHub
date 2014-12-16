@@ -1,11 +1,10 @@
 module emola {
   export interface Widget {
-    x: number
-    y: number
-    width: number
-    height: number
+    rect: Rect
 
     clicked(inputManager: InputManager): Widget
+    draw(contextWrapper: ContextWrapper): void
+    is_contact(point: Point): boolean
   }
 
   export enum SyntaxNode {
@@ -16,11 +15,7 @@ module emola {
   }
 
   export class PaletteWidget implements Widget {
-    x = 0
-    y = 0
-    width = 200
-    height = 200
-
+    rect = new Rect(new Point(200,200), new Size(10,10), new Color(10,10,10,1))
     syntaxNode: SyntaxNode
 
     constructor(syntaxNode: SyntaxNode) {
@@ -28,33 +23,28 @@ module emola {
     }
 
     clicked(inputManager: InputManager): Widget {
-      if (this.exists(inputManager.clicked())) {
+      if (this.is_contact(inputManager.clicked())) {
         return this
       }
       return null
     }
 
-    exists(point: Point): boolean {
-      if (this.x <= point.x && point.x <= this.x+this.width
-          && this.y <= point.y && point.y <= this.y + this.height) {
-        return true
-      } else {
-        return false
-      }
+    draw(contextWrapper: ContextWrapper) {
+      this.rect.draw(contextWrapper)
+    }
+
+    is_contact(point: Point): boolean {
+      return this.rect.is_contact(point)
     }
 
   }
 
   export class Palette implements Widget {
-    x = 0
-    y = 0
-    width = 200
-    height = 200
+    rect = new Rect(new Point(0,0), new Size(200,200), new Color())
 
     paletteWidgetList: PaletteWidget[]
 
-    constructor(paletteWidgetList=[]) {
-      this.paletteWidgetList = paletteWidgetList
+    constructor() {
     }
 
     clicked(inputManager: InputManager): Widget {
@@ -71,18 +61,31 @@ module emola {
     add(paletteWidget: PaletteWidget) {
       this.paletteWidgetList.push(paletteWidget)
     }
+
+    draw(contextWrapper: ContextWrapper) {
+      this.rect.draw(contextWrapper)
+      // for(var paletteWidget in this.paletteWidgetList) {
+      //   // paletteWidget.draw(contextWrapper)
+      //     console.log(paletteWidget)
+      // }
+    }
+
+    is_contact(point: Point): boolean {
+      return this.rect.is_contact(point)
+    }
   }
 
   export class CanvasWindow implements Widget {
-    x = 0
-    y = 0
-    width = 200
-    height = 200
+    rect = new Rect(new Point(0,0), new Size(200,200), new Color())
 
     palette: Palette
 
     constructor(palette: Palette) {
       this.palette = palette
+    }
+
+    draw(contextWrapper: ContextWrapper) {
+      contextWrapper.drawRect(contextWrapper)
     }
 
     clicked(inputManager: InputManager): Widget {
@@ -91,6 +94,10 @@ module emola {
         return widget
       }
       return null
+    }
+
+    is_contact(point: Point): boolean {
+      return this.rect.is_contact(point)
     }
   }
 }

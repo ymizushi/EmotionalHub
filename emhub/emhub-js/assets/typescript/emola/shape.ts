@@ -49,12 +49,21 @@ module emola {
       this.point = point
       this.size = size
       this.color = color
-    }
-    
+  }
+
     move(point: Point, size: Size, color: Color) {
       this.point.move(point)
       this.size.move(size)
       this.color.move(color)
+    }
+
+    is_contact(point: Point):boolean {
+      if (this.point.x <= point.x && point.x <= this.point.x+this.size.width
+          && this.point.y <= point.y && point.y <= this.point.y + this.size.height) {
+        return true
+      } else {
+        return false
+      }
     }
     
     draw(context: ContextWrapper) {
@@ -145,7 +154,7 @@ module emola {
   }
 
   export class ContextWrapper {
-    context: any
+    private context: any
     width: number 
     height: number
     offsetLeft: number

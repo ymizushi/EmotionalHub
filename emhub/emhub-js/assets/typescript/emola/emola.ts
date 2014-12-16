@@ -7,18 +7,20 @@ module emola {
   emola = {}
 
   export class TokenReader {
-    tokenizedList: any
+    tokenizedList: any[]
 
-    constructor(line=null) {
-      this.tokenizedList = [];
-      if (line) this.add(line);
+    constructor(line: string = "") {
+      this.tokenizedList = []
+      if (line != "") {
+        this.add(line)
+      }
     }
     
-    add(line) {
+    add(line: string) {
       this.tokenizedList = this.tokenizedList.concat(Core.tokenize(line))
     }
     
-    next() {
+    next(): any {
       if (this.tokenizedList.length === 0) {
         return null
       }
@@ -27,46 +29,46 @@ module emola {
   }
 
   class DrawingManager {
-    _list: any
-    _socket: any
+    private list: any[]
+    private socket: Socket
 
-    constructor(socket) {
-      this._list = []
-      this._socket = socket
+    constructor(socket: Socket) {
+      this.list = []
+      this.socket = socket
     }
     
-    add(drawing) {
-      this._list.push(drawing)
-      // this._socket.send("hoge")
+    add(drawing: any) {
+      this.list.push(drawing)
+      // this.socket.send("hoge")
     }
     
     remove(drawing) {
-      for (var i in this._list) {
-        if (this._list[i] == drawing) {
-          this._list.splice(i,1)
+      for (var i in this.list) {
+        if (this.list[i] == drawing) {
+          this.list.splice(i,1)
         }
-        if (this._list[i] instanceof List) {
-          this._list[i].remove(drawing)
+        if (this.list[i] instanceof List) {
+          this.list[i].remove(drawing)
         }
       }
     }
     
     clear() {
-      this._list = []
+      this.list = []
     }
     
     draw(context) {
-      for (var i=0;i<this._list.length;i++) {
-        if (this._list[i].rotate) {
-          this._list[i].rotate(0.01)
+      for (var i=0;i<this.list.length;i++) {
+        if (this.list[i].rotate) {
+          this.list[i].rotate(0.01)
         }
-        this._list[i].draw(context)
+        this.list[i].draw(context)
       }
     }
     
     getDrawing(point, drawing) {
-      for (var index in this._list) {
-        var emlistObject = this._list[index]
+      for (var index in this.list) {
+        var emlistObject = this.list[index]
         if (emlistObject.isMet(point) && emlistObject !== drawing ) {
           return emlistObject
         }
@@ -74,8 +76,8 @@ module emola {
     }
     
     getListObject(point, drawing) {
-      for (var index in this._list) {
-        var listObject = this._list[index]
+      for (var index in this.list) {
+        var listObject = this.list[index]
         var targetListObject = listObject.getListObject(point)
         if (targetListObject && targetListObject !== drawing ) {
           return targetListObject
@@ -89,18 +91,18 @@ module emola {
     socket: any
 
     constructor() {
-      var socket = new WebSocket("ws://localhost:5000")
-      socket.onopen = function (event) {
-        console.log("web socket connection is established.")
-      }
-      socket.onmessage = function (event) {
-        console.log(event.data)
-      }
-      this.socket = socket
+      // var socket = new WebSocket("ws://localhost:5000")
+      // socket.onopen = function (event) {
+      //   console.log("web socket connection is established.")
+      // }
+      // socket.onmessage = function (event) {
+      //   console.log(event.data)
+      // }
+      // this.socket = socket
     }
     
     send(message) {
-      this.socket.send(message)
+      // this.socket.send(message)
     }
   }
 
@@ -272,19 +274,25 @@ module emola {
     }
   
     var consoleManager = new ConsoleManager('<div class="console">', function (line) {
-        var result = '';
+        var result = ''
         try {
-          Global.tokenReader.add(line);
-          var parsedList = Core.parse(Global.tokenReader);
-          // if (parsedList.draw) {
-          //   Global.drawingManager.add(parsedList);
-          // }
-          result = parsedList.evalSyntax(Global.env);
+          Global.tokenReader.add(line)
+          var parsedList = Core.parse(Global.tokenReader)
+          if (parsedList.draw) {
+            var palette = new Palette()
+            var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
+            // palette.add(paletteWidget)
+            Global.drawingManager.add(palette)
+
+            Global.drawingManager.add(parsedList)
+
+          }
+          result = parsedList.evalSyntax(Global.env)
         } catch (e) {
-          result = "Parse error";
-          console.log(e);
+          result = "Parse error"
+          console.log(e)
         } 
-        return [{ msg:"=> " + result, className:"jquery-console-message-value"} ];
+        return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
       })
   });
 

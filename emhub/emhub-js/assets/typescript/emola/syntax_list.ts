@@ -407,7 +407,6 @@ module emola {
     }
   }
 
-
   export class VarList extends List {
     evalSyntax(env) {
       this.assert();
