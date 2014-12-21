@@ -2,17 +2,17 @@
 ///<reference path="shape.ts"/>
 module emola {
   export class List {
-    static NODE_RADIUS = 20
-    static LEAF_RADIUS = 15
+    static NODE_RADIUS = 20;
+    static LEAF_RADIUS = 15;
 
-    radius: number
-    theta: number
-    nodeColor: Color
-    leafColor: Color
-    listColor: Color
-    parent: List
-    point: Point
-    list: any
+    radius: number;
+    theta: number;
+    nodeColor: Color;
+    leafColor: Color;
+    listColor: Color;
+    parent: List;
+    point: Point;
+    list: any;
 
     constructor(list, parent=null, point=null) {
       this.list = list;
@@ -86,25 +86,21 @@ module emola {
     }
     
     isMet(point) {
-      if (
-        this.point.x - List.NODE_RADIUS <=  point.x && point.x <=this.point.x + List.NODE_RADIUS && 
-        this.point.y - List.NODE_RADIUS <=  point.y && point.y <=this.point.y + List.NODE_RADIUS
-      ) {
-        return true;
-      }
-      return false;
+      return !!(this.point.x - List.NODE_RADIUS <= point.x && point.x <= this.point.x + List.NODE_RADIUS &&
+      this.point.y - List.NODE_RADIUS <= point.y && point.y <= this.point.y + List.NODE_RADIUS);
+
     }
     
     getListObject(point) {
       if (this.isMet(point)) {
         return this;
       }
-      for (var index in this.list) {
-        var leafListObject = this.list[index];
+      this.list.forEach(function (element) {
+        var leafListObject = element;
         if (leafListObject instanceof List && leafListObject.getListObject(point)) {
           return leafListObject;
         }
-      }
+      });
       return null;
     }
     
@@ -115,24 +111,24 @@ module emola {
 
   export class CircleList extends List {
     evalSyntax(env) {
-      var point = this.list[1]
-      var radius = this.list[2]
-      var color = this.list[3]
+      var point = this.list[1];
+      var radius = this.list[2];
+      var color = this.list[3];
       return new Circle(point.evalSyntax(env), radius.evalSyntax(env), color.evalSyntax(env))
     }
   }
 
   export class ClearList extends List {
     evalSyntax(env) {
-      Global.graphicContext.clear()
-      Global.drawingManager.clear()
+      Global.graphicContext.clear();
+      Global.drawingManager.clear();
       return null
     }
   }
 
   export class ColorList extends List {
     evalSyntax(env) {
-      this.assert()
+      this.assert();
       return new Color(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env), this.list[3].evalSyntax(env))
     }
     
@@ -145,15 +141,15 @@ module emola {
 
   export class DefList extends List {
     constructor(list, parent, point) {
-      super(list, parent, point)
+      super(list, parent, point);
       this.listColor = new Color(0, 255, 0, 0.2)
     }
     
     evalSyntax(env) {
-      this.assert()
-      var keyName = this.list[1].value
-      var value = this.list[2].evalSyntax(env)
-      env.update(keyName, value)
+      this.assert();
+      var keyName = this.list[1].value;
+      var value = this.list[2].evalSyntax(env);
+      env.update(keyName, value);
       return null
     }
     
@@ -170,11 +166,11 @@ module emola {
   export class DefnList extends List {
     // (defn hoge (x y) (+ x y))
     evalSyntax(env) {
-      this.assert()
-      var symbol = this.list[1]
-      var args = this.list[2].list
-      var expList = this.list[3]
-      env.update(symbol.value, new Fn(args, expList, new Env(env)))
+      this.assert();
+      var symbol = this.list[1];
+      var args = this.list[2].list;
+      var expList = this.list[3];
+      env.update(symbol.value, new Fn(args, expList, new Env(env)));
       return null
     }
     
@@ -187,7 +183,7 @@ module emola {
   
   export class DivList extends List {
     evalSyntax(env) {
-      var sum = 1
+      var sum = 1;
       for (var i=1;i < this.list.length;i++) {
         if (i === 1) {
           sum = this.list[i].evalSyntax(env)
@@ -224,8 +220,8 @@ module emola {
   export class EvalList extends List {
     evalSyntax(env) {
       if (this.list[1].type === Atom.VAR) {
-        var value = this.list[1].value
-        var quote = env.find(value).get(value)
+        var value = this.list[1].value;
+        var quote = env.find(value).get(value);
         return quote.exec()
       }
       return this.list[1].exec(env)
@@ -299,7 +295,7 @@ module emola {
 
   export class MinusList extends List {
     constructor(list, parent, point) {
-      super(list, parent, point)
+      super(list, parent, point);
       this.listColor = new Color(50, 0, 0, 0.2);
     }
 
@@ -318,7 +314,7 @@ module emola {
 
   export class MulList extends List {
     constructor(list, parent, point) {
-      super(list, parent, point)
+      super(list, parent, point);
       this.listColor = new Color(0, 200, 50, 0.2);
     }
   
@@ -341,7 +337,7 @@ module emola {
   
   export class PlusList extends List {
     constructor(list, parent, point) {
-      super(list, parent, point)
+      super(list, parent, point);
       this.listColor = new Color(255, 0, 0, 0.2);
     }
   
@@ -356,7 +352,7 @@ module emola {
   
   export class PointList extends List {
     evalSyntax(env) {
-      this.assert()
+      this.assert();
       return new Point(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env));
     }
     assert() {
@@ -367,10 +363,10 @@ module emola {
   }
 
   export class QuoteList extends List {
-    env: Env
+    env: Env;
 
     constructor(list, parent, point) {
-      super(list, parent, point)
+      super(list, parent, point);
       this.listColor = new Color(0, 100, 0, 0.2);
     }
 
@@ -384,7 +380,7 @@ module emola {
     
     }
     evalSyntax(env) {
-      this.env = env
+      this.env = env;
       return this
     }
     

@@ -1,10 +1,10 @@
 module emola {
   export class Env {
-    outer: Env
-    dict: {}
+    outer: Env;
+    dict: {};
 
     constructor(outer: Env) {
-      this.outer = outer
+      this.outer = outer;
       this.dict = {}
     }
 
@@ -27,13 +27,13 @@ module emola {
     }
   }
   export class Fn {
-    args: any
-    expList: any
-    env: any
+    args: any;
+    expList: any;
+    env: any;
 
     constructor(args, expList, env) {
-      this.args = args
-      this.expList = expList
+      this.args = args;
+      this.expList = expList;
       this.env = env
     }
     
@@ -43,15 +43,15 @@ module emola {
   }
 
   export class Quote {
-    list: any
-    env: Env
+    list: any;
+    env: Env;
 
     constructor(list) {
       this.list = list
     }
     
     evalSyntax(env) {
-      this.env = env
+      this.env = env;
       return this
     }
     exec() {
@@ -60,13 +60,13 @@ module emola {
   }
 
   export class Node {
-    parent: Node
-    children: any
-    token: any
+    parent: Node;
+    children: any;
+    token: any;
 
     constructor(parent) {
-      this.parent = parent
-      this.children = []
+      this.parent = parent;
+      this.children = [];
       this.token = null
     }
     
@@ -76,8 +76,8 @@ module emola {
   }
 
   export class Atom {
-    type: string
-    value: any
+    type: string;
+    value: any;
 
     /* lang */ 
     static FN = 'fn';
@@ -116,7 +116,7 @@ module emola {
     static CLEAR = 'clear';
 
     constructor(type: string, value=null) {
-      this.type = type
+      this.type = type;
       this.value = value
     }
     
