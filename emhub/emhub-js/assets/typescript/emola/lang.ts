@@ -1,3 +1,4 @@
+///<reference path="error.ts"/>
 module emola {
 
   export interface Evalable {
@@ -103,20 +104,20 @@ module emola {
         case Atom.NUMBER:
           return Number(this.value);
         case Atom.VAR:
-          if (env.findEnv(this.value)) {
-            var foundValue = env.findEnv(this.value).get(this.value);
+          var foundEnv:Env = env.findEnv(this.value);
+          if (foundEnv) {
+            var foundValue = foundEnv.get(this.value);
             if (foundValue.evalSyntax) {
               return foundValue.evalSyntax(env);
             } else {
               return foundValue;
             }
           } else {
-            throw 'target key of environment is not found.';
+            throw new InvalidTypeError('Target key of environment is not found.');
           }
           break;
         default:
-          console.log(this.type);
-        // throw new Exception.InvalidTypeException();
+          throw new InvalidTypeError('Unknown reserved word.');
       }
     }
   }
@@ -130,7 +131,7 @@ module emola {
       this.dict = {}
     }
 
-    update(key: string, value: Evalable):void {
+    update(key: string, value: Evalable) {
       this.dict[key] = value
     }
 
@@ -140,7 +141,7 @@ module emola {
 
     findEnv(key: string):Env {
       if (this.outer === null && !this.dict[key]) {
-        throw 'symbol:' + key +  ' is not defined.'
+        throw new NotFoundError('symbol:' + key +  ' is not found in env.')
       }
       if (this.dict[key]) {
         return this;
@@ -191,10 +192,5 @@ module emola {
       this.children = [];
       this.token = null
     }
-    
-    addChildren(children) {
-      this.children.push(children)
-    }
   }
-
 }

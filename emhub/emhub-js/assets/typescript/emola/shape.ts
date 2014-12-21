@@ -43,7 +43,6 @@ module emola {
     }
   }
 
-
   export class Color {
     r: number;
     g: number;
@@ -195,6 +194,5 @@ module emola {
       var sizeHeight = this.context.canvas.clientHeight;
       this.context.clearRect(0, 0, sizeWidth, sizeHeight)
     }
-
   }
 }
