@@ -286,25 +286,4 @@ module emola {
     Global.drawingManager.draw(Global.graphicContext)
   }
 
-  export class MouseInput {
-    constructor() {
-    }
-  }
-
-  export class KeyboardInput {
-    constructor() {
-    }
-  }
-
-
-  export interface Druggable {
-  }
-
-  export class InputManager {
-    clicked(): Point {
-      return new Point(1 ,2)
-    }
-  
-  }
-
 }

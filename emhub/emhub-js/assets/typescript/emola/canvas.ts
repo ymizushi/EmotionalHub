@@ -1,12 +1,13 @@
 ///<reference path="shape.ts"/>
-///<reference path="emola.ts"/>
+///<reference path="input.ts"/>
+
 module emola {
   export interface Widget {
     rect: Rect
 
     clicked(inputManager: InputManager): Widget
     draw(contextWrapper: CanvasContext): void
-    is_contact(point: Point): boolean
+    isContact(point: Point): boolean
   }
 
   export enum SyntaxNode {
@@ -24,8 +25,12 @@ module emola {
       this.syntaxNode = syntaxNode
     }
 
+    isContact(point: Point):boolean {
+      return this.rect.isContact(point)
+    }
+
     clicked(inputManager: InputManager): Widget {
-      if (this.is_contact(inputManager.clicked())) {
+      if (this.isContact(inputManager.clicked())) {
         return this
       }
       return null
@@ -34,11 +39,6 @@ module emola {
     draw(contextWrapper: CanvasContext) {
       this.rect.draw(contextWrapper)
     }
-
-    is_contact(point: Point): boolean {
-      return this.rect.isContact(point)
-    }
-
   }
 
   export class Palette implements Widget {
@@ -72,7 +72,7 @@ module emola {
       // }
     }
 
-    is_contact(point: Point): boolean {
+    isContact(point:emola.Point):boolean {
       return this.rect.isContact(point)
     }
   }
