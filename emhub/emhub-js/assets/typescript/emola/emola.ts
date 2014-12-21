@@ -1,6 +1,8 @@
 /// <reference path="../../../typings/jquery/jquery.d.ts" />
 /// <reference path="shape.ts" />
 /// <reference path="lang.ts" />
+///<reference path="syntax_list.ts"/>
+///<reference path="canvas.ts"/>
 
 module emola {
   var emola:any
@@ -43,16 +45,16 @@ module emola {
     }
     
     remove(drawing) {
-      for (var i in this.list) {
-        if (this.list[i] == drawing) {
-          this.list.splice(i,1)
+      this.list.forEach(function(element) {
+        if (element == drawing) {
+          this.list.splice(element,1)
         }
-        if (this.list[i] instanceof List) {
-          this.list[i].remove(drawing)
+        if (element instanceof List) {
+          element.remove(drawing)
         }
-      }
+      })
     }
-    
+
     clear() {
       this.list = []
     }
@@ -65,21 +67,11 @@ module emola {
         this.list[i].draw(context)
       }
     }
-    
-    getDrawing(point, drawing) {
-      for (var index in this.list) {
-        var emlistObject = this.list[index]
-        if (emlistObject.isMet(point) && emlistObject !== drawing ) {
-          return emlistObject
-        }
-      }
-    }
-    
-    getListObject(point, drawing) {
-      for (var index in this.list) {
-        var listObject = this.list[index]
-        var targetListObject = listObject.getListObject(point)
-        if (targetListObject && targetListObject !== drawing ) {
+
+    getListObject(point: Point, drawing) {
+      for (var i in this.list) {
+        var targetListObject = this.list[i].getListObject(point)
+        if (targetListObject && targetListObject !== drawing) {
           return targetListObject
         }
       }
@@ -279,10 +271,10 @@ module emola {
           Global.tokenReader.add(line)
           var parsedList = Core.parse(Global.tokenReader)
           if (parsedList.draw) {
-            var palette = new Palette()
-            var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
+            // var palette = new Palette()
+            // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
             // palette.add(paletteWidget)
-            Global.drawingManager.add(palette)
+            // Global.drawingManager.add(palette)
 
             Global.drawingManager.add(parsedList)
 
