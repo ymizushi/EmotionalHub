@@ -1,4 +1,126 @@
 module emola {
+
+  export interface Evalable {
+    evalSyntax(env: Env);
+  }
+
+  export class Atom implements Evalable {
+    type: string;
+    value: string;
+
+    // TODO: あとでenumでリファクタリング
+    /* lang */
+    static FN = 'fn';
+    static IF = 'if';
+    static DEF = 'def';
+    static DEFN = 'defn';
+    static DO = 'do';
+    static SEND = 'send';
+    static VAR = 'var';
+    static LET = 'let';
+    static QUOTE = 'quote';
+    static EVAL = 'eval';
+
+    /* type */
+    static TRUE = 'true';
+    static FALSE = 'false';
+    static STR = 'str';
+    static NUMBER = 'number';
+
+    /* math */
+    static PLUS = '+';
+    static MINUS = '-';
+    static DIV = '/';
+    static MUL = '*';
+    static EQUAL = '=';
+    static GREATER = '>';
+    static LESS = '<';
+    static GREATEREQUAL = '>=';
+    static LESSEQUAL = '<=';
+
+    /* visual */
+    static DRAW = 'draw';
+    static POINT = 'point';
+    static COLOR = 'color';
+    static CIRCLE = 'circle';
+    static CLEAR = 'clear';
+
+    static isAtom(atom: Atom) {
+      return atom instanceof Atom
+    }
+
+    static getAtoms():string[] {
+      return [
+        Atom.FN,
+        Atom.IF,
+        Atom.DEF,
+        Atom.DEFN,
+        Atom.DO,
+        Atom.SEND,
+        Atom.LET,
+        Atom.QUOTE,
+        Atom.EVAL,
+
+        Atom.PLUS,
+        Atom.MINUS,
+        Atom.DIV,
+        Atom.MUL,
+        Atom.EQUAL,
+        Atom.GREATER,
+        Atom.LESS,
+        Atom.GREATEREQUAL,
+        Atom.LESSEQUAL,
+
+        Atom.DRAW,
+        Atom.POINT,
+        Atom.COLOR,
+        Atom.CIRCLE,
+        Atom.CLEAR
+      ];
+    }
+
+    static isAtomToken(token: string):boolean {
+      return Atom.getAtoms().indexOf(token) >= 0
+    }
+
+    constructor(type: string, value: string=null) {
+      this.type = type;
+      this.value = value
+    }
+
+    equalToType(type: string) {
+      return this.type === type
+    }
+
+    evalSyntax(env: Env) {
+      switch (this.type) {
+        case Atom.TRUE:
+          return true;
+        case Atom.FALSE:
+          return false;
+        case Atom.STR:
+          return this.value;
+        case Atom.NUMBER:
+          return Number(this.value);
+        case Atom.VAR:
+          if (env.findEnv(this.value)) {
+            var foundValue = env.findEnv(this.value).get(this.value);
+            if (foundValue.evalSyntax) {
+              return foundValue.evalSyntax(env);
+            } else {
+              return foundValue;
+            }
+          } else {
+            throw 'target key of environment is not found.';
+          }
+          break;
+        default:
+          console.log(this.type);
+        // throw new Exception.InvalidTypeException();
+      }
+    }
+  }
+
   export class Env {
     outer: Env;
     dict: {};
@@ -8,41 +130,41 @@ module emola {
       this.dict = {}
     }
 
-    update(key: string, value: any):void {
+    update(key: string, value: Evalable):void {
       this.dict[key] = value
     }
 
-    get(key: string):any {
+    get(key: string): Evalable {
       return this.dict[key]
     }
 
-    find(key: string):any {
+    findEnv(key: string):Env {
       if (this.outer === null && !this.dict[key]) {
         throw 'symbol:' + key +  ' is not defined.'
       }
       if (this.dict[key]) {
-        return this
+        return this;
       }
-      return this.outer.find(key)
+      return this.outer.findEnv(key)
     }
   }
-  export class Fn {
+  export class Fn implements Evalable {
     args: any;
     expList: any;
-    env: any;
+    env: Env;
 
-    constructor(args, expList, env) {
+    constructor(args, expList, env:Env) {
       this.args = args;
       this.expList = expList;
       this.env = env
     }
     
-    evalSyntax(env) {
+    evalSyntax(env: Env) {
       return this.expList.evalSyntax(this.env)
     }
   }
 
-  export class Quote {
+  export class Quote implements Evalable {
     list: any;
     env: Env;
 
@@ -75,119 +197,4 @@ module emola {
     }
   }
 
-  export class Atom {
-    type: string;
-    value: any;
-
-    /* lang */ 
-    static FN = 'fn';
-    static IF = 'if';
-    static DEF = 'def';
-    static DEFN = 'defn';
-    static DO = 'do';
-    static SEND = 'send';
-    static VAR = 'var';
-    static LET = 'let';
-    static QUOTE = 'quote';
-    static EVAL = 'eval';
-    
-    /* type */
-    static TRUE = 'true';
-    static FALSE = 'false';
-    static STR = 'str';
-    static NUMBER = 'number';
-    
-    /* math */
-    static PLUS = '+';
-    static MINUS = '-';
-    static DIV = '/';
-    static MUL = '*';
-    static EQUAL = '=';
-    static GREATER = '>';
-    static LESS = '<';
-    static GREATEREQUAL = '>=';
-    static LESSEQUAL = '<=';
-    
-    /* visual */
-    static DRAW = 'draw';
-    static POINT = 'point';
-    static COLOR = 'color';
-    static CIRCLE = 'circle';
-    static CLEAR = 'clear';
-
-    constructor(type: string, value=null) {
-      this.type = type;
-      this.value = value
-    }
-    
-    static isAtom(atom) {
-      return atom instanceof Atom
-    }
-    
-    static getAtoms() {
-      return [
-        Atom.FN,
-        Atom.IF,
-        Atom.DEF,
-        Atom.DEFN,
-        Atom.DO,
-        Atom.SEND,
-        Atom.LET,
-        Atom.QUOTE,
-        Atom.EVAL,
-    
-        Atom.PLUS,
-        Atom.MINUS,
-        Atom.DIV,
-        Atom.MUL,
-        Atom.EQUAL,
-        Atom.GREATER,
-        Atom.LESS,
-        Atom.GREATEREQUAL,
-        Atom.LESSEQUAL,
-    
-        Atom.DRAW,
-        Atom.POINT,
-        Atom.COLOR,
-        Atom.CIRCLE,
-        Atom.CLEAR
-      ];
-    }
-    
-    static isAtomToken(token) {
-      return Atom.getAtoms().indexOf(token) >= 0
-    }
-    
-    equalToType(type) {
-      return this.type === type
-    }
-    
-    evalSyntax(env) {
-      switch (this.type) {
-        case Atom.TRUE:
-          return true;
-        case Atom.FALSE:
-          return false;
-        case Atom.STR:
-          return this.value;
-        case Atom.NUMBER:
-          return Number(this.value);
-        case Atom.VAR:
-          if (env.find(this.value)) {
-            var foundValue = env.find(this.value).get(this.value);
-            if (foundValue.evalSyntax) {
-              return foundValue.evalSyntax(env);
-            } else {
-              return foundValue;
-            }
-          } else {
-            throw 'target key of environment is not found.';
-          }
-          break;
-        default:
-          console.log(this.type);
-          // throw new Exception.InvalidTypeException();
-      }
-    }
-  }
 }

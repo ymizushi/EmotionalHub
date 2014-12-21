@@ -1,11 +1,13 @@
 ///<reference path="shape.ts"/>
 ///<reference path="emola.ts"/>
 module emola {
+
+
   export interface Widget {
     rect: Rect
 
     clicked(inputManager: InputManager): Widget
-    draw(contextWrapper: ContextWrapper): void
+    draw(contextWrapper: CanvasContext): void
     is_contact(point: Point): boolean
   }
 
@@ -31,12 +33,12 @@ module emola {
       return null
     }
 
-    draw(contextWrapper: ContextWrapper) {
+    draw(contextWrapper: CanvasContext) {
       this.rect.draw(contextWrapper)
     }
 
     is_contact(point: Point): boolean {
-      return this.rect.is_contact(point)
+      return this.rect.isContact(point)
     }
 
   }
@@ -64,7 +66,7 @@ module emola {
       this.paletteWidgetList.push(paletteWidget)
     }
 
-    draw(contextWrapper: ContextWrapper) {
+    draw(contextWrapper: CanvasContext) {
       this.rect.draw(contextWrapper);
       // for(var paletteWidget in this.paletteWidgetList) {
       //   // paletteWidget.draw(contextWrapper)
@@ -73,33 +75,34 @@ module emola {
     }
 
     is_contact(point: Point): boolean {
-      return this.rect.is_contact(point)
+      return this.rect.isContact(point)
     }
   }
 
-  export class CanvasWindow implements Widget {
-    rect = new Rect(new Point(0,0), new Size(200,200), new Color());
-
-    palette: Palette;
-
-    constructor(palette: Palette) {
-      this.palette = palette
-    }
-
-    draw(contextWrapper: ContextWrapper) {
-      contextWrapper.drawRect(contextWrapper)
-    }
-
-    clicked(inputManager: InputManager): Widget {
-      var widget: Widget = this.palette.clicked(inputManager);
-      if (widget) {
-        return widget
-      }
-      return null
-    }
-
-    is_contact(point: Point): boolean {
-      return this.rect.is_contact(point)
-    }
-  }
+  //export class CanvasWindow implements Widget {
+  //  rect = new Rect(new Point(0,0), new Size(200,200), new Color());
+  //
+  //  palette: Palette;
+  //
+  //  constructor(palette: Palette) {
+  //    this.palette = palette
+  //  }
+  //
+  //  //draw(contextWrapper: CanvasContext) {
+  //  //  contextWrapper.drawRect(this)
+  //  //}
+  //
+  //  clicked(inputManager: InputManager): Widget {
+  //    var widget: Widget = this.palette.clicked(inputManager);
+  //    if (widget) {
+  //      return widget
+  //    }
+  //    return null
+  //  }
+  //
+  //  isContact(point: Point): boolean {
+  //    return this.rect.isContact(point)
+  //  }
+  //}
+  //}
 }

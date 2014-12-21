@@ -785,7 +785,7 @@ interface JQueryStatic {
      *
      * @param url A string containing the URL to which the request is sent.
      * @param success A callback function that is executed if the request succeeds. Required if dataType is provided, but can be null in that case.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, description, html).
      */
     post(url: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
@@ -794,7 +794,7 @@ interface JQueryStatic {
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
      * @param success A callback function that is executed if the request succeeds. Required if dataType is provided, but can be null in that case.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, description, html).
      */
     post(url: string, data?: Object, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
@@ -803,7 +803,7 @@ interface JQueryStatic {
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
      * @param success A callback function that is executed if the request succeeds. Required if dataType is provided, but can be null in that case.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, description, html).
      */
     post(url: string, data?: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
 
@@ -1500,13 +1500,13 @@ interface JQuery {
     /**
      * Set the value of each element in the set of matched elements.
      *
-     * @param value A string of text or an array of strings corresponding to the value of each matched element to set as selected/checked.
+     * @param value A string of description or an array of strings corresponding to the value of each matched element to set as selected/checked.
      */
     val(value: string): JQuery;
     /**
      * Set the value of each element in the set of matched elements.
      *
-     * @param value A string of text or an array of strings corresponding to the value of each matched element to set as selected/checked.
+     * @param value A string of description or an array of strings corresponding to the value of each matched element to set as selected/checked.
      */
     val(value: string[]): JQuery;
     /**
@@ -3389,31 +3389,31 @@ interface JQuery {
     replaceWith(func: () => any): JQuery;
 
     /**
-     * Get the combined text contents of each element in the set of matched elements, including their descendants.
+     * Get the combined description contents of each element in the set of matched elements, including their descendants.
      */
     text(): string;
     /**
-     * Set the content of each element in the set of matched elements to the specified text.
+     * Set the content of each element in the set of matched elements to the specified description.
      * 
-     * @param text The text to set as the content of each matched element.
+     * @param text The description to set as the content of each matched element.
      */
     text(text: string): JQuery;
     /**
-     * Set the content of each element in the set of matched elements to the specified text.
+     * Set the content of each element in the set of matched elements to the specified description.
      * 
-     * @param text The text to set as the content of each matched element.
+     * @param text The description to set as the content of each matched element.
      */
     text(text: number): JQuery;
     /**
-     * Set the content of each element in the set of matched elements to the specified text.
+     * Set the content of each element in the set of matched elements to the specified description.
      * 
-     * @param text The text to set as the content of each matched element.
+     * @param text The description to set as the content of each matched element.
      */
     text(text: boolean): JQuery;
     /**
-     * Set the content of each element in the set of matched elements to the specified text.
+     * Set the content of each element in the set of matched elements to the specified description.
      * 
-     * @param func A function returning the text content to set. Receives the index position of the element in the set and the old text value as arguments.
+     * @param func A function returning the description content to set. Receives the index position of the element in the set and the old description value as arguments.
      */
     text(func: (index: number, text: string) => string): JQuery;
 
@@ -3552,7 +3552,7 @@ interface JQuery {
     /**
      * Add elements to the set of matched elements.
      * 
-     * @param selector A string representing a selector expression to find additional elements to add to the set of matched elements.
+     * @param selector A string representing a selector expression to findEnv additional elements to add to the set of matched elements.
      * @param context The point in the document at which the selector should begin matching; similar to the context argument of the $(selector, context) method.
      */
     add(selector: string, context?: Element): JQuery;
@@ -3617,7 +3617,7 @@ interface JQuery {
     closest(selectors: any, context?: Element): any[];
 
     /**
-     * Get the children of each element in the set of matched elements, including text and comment nodes.
+     * Get the children of each element in the set of matched elements, including description and comment nodes.
      */
     contents(): JQuery;
 

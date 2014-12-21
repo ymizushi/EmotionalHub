@@ -5,11 +5,11 @@ describe("Env test", function() {
     expect(env.dict["hoge"]).toEqual(5);
   });
 
-  it("find", function() {
+  it("findEnv", function() {
     var outerEnv = new emola.Env(null);
     outerEnv.update('hoge', 5);
     var env = new emola.Env(outerEnv);
-    expect(env.find('hoge')).toBe(outerEnv);
+    expect(env.findEnv('hoge')).toBe(outerEnv);
   });
 
   it("get", function() {

@@ -222,7 +222,7 @@ module emola {
       if (!canvas || !canvas.getContext) {
         return null
       }
-      return new ContextWrapper(canvas.getContext('2d'))
+      return new CanvasContext(canvas.getContext('2d'))
     }
   }
   

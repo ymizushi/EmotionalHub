@@ -221,7 +221,7 @@ module emola {
     evalSyntax(env) {
       if (this.list[1].type === Atom.VAR) {
         var value = this.list[1].value;
-        var quote = env.find(value).get(value);
+        var quote = env.findEnv(value).get(value);
         return quote.exec()
       }
       return this.list[1].exec(env)
@@ -412,7 +412,7 @@ module emola {
       if (this.list[0] instanceof VarList) {
         func = this.list[0].evalSyntax(env);
       } else {
-        func = env.find(this.list[0].value).get(this.list[0].value);
+        func = env.findEnv(this.list[0].value).get(this.list[0].value);
       }
       var realArgsList = this.list.slice(1);
     
