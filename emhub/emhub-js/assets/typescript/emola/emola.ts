@@ -3,32 +3,13 @@
 /// <reference path="lang.ts" />
 ///<reference path="syntax_list.ts"/>
 ///<reference path="canvas.ts"/>
+///<reference path="reader.ts"/>
+///<reference path="socket.ts"/>
 
 module emola {
   var emola:any
   emola = {}
 
-  export class TokenReader {
-    tokenizedList: any[]
-
-    constructor(line: string = "") {
-      this.tokenizedList = []
-      if (line != "") {
-        this.add(line)
-      }
-    }
-    
-    add(line: string) {
-      this.tokenizedList = this.tokenizedList.concat(Core.tokenize(line))
-    }
-    
-    next(): any {
-      if (this.tokenizedList.length === 0) {
-        return null
-      }
-      return this.tokenizedList.shift()
-    }
-  }
 
   class DrawingManager {
     private list: any[]
@@ -79,25 +60,6 @@ module emola {
   }
   
 
-  class Socket {
-    socket: any
-
-    constructor() {
-      // var socket = new WebSocket("ws://localhost:5000")
-      // socket.onopen = function (event) {
-      //   console.log("web socket connection is established.")
-      // }
-      // socket.onmessage = function (event) {
-      //   console.log(event.data)
-      // }
-      // this.socket = socket
-    }
-    
-    send(message) {
-      // this.socket.send(message)
-    }
-  }
-
   export class Global {
     static env = new Env(null)
     static tokenReader = new TokenReader()
@@ -111,16 +73,6 @@ module emola {
   }
 
   export class Core {
-    static tokenize(inputStr) {
-      return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ').filter(
-        function (str) { return str ? true : false
-      }).map(
-        function (ele) {
-          var parsedFloat = parseFloat(ele)
-          return isNaN(parsedFloat) ? ele : parsedFloat
-        }
-      )
-    }
 
     static atomize(token) {
       if (token === Atom.TRUE) {
