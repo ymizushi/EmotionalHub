@@ -172,7 +172,7 @@ module emola {
       var symbol = this.list[1]
       var args = this.list[2].list
       var expList = this.list[3]
-      env.update(symbol.value, new Fn(args, expList, new DictEnv(env)))
+      env.update(symbol.value, new Fn(args, expList, new Env(env)))
       return null
     }
     
@@ -287,7 +287,7 @@ module emola {
     evalSyntax(env) {
       var lets = this.list[1].list;
       var expList = this.list[2];
-      var newEnv = new DictEnv(env);
+      var newEnv = new Env(env);
       for (var i=0;i<lets.length;i=i+2) {
         newEnv.update(lets[i].value, lets[i+1].evalSyntax(newEnv));
       }
@@ -365,7 +365,7 @@ module emola {
   }
 
   export class QuoteList extends List {
-    env: DictEnv
+    env: Env
 
     constructor(list, parent, point) {
       super(list, parent, point)

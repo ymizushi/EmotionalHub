@@ -107,7 +107,7 @@ module emola {
   }
 
   export class Global {
-    static env = new DictEnv(null)
+    static env = new Env(null)
     static tokenReader = new TokenReader()
     static graphicContext = null
     static socket = new Socket()
@@ -215,7 +215,7 @@ module emola {
     }
     
     static parseAndEval(tokenReader, env) {
-      if (!env) env = new DictEnv(null);
+      if (!env) env = new Env(null);
       var parsedList = Core.parse(tokenReader);
       return parsedList.evalSyntax(env);
     }

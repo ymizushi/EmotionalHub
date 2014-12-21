@@ -1,9 +1,9 @@
 module emola {
-  export class DictEnv {
-    outer: DictEnv
+  export class Env {
+    outer: Env
     dict: {}
 
-    constructor(outer: DictEnv) {
+    constructor(outer: Env) {
       this.outer = outer
       this.dict = {}
     }
@@ -44,7 +44,7 @@ module emola {
 
   export class Quote {
     list: any
-    env: DictEnv
+    env: Env
 
     constructor(list) {
       this.list = list
