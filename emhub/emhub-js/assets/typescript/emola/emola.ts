@@ -10,7 +10,6 @@ module emola {
   var emola:any
   emola = {}
 
-
   class DrawingManager {
     private list: any[]
     private socket: Socket
@@ -59,6 +58,32 @@ module emola {
     }
   }
   
+  export class Parser {
+    static parse(tokenReader, parentList = null) {
+      var syntaxList = [];
+      while (true) {
+        var token = tokenReader.next();
+        var point;
+        if (!parentList) {
+          var x = Math.random() * 200;
+          var y = Math.random() * 200;
+          point = new Point(Math.floor(x), Math.floor(y));
+        } else {
+          point = null;
+        }
+        if (token === '(') {
+          syntaxList.push(Parser.parse(tokenReader, parentList));
+        } else if (token === ')') {
+          return Core.createList(syntaxList, parentList, point);
+        } else if (token === null) {
+          break;
+        } else {
+          syntaxList.push(Atomizer.atomize(token));
+        }
+      }
+      return syntaxList[0];
+    }
+  }
 
   export class Global {
     static env = new Env(null)
@@ -74,50 +99,7 @@ module emola {
 
   export class Core {
 
-    static atomize(token) {
-      if (token === Atom.TRUE) {
-        return new Atom(Atom.TRUE);
-      } else if (token === Atom.FALSE) {
-        return new Atom(Atom.FALSE);
-      } else if (typeof token === 'string') {
-        if (token[0] === '"' || token[0] === "'") {
-          return  new Atom(Atom.STR, token.slice(1,-1));
-        } else if (Atom.isAtomToken(token)) {
-          return  new Atom(token, null);
-        }  else {
-          return new Atom(Atom.VAR, token);
-        }
-      } else if (typeof token === 'number') {
-          return new Atom(Atom.NUMBER, token);
-      } else {
-        throw 'Unknown token';
-      }
-    }
 
-    static parse(tokenReader, parentList=null) {
-      var syntaxList = [];
-      while(true) {
-        var token = tokenReader.next();
-        var point;
-        if (!parentList) {
-          var x = Math.random()*200;
-          var y = Math.random()*200;
-          point = new Point(Math.floor(x), Math.floor(y));
-        } else {
-          point = null;
-        }
-        if (token === '(') {
-          syntaxList.push(Core.parse(tokenReader, parentList));
-        } else if (token === ')') {
-          return Core.createList(syntaxList, parentList, point);
-        } else if (token === null) {
-          break;
-        } else {
-          syntaxList.push(Core.atomize(token));
-        }
-      }
-      return syntaxList[0];
-    } 
 
     static createList(syntaxList, parentList, point) {
       var firstList = syntaxList[0];
@@ -160,7 +142,7 @@ module emola {
     
     static parseAndEval(tokenReader, env) {
       if (!env) env = new Env(null);
-      var parsedList = Core.parse(tokenReader);
+      var parsedList = Parser.parse(tokenReader);
       return parsedList.evalSyntax(env);
     }
     
@@ -221,7 +203,7 @@ module emola {
         var result = ''
         try {
           Global.tokenReader.add(line)
-          var parsedList = Core.parse(Global.tokenReader)
+          var parsedList = Parser.parse(Global.tokenReader)
           if (parsedList.draw) {
             // var palette = new Palette()
             // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)

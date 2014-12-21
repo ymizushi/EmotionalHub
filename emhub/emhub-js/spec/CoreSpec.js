@@ -13,7 +13,7 @@ describe("parse test", function() {
   it("constructor", function() {
     emola.Global.tokenReader.add("(- 1 2)");
 
-    var result = emola.Core.parse(emola.Global.tokenReader).evalSyntax(emola.Global.env);
+    var result = emola.Parser.parse(emola.Global.tokenReader).evalSyntax(emola.Global.env);
     expect(result).toEqual(-1);
     
   });
