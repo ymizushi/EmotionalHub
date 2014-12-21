@@ -1,3 +1,4 @@
+///<reference path="shape.ts"/>
 module emola {
   export interface Widget {
     rect: Rect

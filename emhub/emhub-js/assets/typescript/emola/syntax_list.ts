@@ -1,3 +1,5 @@
+///<reference path="emola.ts"/>
+///<reference path="shape.ts"/>
 module emola {
   export class List {
     static NODE_RADIUS = 20
