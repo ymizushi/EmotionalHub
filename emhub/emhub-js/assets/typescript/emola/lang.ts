@@ -1,4 +1,5 @@
 ///<reference path="error.ts"/>
+///<reference path="syntax_list.ts"/>
 module emola {
 
   export interface Evalable {
@@ -150,11 +151,11 @@ module emola {
     }
   }
   export class Fn implements Evalable {
-    args: any;
-    expList: any;
+    args: string[];
+    expList: ExpList;
     env: Env;
 
-    constructor(args, expList, env:Env) {
+    constructor(args: string[], expList:ExpList, env:Env) {
       this.args = args;
       this.expList = expList;
       this.env = env

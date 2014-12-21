@@ -18,4 +18,14 @@ module emola {
       this.message = message;
     }
   }
+
+  export class InvalidArgumentError implements Error {
+    name:string;
+    message:string;
+
+    constructor(message: string) {
+      this.name = 'InvalidArgumentError';
+      this.message = message;
+    }
+  }
 }

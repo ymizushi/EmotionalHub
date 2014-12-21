@@ -49,7 +49,7 @@ module emola {
         if (element == drawing) {
           this.list.splice(element,1)
         }
-        if (element instanceof List) {
+        if (element instanceof ExpList) {
           element.remove(drawing)
         }
       })
