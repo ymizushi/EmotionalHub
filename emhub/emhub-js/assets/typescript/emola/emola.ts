@@ -91,16 +91,11 @@ module emola {
     static graphicContext = null
     static socket = new Socket()
     static drawingManager = new DrawingManager(Global.socket)
-    static lastClickedPoint = null
     static drugging = false
-    static clickPoint = new Point(0, 0)
-    static event = null
+
   }
 
   export class Core {
-
-
-
     static createList(syntaxList, parentList, point) {
       var firstList = syntaxList[0];
       var syntaxMap = {};
@@ -145,7 +140,7 @@ module emola {
       var parsedList = Parser.parse(tokenReader);
       return parsedList.evalSyntax(env);
     }
-    
+
     static readAndEval(line, env) {
       Global.tokenReader.add(line);
       return Core.parseAndEval(Global.tokenReader, env);
@@ -160,7 +155,6 @@ module emola {
     }
   }
   
-
   class ConsoleManager {
     callbackList: any
     commandContainer: any
@@ -225,7 +219,7 @@ module emola {
   class EventManager {
     constructor() {
 
-      function getPosition(e:any):any {
+      function getPosition(e:any):Point {
         var pageX = e.pageX;
         var pageY = e.pageY;
         var rect = e.target.getBoundingClientRect();
