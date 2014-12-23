@@ -3,82 +3,33 @@
 ///<reference path="shape.ts"/>
 
 module emola {
-  export class ExpListGraphContext {
+  export class ExpList {
     static NODE_RADIUS = 20;
     static LEAF_RADIUS = 15;
 
     radius: number;
     theta: number;
-
     nodeColor: Color;
     leafColor: Color;
     listColor: Color;
+    parent: ExpList;
     point: Point;
+    list: any;
 
-    constructor() {
+    constructor(list, parent=null, point=null) {
+      this.list = list;
+    
       // グラフィック要素
       this.radius = 50;
       this.theta = 0;
       this.nodeColor = new Color(255, 255, 51);
       this.leafColor = new Color(102, 102, 102);
-      this.listColor = new Color(50, 50, 50,0.2)
-    }
-
-    rotate(evalableList, theta:number) {
-      this.theta += theta;
-      evalableList.forEach(evalable => {
-        if (evalable instanceof ExpList) {
-          evalable.rotate(theta);
-        }
-      });
-    }
-
-    draw(evalableList, context) {
-      var nodeCircle = new Circle(this.point , ExpListGraphContext.NODE_RADIUS, this.nodeColor);
-
-      for (var i=0;i<evalableList.length;i++) {
-        this.theta += 2 * Math.PI/evalableList.length;
-        var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
-        if (evalableList[i] instanceof ExpList) {
-          point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
-          evalableList[i].point = point;
-          evalableList[i].draw(context);
-        } else {
-          var circle = new Circle(point, ExpListGraphContext.LEAF_RADIUS, this.leafColor);
-          circle.draw(context);
-
-          var text;
-          if (evalableList[i].value) {
-            text = evalableList[i].value;
-          } else {
-            text = evalableList[i].type;
-          }
-          text = new Text(text, point, new Color(200,200,200));
-          text.draw(context);
-        }
-      }
-
-      (new Circle(this.point , this.radius, this.listColor)).draw(context);
-      nodeCircle.draw(context);
-    }
-
-    isMet(point) {
-      return !!(this.point.x - ExpListGraphContext.NODE_RADIUS <= point.x && point.x <= this.point.x + ExpListGraphContext.NODE_RADIUS &&
-      this.point.y - ExpListGraphContext.NODE_RADIUS <= point.y && point.y <= this.point.y + ExpListGraphContext.NODE_RADIUS);
-    }
-  }
-
-  export class ExpList{
-    graphContext: ExpListGraphContext = new ExpListGraphContext();
-
-    list: any;
-    parent: ExpList;
-
-    constructor(list, parent=null, point=null) {
-      this.list = list;
+      this.listColor = new Color(50, 50, 50,0.2);
+    
       this.parent = parent;
+      this.point = point;
     }
-
+    
     push(element) {
       return this.list.push(element);
     }
@@ -94,12 +45,56 @@ module emola {
       }
     }
     
+    rotate(theta) {
+      this.theta += theta ;
+      for (var i=0;i<this.list.length;i++) {
+        if (this.list[i] instanceof ExpList) {
+          this.list[i].rotate(theta);
+        } 
+      }
+    }
+    
     pop() {
       return this.list.pop();
     }
     
+    draw(context) {
+      var nodeCircle = new Circle(this.point , ExpList.NODE_RADIUS, this.nodeColor);
+    
+      for (var i=0;i<this.list.length;i++) {
+        this.theta += 2 * Math.PI/this.list.length;
+        var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
+        if (this.list[i] instanceof ExpList) {
+          point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
+          this.list[i].point = point;
+          this.list[i].draw(context);
+        } else {
+          var circle = new Circle(point, ExpList.LEAF_RADIUS, this.leafColor);
+          circle.draw(context);
+    
+          var text;
+          if (this.list[i].value) {
+            text = this.list[i].value;
+          } else {
+            text = this.list[i].type;
+          }
+          text = new Text(text, point, new Color(200,200,200));
+          text.draw(context);
+        }
+    
+      }
+      (new Circle(this.point , this.radius, this.listColor)).draw(context);
+      nodeCircle.draw(context);
+    }
+    
+    isMet(point) {
+      return !!(this.point.x - ExpList.NODE_RADIUS <= point.x && point.x <= this.point.x + ExpList.NODE_RADIUS &&
+      this.point.y - ExpList.NODE_RADIUS <= point.y && point.y <= this.point.y + ExpList.NODE_RADIUS);
+
+    }
+    
     getListObject(point) {
-      if (this.graphContext.isMet(point)) {
+      if (this.isMet(point)) {
         return this;
       }
       this.list.forEach(function (element) {
@@ -151,7 +146,7 @@ module emola {
   export class DefList extends ExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
-      this.graphContext.listColor = new Color(0, 255, 0, 0.2)
+      this.listColor = new Color(0, 255, 0, 0.2)
     }
     
     evalSyntax(env) {
@@ -305,8 +300,7 @@ module emola {
   export class MinusList extends ExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
-      this.graphContext.listColor = new Color(50, 0, 0, 0.2);
-
+      this.listColor = new Color(50, 0, 0, 0.2);
     }
 
     evalSyntax(env) {
@@ -325,7 +319,7 @@ module emola {
   export class MulList extends ExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
-      this.graphContext.listColor = new Color(0, 200, 50, 0.2);
+      this.listColor = new Color(0, 200, 50, 0.2);
     }
   
     evalSyntax(env) {
@@ -348,7 +342,7 @@ module emola {
   export class PlusList extends ExpList {
     constructor(list, parent, point) {
       super(list, parent, point);
-      this.graphContext.listColor = new Color(255, 0, 0, 0.2);
+      this.listColor = new Color(255, 0, 0, 0.2);
     }
   
     evalSyntax(env) {
@@ -377,7 +371,7 @@ module emola {
 
     constructor(list, parent, point) {
       super(list, parent, point);
-      this.graphContext.listColor = new Color(0, 100, 0, 0.2);
+      this.listColor = new Color(0, 100, 0, 0.2);
     }
 
     exec () {
