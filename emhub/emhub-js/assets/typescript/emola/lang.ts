@@ -1,7 +1,6 @@
 ///<reference path="error.ts"/>
 ///<reference path="syntax_list.ts"/>
 module emola {
-
   export interface Evalable {
     evalSyntax(env: Env);
   }

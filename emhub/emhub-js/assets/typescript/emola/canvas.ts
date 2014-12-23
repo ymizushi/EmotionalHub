@@ -2,57 +2,45 @@
 ///<reference path="input.ts"/>
 
 module emola {
-  export interface Widget {
-    rect: Rect
-
-    clicked(inputManager: InputManager): Widget
-    draw(contextWrapper: CanvasContext): void
-    isContact(point: Point): boolean
-  }
-
-  export enum SyntaxNode {
+  export enum SyntaxNodeType {
     Plus,
     Minus,
     Div,
     Mul
   }
 
-  export class PaletteWidget implements Widget {
-    rect = new Rect(new Point(200,200), new Size(10,10), new Color(10,10,10,1));
-    syntaxNode: SyntaxNode;
+  export interface Widget {
+    rect : Rect
 
-    constructor(syntaxNode: SyntaxNode) {
-      this.syntaxNode = syntaxNode
+    clicked(inputManager: InputManager): Widget
+    draw(contextWrapper: CanvasContext): void
+  }
+
+  export class PalettComponent {
+    size = new Size(100,100);
+    syntaxNodeType: SyntaxNodeType;
+
+    constructor(syntaxNodeType: SyntaxNodeType) {
+      this.syntaxNodeType = syntaxNodeType
     }
 
-    isContact(point: Point):boolean {
-      return this.rect.isContact(point)
-    }
-
-    clicked(inputManager: InputManager): Widget {
-      if (this.isContact(inputManager.clicked())) {
-        return this
-      }
-      return null
-    }
-
-    draw(contextWrapper: CanvasContext) {
-      this.rect.draw(contextWrapper)
+    draw(contextWrapper: CanvasContext, point: Point) {
+      contextWrapper.drawRect(new Rect(point, this.size, new Color()));
     }
   }
 
   export class Palette implements Widget {
     rect = new Rect(new Point(0,0), new Size(200,200), new Color());
 
-    paletteWidgetList: PaletteWidget[];
+    paletteComponentList: PalettComponent[];
 
     constructor() {
     }
 
     clicked(inputManager: InputManager): Widget {
       var clickedPoint: Point = inputManager.clicked();
-      this.paletteWidgetList.forEach(function (element) {
-        var widget:Widget = element.clicked(inputManager);
+      this.paletteComponentList.forEach(function (paletteComponent) {
+        var widget:Widget = paletteComponent.clicked(inputManager);
         if (widget) {
           return widget
         }
@@ -60,7 +48,7 @@ module emola {
       return null
     }
 
-    add(paletteWidget: PaletteWidget) {
+    add(paletteWidget: PalettComponent) {
       this.paletteWidgetList.push(paletteWidget)
     }
 
