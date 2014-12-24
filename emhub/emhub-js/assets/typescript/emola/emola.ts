@@ -100,37 +100,37 @@ module emola {
       var firstList = syntaxList[0];
       var syntaxMap = {};
       /* lang */
-      syntaxMap[Atom.FN] = FnList;
-      syntaxMap[Atom.IF] = IfList;
-      syntaxMap[Atom.DEF] = DefList;
-      syntaxMap[Atom.DEFN] = DefnList;
-      syntaxMap[Atom.DO] = DoList;
-      syntaxMap[Atom.SEND] = SendList;
-      syntaxMap[Atom.LET] = LetList;
-      syntaxMap[Atom.QUOTE] = QuoteList;
-      syntaxMap[Atom.EVAL] = EvalList;
+      syntaxMap[Atom.FN] = GraphFnList;
+      syntaxMap[Atom.IF] = GraphIfList;
+      syntaxMap[Atom.DEF] = GraphDefList;
+      syntaxMap[Atom.DEFN] = GraphDefnList;
+      syntaxMap[Atom.DO] = GraphDoList;
+      syntaxMap[Atom.SEND] = GraphSendList;
+      syntaxMap[Atom.LET] = GraphLetList;
+      syntaxMap[Atom.QUOTE] = GraphQuoteList;
+      syntaxMap[Atom.EVAL] = GraphEvalList;
     
       /* math */
-      syntaxMap[Atom.PLUS] = PlusList;
-      syntaxMap[Atom.MINUS] = MinusList;
-      syntaxMap[Atom.DIV] = DivList;
-      syntaxMap[Atom.MUL] = MulList;
-      syntaxMap[Atom.EQUAL] = EqualList;
-      syntaxMap[Atom.GREATER] = GreaterList;
-      syntaxMap[Atom.LESS] = LessList;
-      syntaxMap[Atom.GREATEREQUAL] = GreaterEqualList;
-      syntaxMap[Atom.LESSEQUAL] = LessEqualList;
+      syntaxMap[Atom.PLUS] = GraphPlusList;
+      syntaxMap[Atom.MINUS] = GraphMinusList;
+      syntaxMap[Atom.DIV] = GraphDivList;
+      syntaxMap[Atom.MUL] = GraphMulList;
+      syntaxMap[Atom.EQUAL] = GraphEqualList;
+      syntaxMap[Atom.GREATER] = GraphGreaterList;
+      syntaxMap[Atom.LESS] = GraphLessList;
+      syntaxMap[Atom.GREATEREQUAL] = GraphGreaterEqualList;
+      syntaxMap[Atom.LESSEQUAL] = GraphLessEqualList;
     
       /* graphic */
-      syntaxMap[Atom.DRAW] = DrawList;
-      syntaxMap[Atom.POINT] = PointList;
-      syntaxMap[Atom.COLOR] = ColorList;
-      syntaxMap[Atom.CIRCLE] = CircleList;
-      syntaxMap[Atom.CLEAR] = ClearList;
+      syntaxMap[Atom.DRAW] = GraphDrawList;
+      syntaxMap[Atom.POINT] = GraphPointList;
+      syntaxMap[Atom.COLOR] = GraphColorList;
+      syntaxMap[Atom.CIRCLE] = GraphCircleList;
+      syntaxMap[Atom.CLEAR] = GraphClearList;
     
       var TargetFunction = syntaxMap[firstList.type];
       if (!TargetFunction) {
-        TargetFunction = VarList;
+        TargetFunction = GraphVarList;
       }
       return new TargetFunction(syntaxList, parentList, point);
     }
