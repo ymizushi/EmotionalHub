@@ -151,10 +151,10 @@ module emola {
   }
   export class Fn implements Evalable {
     args: string[];
-    expList: ExpList;
+    expList: GraphExpList;
     env: Env;
 
-    constructor(args: string[], expList:ExpList, env:Env) {
+    constructor(args: string[], expList:GraphExpList, env:Env) {
       this.args = args;
       this.expList = expList;
       this.env = env

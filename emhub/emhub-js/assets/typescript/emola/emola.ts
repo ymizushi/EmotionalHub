@@ -29,7 +29,7 @@ module emola {
         if (element == drawing) {
           this.list.splice(element,1)
         }
-        if (element instanceof ExpList) {
+        if (element instanceof GraphExpList) {
           element.remove(drawing)
         }
       })

@@ -16,7 +16,7 @@ module emola {
     draw(contextWrapper: CanvasContext): void
   }
 
-  export class PalettComponent {
+  export class PaletteComponent {
     size = new Size(100,100);
     syntaxNodeType: SyntaxNodeType;
 
@@ -30,65 +30,30 @@ module emola {
   }
 
   export class Palette implements Widget {
-    rect = new Rect(new Point(0,0), new Size(200,200), new Color());
+    rect = new Rect(new Point(0,0), new Size(150,1000), new Color());
 
-    paletteComponentList: PalettComponent[];
+    paletteComponentList: PaletteComponent[];
 
     constructor() {
     }
 
-    clicked(inputManager: InputManager): Widget {
-      var clickedPoint: Point = inputManager.clicked();
-      this.paletteComponentList.forEach(function (paletteComponent) {
-        var widget:Widget = paletteComponent.clicked(inputManager);
-        if (widget) {
-          return widget
-        }
-      });
-      return null
+    clicked(inputManager: InputManager): any {
     }
 
-    add(paletteWidget: PalettComponent) {
-      this.paletteWidgetList.push(paletteWidget)
+    add(paletteComponent: PaletteComponent) {
+      this.paletteComponentList.push(paletteComponent)
     }
 
     draw(contextWrapper: CanvasContext) {
       this.rect.draw(contextWrapper);
-      // for(var paletteWidget in this.paletteWidgetList) {
-      //   // paletteWidget.draw(contextWrapper)
-      //     console.log(paletteWidget)
-      // }
-    }
-
-    isContact(point:emola.Point):boolean {
-      return this.rect.isContact(point)
     }
   }
 
-  //export class CanvasWindow implements Widget {
-  //  rect = new Rect(new Point(0,0), new Size(200,200), new Color());
-  //
-  //  palette: Palette;
-  //
-  //  constructor(palette: Palette) {
-  //    this.palette = palette
-  //  }
-  //
-  //  //draw(contextWrapper: CanvasContext) {
-  //  //  contextWrapper.drawRect(this)
-  //  //}
-  //
-  //  clicked(inputManager: InputManager): Widget {
-  //    var widget: Widget = this.palette.clicked(inputManager);
-  //    if (widget) {
-  //      return widget
-  //    }
-  //    return null
-  //  }
-  //
-  //  isContact(point: Point): boolean {
-  //    return this.rect.isContact(point)
-  //  }
-  //}
-  //}
+  export class CanvasWindow {
+    palette: Palette;
+
+    constructor(palette: Palette) {
+      this.palette = palette
+    }
+  }
 }

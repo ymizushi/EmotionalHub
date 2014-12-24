@@ -4,6 +4,39 @@
 
 module emola {
   export class ExpList {
+    parent: ExpList;
+    list: any;
+
+    constructor(list: ExpList, parent: ExpList=null) {
+      this.list = list;
+      this.parent = parent;
+    }
+
+    push(element) {
+      return this.list.push(element);
+    }
+
+    remove(listObject) {
+      for (var index in this.list) {
+        if (this.list[index] == listObject) {
+          this.list.splice(index,1);
+        }
+        if (this.list[index] instanceof GraphExpList) {
+          this.list[index].remove(listObject);
+        }
+      }
+    }
+
+    pop() {
+      return this.list.pop();
+    }
+
+    add(listObject) {
+      this.list.push(listObject);
+    }
+  }
+
+  export class ExpListGraphContext {
     static NODE_RADIUS = 20;
     static LEAF_RADIUS = 15;
 
@@ -12,7 +45,92 @@ module emola {
     nodeColor: Color;
     leafColor: Color;
     listColor: Color;
-    parent: ExpList;
+    parent: GraphExpList;
+    point: Point;
+    list: any;
+
+    constructor(list, parent=null, point=null) {
+      this.list = list;
+
+      // グラフィック要素
+      this.radius = 50;
+      this.theta = 0;
+      this.nodeColor = new Color(255, 255, 51);
+      this.leafColor = new Color(102, 102, 102);
+      this.listColor = new Color(50, 50, 50,0.2);
+
+      this.parent = parent;
+      this.point = point;
+    }
+
+    rotate(theta) {
+      this.theta += theta ;
+      for (var i=0;i<this.list.length;i++) {
+        if (this.list[i] instanceof GraphExpList) {
+          this.list[i].rotate(theta);
+        }
+      }
+    }
+
+    draw(context) {
+      var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
+
+      for (var i=0;i<this.list.length;i++) {
+        this.theta += 2 * Math.PI/this.list.length;
+        var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
+        if (this.list[i] instanceof GraphExpList) {
+          point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
+          this.list[i].point = point;
+          this.list[i].draw(context);
+        } else {
+          var circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
+          circle.draw(context);
+
+          var text;
+          if (this.list[i].value) {
+            text = this.list[i].value;
+          } else {
+            text = this.list[i].type;
+          }
+          text = new Text(text, point, new Color(200,200,200));
+          text.draw(context);
+        }
+
+      }
+      (new Circle(this.point , this.radius, this.listColor)).draw(context);
+      nodeCircle.draw(context);
+    }
+
+    isMet(point) {
+      return !!(this.point.x - GraphExpList.NODE_RADIUS <= point.x && point.x <= this.point.x + GraphExpList.NODE_RADIUS &&
+      this.point.y - GraphExpList.NODE_RADIUS <= point.y && point.y <= this.point.y + GraphExpList.NODE_RADIUS);
+
+    }
+
+    getListObject(point) {
+      if (this.isMet(point)) {
+        return this;
+      }
+      this.list.forEach(function (element) {
+        var leafListObject = element;
+        if (leafListObject instanceof GraphExpList && leafListObject.getListObject(point)) {
+          return leafListObject;
+        }
+      });
+      return null;
+    }
+  }
+
+  export class GraphExpList {
+    static NODE_RADIUS = 20;
+    static LEAF_RADIUS = 15;
+
+    radius: number;
+    theta: number;
+    nodeColor: Color;
+    leafColor: Color;
+    listColor: Color;
+    parent: GraphExpList;
     point: Point;
     list: any;
 
@@ -39,7 +157,7 @@ module emola {
         if (this.list[index] == listObject) {
           this.list.splice(index,1);
         }
-        if (this.list[index] instanceof ExpList) {
+        if (this.list[index] instanceof GraphExpList) {
           this.list[index].remove(listObject);
         }
       }
@@ -48,7 +166,7 @@ module emola {
     rotate(theta) {
       this.theta += theta ;
       for (var i=0;i<this.list.length;i++) {
-        if (this.list[i] instanceof ExpList) {
+        if (this.list[i] instanceof GraphExpList) {
           this.list[i].rotate(theta);
         } 
       }
@@ -59,17 +177,17 @@ module emola {
     }
     
     draw(context) {
-      var nodeCircle = new Circle(this.point , ExpList.NODE_RADIUS, this.nodeColor);
+      var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
     
       for (var i=0;i<this.list.length;i++) {
         this.theta += 2 * Math.PI/this.list.length;
         var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
-        if (this.list[i] instanceof ExpList) {
+        if (this.list[i] instanceof GraphExpList) {
           point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
           this.list[i].point = point;
           this.list[i].draw(context);
         } else {
-          var circle = new Circle(point, ExpList.LEAF_RADIUS, this.leafColor);
+          var circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
           circle.draw(context);
     
           var text;
@@ -88,8 +206,8 @@ module emola {
     }
     
     isMet(point) {
-      return !!(this.point.x - ExpList.NODE_RADIUS <= point.x && point.x <= this.point.x + ExpList.NODE_RADIUS &&
-      this.point.y - ExpList.NODE_RADIUS <= point.y && point.y <= this.point.y + ExpList.NODE_RADIUS);
+      return !!(this.point.x - GraphExpList.NODE_RADIUS <= point.x && point.x <= this.point.x + GraphExpList.NODE_RADIUS &&
+      this.point.y - GraphExpList.NODE_RADIUS <= point.y && point.y <= this.point.y + GraphExpList.NODE_RADIUS);
 
     }
     
@@ -99,7 +217,7 @@ module emola {
       }
       this.list.forEach(function (element) {
         var leafListObject = element;
-        if (leafListObject instanceof ExpList && leafListObject.getListObject(point)) {
+        if (leafListObject instanceof GraphExpList && leafListObject.getListObject(point)) {
           return leafListObject;
         }
       });
@@ -114,7 +232,7 @@ module emola {
     }
   }
 
-  export class CircleList extends ExpList implements Evalable {
+  export class CircleList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       var pointList: PointList = this.list[1];
       var radius: Atom = this.list[2];
@@ -123,14 +241,14 @@ module emola {
     }
   }
 
-  export class ClearList extends ExpList implements Evalable {
+  export class ClearList extends GraphExpList implements Evalable {
     evalSyntax(_: Env) {
       Global.graphicContext.clear();
       Global.drawingManager.clear();
     }
   }
 
-  export class ColorList extends ExpList implements Evalable {
+  export class ColorList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
       return new Color(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env), this.list[3].evalSyntax(env))
@@ -143,7 +261,7 @@ module emola {
     }
   }
 
-  export class DefList extends ExpList implements Evalable {
+  export class DefList extends GraphExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
       this.listColor = new Color(0, 255, 0, 0.2)
@@ -167,7 +285,7 @@ module emola {
     }
   }
 
-  export class DefnList extends ExpList implements Evalable {
+  export class DefnList extends GraphExpList implements Evalable {
     // (defn hoge (x y) (+ x y))
     evalSyntax(env) {
       this.assert();
@@ -185,7 +303,7 @@ module emola {
     }
   }
   
-  export class DivList extends ExpList implements Evalable {
+  export class DivList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var sum = 1;
       for (var i=1;i < this.list.length;i++) {
@@ -199,7 +317,7 @@ module emola {
     }
   }
 
-  export class DoList extends ExpList implements Evalable {
+  export class DoList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var expList = this.list.slice(1);
       var result = expList.map(function (elem) { return elem.evalSyntax(env);});
@@ -207,7 +325,7 @@ module emola {
     }
   }
   
-  export class DrawList extends ExpList  implements Evalable {
+  export class DrawList extends GraphExpList  implements Evalable {
     evalSyntax(env) {
       var figure = this.list[1].evalSyntax(env);
       Global.drawingManager.add(figure);
@@ -215,13 +333,13 @@ module emola {
     }
   }
 
-  export class EqualList extends ExpList implements Evalable {
+  export class EqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
     }
   }
 
-  export class EvalList extends ExpList implements Evalable {
+  export class EvalList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       if (this.list[1].type === Atom.VAR) {
         var value = this.list[1].value;
@@ -232,7 +350,7 @@ module emola {
     }
   }
 
-  export class FnList extends ExpList implements Evalable {
+  export class FnList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var args = this.list[1].list; // directで見てる
       var expList = this.list[2];
@@ -240,19 +358,19 @@ module emola {
     }
   }
 
-  export class GreaterList extends ExpList implements Evalable {
+  export class GreaterList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
     }
   }
 
-  export class GreaterEqualList extends ExpList implements Evalable {
+  export class GreaterEqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
     }
   }
 
-  export class IfList extends ExpList implements Evalable {
+  export class IfList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       this.assert();
       var testExp = this.list[1];
@@ -272,19 +390,19 @@ module emola {
     }
   }
   
-  export class LessList extends ExpList implements Evalable {
+  export class LessList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) < this.list[2].evalSyntax(env);
     }
   }
   
-  export class LessEqualList extends ExpList implements Evalable {
+  export class LessEqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       return this.list[1].evalSyntax(env) <= this.list[2].evalSyntax(env);
     }
   }
   
-  export class LetList extends ExpList implements Evalable {
+  export class LetList extends GraphExpList implements Evalable {
     // (let (x 1) (+ x 1 1))
     evalSyntax(env) {
       var lets = this.list[1].list;
@@ -297,7 +415,7 @@ module emola {
     }
   }
 
-  export class MinusList extends ExpList implements Evalable {
+  export class MinusList extends GraphExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
       this.listColor = new Color(50, 0, 0, 0.2);
@@ -316,7 +434,7 @@ module emola {
     }
   }
 
-  export class MulList extends ExpList implements Evalable {
+  export class MulList extends GraphExpList implements Evalable {
     constructor(list, parent, point) {
       super(list, parent, point);
       this.listColor = new Color(0, 200, 50, 0.2);
@@ -331,7 +449,7 @@ module emola {
     }
   }
 
-  export class NestList extends ExpList implements Evalable {
+  export class NestList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var func = this.list[0].evalSyntax(env);
       var args = this.list[0].slice(1);
@@ -339,7 +457,7 @@ module emola {
     }
   }
   
-  export class PlusList extends ExpList {
+  export class PlusList extends GraphExpList {
     constructor(list, parent, point) {
       super(list, parent, point);
       this.listColor = new Color(255, 0, 0, 0.2);
@@ -354,7 +472,7 @@ module emola {
     }
   }
   
-  export class PointList extends ExpList implements Evalable {
+  export class PointList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       this.assert();
       return new Point(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env));
@@ -366,7 +484,7 @@ module emola {
     }
   }
 
-  export class QuoteList extends ExpList implements Evalable {
+  export class QuoteList extends GraphExpList implements Evalable {
     env: Env;
 
     constructor(list, parent, point) {
@@ -395,7 +513,7 @@ module emola {
     }
   }
   
-  export class SendList extends ExpList implements Evalable {
+  export class SendList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
       var object = this.list[1].evalSyntax(env);
@@ -409,7 +527,7 @@ module emola {
     }
   }
 
-  export class VarList extends ExpList implements Evalable {
+  export class VarList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
       var func:any;
