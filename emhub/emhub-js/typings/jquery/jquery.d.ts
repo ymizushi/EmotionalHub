@@ -188,37 +188,37 @@ interface JQueryXHR extends XMLHttpRequest, JQueryPromise<any> {
  */
 interface JQueryCallback {
     /**
-     * Add a callback or a collection of callbacks to a callback list.
+     * Add a callback or a collection of callbacks to a callback expList.
      * 
-     * @param callbacks A function, or array of functions, that are to be added to the callback list.
+     * @param callbacks A function, or array of functions, that are to be added to the callback expList.
      */
     add(callbacks: Function): JQueryCallback;
     /**
-     * Add a callback or a collection of callbacks to a callback list.
+     * Add a callback or a collection of callbacks to a callback expList.
      * 
-     * @param callbacks A function, or array of functions, that are to be added to the callback list.
+     * @param callbacks A function, or array of functions, that are to be added to the callback expList.
      */
     add(callbacks: Function[]): JQueryCallback;
 
     /**
-     * Disable a callback list from doing anything more.
+     * Disable a callback expList from doing anything more.
      */
     disable(): JQueryCallback;
 
     /**
-     * Determine if the callbacks list has been disabled.
+     * Determine if the callbacks expList has been disabled.
      */
     disabled(): boolean;
 
     /**
-     * Remove all of the callbacks from a list.
+     * Remove all of the callbacks from a expList.
      */
     empty(): JQueryCallback;
 
     /**
      * Call all of the callbacks with the given arguments
      * 
-     * @param arguments The argument or list of arguments to pass back to the callback list.
+     * @param arguments The argument or expList of arguments to pass back to the callback expList.
      */
     fire(...arguments: any[]): JQueryCallback;
 
@@ -228,40 +228,40 @@ interface JQueryCallback {
     fired(): boolean;
 
     /**
-     * Call all callbacks in a list with the given context and arguments.
+     * Call all callbacks in a expList with the given context and arguments.
      * 
-     * @param context A reference to the context in which the callbacks in the list should be fired.
-     * @param arguments An argument, or array of arguments, to pass to the callbacks in the list.
+     * @param context A reference to the context in which the callbacks in the expList should be fired.
+     * @param arguments An argument, or array of arguments, to pass to the callbacks in the expList.
      */
     fireWith(context?: any, ...args: any[]): JQueryCallback;
 
     /**
-     * Determine whether a supplied callback is in a list
+     * Determine whether a supplied callback is in a expList
      * 
      * @param callback The callback to search for.
      */
     has(callback: Function): boolean;
 
     /**
-     * Lock a callback list in its current state.
+     * Lock a callback expList in its current state.
      */
     lock(): JQueryCallback;
 
     /**
-     * Determine if the callbacks list has been locked.
+     * Determine if the callbacks expList has been locked.
      */
     locked(): boolean;
 
     /**
-     * Remove a callback or a collection of callbacks from a callback list.
+     * Remove a callback or a collection of callbacks from a callback expList.
      * 
-     * @param callbacks A function, or array of functions, that are to be removed from the callback list.
+     * @param callbacks A function, or array of functions, that are to be removed from the callback expList.
      */
     remove(callbacks: Function): JQueryCallback;
     /**
-     * Remove a callback or a collection of callbacks from a callback list.
+     * Remove a callback or a collection of callbacks from a callback expList.
      * 
-     * @param callbacks A function, or array of functions, that are to be removed from the callback list.
+     * @param callbacks A function, or array of functions, that are to be removed from the callback expList.
      */
     remove(callbacks: Function[]): JQueryCallback;
 }
@@ -808,9 +808,9 @@ interface JQueryStatic {
     post(url: string, data?: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
 
     /**
-     * A multi-purpose callbacks list object that provides a powerful way to manage callback lists.
+     * A multi-purpose callbacks expList object that provides a powerful way to manage callback lists.
      *
-     * @param flags An optional list of space-separated flags that change how the callback list behaves.
+     * @param flags An optional expList of space-separated flags that change how the callback expList behaves.
      */
     Callbacks(flags?: string): JQueryCallback;
 
@@ -1448,7 +1448,7 @@ interface JQuery {
     /**
      * Remove an attribute from each element in the set of matched elements.
      *
-     * @param attributeName An attribute to remove; as of version 1.7, it can be a space-separated list of attributes.
+     * @param attributeName An attribute to remove; as of version 1.7, it can be a space-separated expList of attributes.
      */
     removeAttr(attributeName: string): JQuery;
 

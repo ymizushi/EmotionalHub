@@ -68,7 +68,7 @@ module emola {
     evalSyntax(env) {
       this.assert();
       var symbol = this.list[1];
-      var args = this.list[2].list;
+      var args = this.list[2].expList;
       var expList = this.list[3];
       env.update(symbol.value, new Fn(args, expList, new Env(env)));
       return null
@@ -128,7 +128,7 @@ module emola {
 
   export class FnList extends ExpList implements Evalable {
     evalSyntax(env) {
-      var args = this.list[1].list; // directで見てる
+      var args = this.list[1].expList; // directで見てる
       var expList = this.list[2];
       return new Fn(args, expList, env);
     }
@@ -173,7 +173,7 @@ module emola {
   export class LetList extends ExpList implements Evalable {
     // (let (x 1) (+ x 1 1))
     evalSyntax(env: Env) {
-      var lets = this.list[1].list;
+      var lets = this.list[1].expList;
       var expList = this.list[2];
       var newEnv = new Env(env);
       for (var i=0;i<lets.length;i=i+2) {
@@ -403,10 +403,16 @@ module emola {
     listColor: Color;
     parent: GraphExpList;
     point: Point;
-    list: any;
 
-    constructor(list, parent=null, point=null) {
-      this.list = list;
+    expList: any;
+    graphExpListContext:GraphExpListContext;
+
+    __constructor() {
+      GraphExpListContext
+    }
+
+    constructor(expList, parent=null, point=null) {
+      this.expList = expList;
     
       // グラフィック要素
       this.radius = 50;
@@ -420,52 +426,52 @@ module emola {
     }
     
     push(element) {
-      return this.list.push(element);
+      return this.expList.push(element);
     }
     
     remove(listObject) {
-      for (var index in this.list) {
-        if (this.list[index] == listObject) {
-          this.list.splice(index,1);
+      for (var index in this.expList) {
+        if (this.expList[index] == listObject) {
+          this.expList.splice(index,1);
         }
-        if (this.list[index] instanceof GraphExpList) {
-          this.list[index].remove(listObject);
+        if (this.expList[index] instanceof GraphExpList) {
+          this.expList[index].remove(listObject);
         }
       }
     }
     
     rotate(theta) {
       this.theta += theta ;
-      for (var i=0;i<this.list.length;i++) {
-        if (this.list[i] instanceof GraphExpList) {
-          this.list[i].rotate(theta);
+      for (var i=0;i<this.expList.length;i++) {
+        if (this.expList[i] instanceof GraphExpList) {
+          this.expList[i].rotate(theta);
         } 
       }
     }
     
     pop() {
-      return this.list.pop();
+      return this.expList.pop();
     }
     
     draw(context) {
       var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
     
-      for (var i=0;i<this.list.length;i++) {
-        this.theta += 2 * Math.PI/this.list.length;
+      for (var i=0;i<this.expList.length;i++) {
+        this.theta += 2 * Math.PI/this.expList.length;
         var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
-        if (this.list[i] instanceof GraphExpList) {
+        if (this.expList[i] instanceof GraphExpList) {
           point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
-          this.list[i].point = point;
-          this.list[i].draw(context);
+          this.expList[i].point = point;
+          this.expList[i].draw(context);
         } else {
           var circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
           circle.draw(context);
     
           var text;
-          if (this.list[i].value) {
-            text = this.list[i].value;
+          if (this.expList[i].value) {
+            text = this.expList[i].value;
           } else {
-            text = this.list[i].type;
+            text = this.expList[i].type;
           }
           text = new Text(text, point, new Color(200,200,200));
           text.draw(context);
@@ -486,7 +492,7 @@ module emola {
       if (this.isMet(point)) {
         return this;
       }
-      this.list.forEach(function (element) {
+      this.expList.forEach(function (element) {
         var leafListObject = element;
         if (leafListObject instanceof GraphExpList && leafListObject.getListObject(point)) {
           return leafListObject;
@@ -496,7 +502,7 @@ module emola {
     }
     
     add(listObject) {
-      this.list.push(listObject);
+      this.expList.push(listObject);
     }
     evalSyntax(env: Env) {
 
@@ -505,9 +511,9 @@ module emola {
 
   export class GraphCircleList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
-      var pointList: GraphPointList = this.list[1];
-      var radius: Atom = this.list[2];
-      var colorList: GraphColorList = this.list[3];
+      var pointList: GraphPointList = this.expList[1];
+      var radius: Atom = this.expList[2];
+      var colorList: GraphColorList = this.expList[3];
       return new Circle(pointList.evalSyntax(env), radius.evalSyntax(env), colorList.evalSyntax(env))
     }
   }
@@ -522,11 +528,11 @@ module emola {
   export class GraphColorList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
-      return new Color(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env), this.list[3].evalSyntax(env))
+      return new Color(this.expList[1].evalSyntax(env), this.expList[2].evalSyntax(env), this.expList[3].evalSyntax(env))
     }
     
     assert() {
-      if (this.list[1] === undefined || this.list[2] === undefined || this.list[3] === undefined || this.list.length > 4) {
+      if (this.expList[1] === undefined || this.expList[2] === undefined || this.expList[3] === undefined || this.expList.length > 4) {
         throw new InvalidArgumentError('color arguments are illegal.')
       }
     }
@@ -540,17 +546,17 @@ module emola {
 
     evalSyntax(env) {
       this.assert();
-      var keyName = this.list[1].value;
-      var value = this.list[2].evalSyntax(env);
+      var keyName = this.expList[1].value;
+      var value = this.expList[2].evalSyntax(env);
       env.update(keyName, value);
       return null
     }
     
     assert() {
-      if (this.list.length !== 3) {
+      if (this.expList.length !== 3) {
         throw new Error("InvalidArgumentException")
       }
-      if (this.list[1].type !== Atom.VAR) {
+      if (this.expList[1].type !== Atom.VAR) {
         throw new Error("InvalidAtomTypeException")
       }
     }
@@ -560,15 +566,15 @@ module emola {
     // (defn hoge (x y) (+ x y))
     evalSyntax(env) {
       this.assert();
-      var symbol = this.list[1];
-      var args = this.list[2].list;
-      var expList = this.list[3];
+      var symbol = this.expList[1];
+      var args = this.expList[2].expList;
+      var expList = this.expList[3];
       env.update(symbol.value, new Fn(args, expList, new Env(env)));
       return null
     }
     
     assert() {
-      if (this.list.length !== 4) {
+      if (this.expList.length !== 4) {
         throw new Error("InvalidArgumentException")
       }
     }
@@ -578,11 +584,11 @@ module emola {
   export class GraphDivList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var sum = 1;
-      for (var i=1;i < this.list.length;i++) {
+      for (var i=1;i < this.expList.length;i++) {
         if (i === 1) {
-          sum = this.list[i].evalSyntax(env)
+          sum = this.expList[i].evalSyntax(env)
         } else {
-          sum /= this.list[i].evalSyntax(env)
+          sum /= this.expList[i].evalSyntax(env)
         }
       }
       return sum
@@ -590,7 +596,7 @@ module emola {
   }
   export class GraphDoList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      var expList = this.list.slice(1);
+      var expList = this.expList.slice(1);
       var result = expList.map(function (elem) { return elem.evalSyntax(env);});
       return result[result.length-1]; // 配列の最後の要素を取り出す
     }
@@ -599,7 +605,7 @@ module emola {
 
   export class GraphDrawList extends GraphExpList  implements Evalable {
     evalSyntax(env) {
-      var figure = this.list[1].evalSyntax(env);
+      var figure = this.expList[1].evalSyntax(env);
       Global.drawingManager.add(figure);
       return figure;
     }
@@ -607,47 +613,47 @@ module emola {
 
   export class GraphEqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      return this.list[1].evalSyntax(env) === this.list[2].evalSyntax(env);
+      return this.expList[1].evalSyntax(env) === this.expList[2].evalSyntax(env);
     }
   }
 
   export class GraphEvalList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      if (this.list[1].type === Atom.VAR) {
-        var value = this.list[1].value;
+      if (this.expList[1].type === Atom.VAR) {
+        var value = this.expList[1].value;
         var quote = env.findEnv(value).get(value);
         return quote.exec()
       }
-      return this.list[1].exec(env)
+      return this.expList[1].exec(env)
     }
   }
 
   export class GraphFnList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      var args = this.list[1].list; // directで見てる
-      var expList = this.list[2];
+      var args = this.expList[1].expList; // directで見てる
+      var expList = this.expList[2];
       return new Fn(args, expList, env);
     }
   }
 
   export class GraphGreaterList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      return this.list[1].evalSyntax(env) > this.list[2].evalSyntax(env);
+      return this.expList[1].evalSyntax(env) > this.expList[2].evalSyntax(env);
     }
   }
 
   export class GraphGreaterEqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      return this.list[1].evalSyntax(env) >= this.list[2].evalSyntax(env);
+      return this.expList[1].evalSyntax(env) >= this.expList[2].evalSyntax(env);
     }
   }
 
   export class GraphIfList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       this.assert();
-      var testExp = this.list[1];
-      var thenExp = this.list[2];
-      var elseExp = this.list[3];
+      var testExp = this.expList[1];
+      var thenExp = this.expList[2];
+      var elseExp = this.expList[3];
       if (testExp.evalSyntax(env)) {
         return thenExp.evalSyntax(env);
       } else {
@@ -656,7 +662,7 @@ module emola {
     }
 
     assert() {
-      if (this.list.length !== 4) {
+      if (this.expList.length !== 4) {
         throw new Error("InvalidArgumentException");
       }
     }
@@ -664,13 +670,13 @@ module emola {
   
   export class GraphLessList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      return this.list[1].evalSyntax(env) < this.list[2].evalSyntax(env);
+      return this.expList[1].evalSyntax(env) < this.expList[2].evalSyntax(env);
     }
   }
   
   export class GraphLessEqualList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      return this.list[1].evalSyntax(env) <= this.list[2].evalSyntax(env);
+      return this.expList[1].evalSyntax(env) <= this.expList[2].evalSyntax(env);
     }
   }
   
@@ -678,8 +684,8 @@ module emola {
   export class GraphLetList extends GraphExpList implements Evalable {
     // (let (x 1) (+ x 1 1))
     evalSyntax(env) {
-      var lets = this.list[1].list;
-      var expList = this.list[2];
+      var lets = this.expList[1].expList;
+      var expList = this.expList[2];
       var newEnv = new Env(env);
       for (var i=0;i<lets.length;i=i+2) {
         newEnv.update(lets[i].value, lets[i+1].evalSyntax(newEnv));
@@ -696,11 +702,11 @@ module emola {
 
     evalSyntax(env) {
       var sum = 0;
-      for (var i=1;i < this.list.length;i++) {
+      for (var i=1;i < this.expList.length;i++) {
         if (i === 1) {
-          sum = this.list[i].evalSyntax(env);
+          sum = this.expList[i].evalSyntax(env);
         } else {
-          sum -= this.list[i].evalSyntax(env);
+          sum -= this.expList[i].evalSyntax(env);
         }
       }
       return sum;
@@ -715,8 +721,8 @@ module emola {
   
     evalSyntax(env) {
       var sum = 1;
-      for (var i=1; i<this.list.length; i++) {
-        sum *= this.list[i].evalSyntax(env);
+      for (var i=1; i<this.expList.length; i++) {
+        sum *= this.expList[i].evalSyntax(env);
       }
       return sum;
     }
@@ -724,8 +730,8 @@ module emola {
 
   export class GraphNestList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      var func = this.list[0].evalSyntax(env);
-      var args = this.list[0].slice(1);
+      var func = this.expList[0].evalSyntax(env);
+      var args = this.expList[0].slice(1);
       return func.exec(args, env);
     }
   }
@@ -738,8 +744,8 @@ module emola {
   
     evalSyntax(env) {
       var sum = 0;
-      for (var i=1; i<this.list.length;i++) {
-        sum += this.list[i].evalSyntax(env);
+      for (var i=1; i<this.expList.length;i++) {
+        sum += this.expList[i].evalSyntax(env);
       }
       return sum;
     }
@@ -748,10 +754,10 @@ module emola {
   export class GraphPointList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       this.assert();
-      return new Point(this.list[1].evalSyntax(env), this.list[2].evalSyntax(env));
+      return new Point(this.expList[1].evalSyntax(env), this.expList[2].evalSyntax(env));
     }
     assert() {
-      if (this.list[1] === undefined || this.list[2] === undefined || this.list.length > 3) {
+      if (this.expList[1] === undefined || this.expList[2] === undefined || this.expList.length > 3) {
         throw 'point arguments are illegal.';
       }
     }
@@ -767,7 +773,7 @@ module emola {
 
     exec () {
       this.assert();
-      var list = this.list[1];
+      var list = this.expList[1];
       if (list.draw) {
         Global.drawingManager.add(list);
       }
@@ -780,7 +786,7 @@ module emola {
     }
     
     assert() {
-      if (this.list[0].type !== Atom.QUOTE) {
+      if (this.expList[0].type !== Atom.QUOTE) {
         throw new Error("InvalidAtomTypeException");
       }
     }
@@ -789,9 +795,9 @@ module emola {
   export class GraphSendList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
-      var object = this.list[1].evalSyntax(env);
-      var methodName = this.list[2].value;
-      var args = this.list.slice(3).map(function (x) { return x.evalSyntax(env);});
+      var object = this.expList[1].evalSyntax(env);
+      var methodName = this.expList[2].value;
+      var args = this.expList.slice(3).map(function (x) { return x.evalSyntax(env);});
       object[methodName].apply(object, args);
       return object;
     }
@@ -804,12 +810,12 @@ module emola {
     evalSyntax(env: Env) {
       this.assert();
       var func:any;
-      if (this.list[0] instanceof GraphVarList) {
-        func = this.list[0].evalSyntax(env);
+      if (this.expList[0] instanceof GraphVarList) {
+        func = this.expList[0].evalSyntax(env);
       } else {
-        func = env.findEnv(this.list[0].value).get(this.list[0].value);
+        func = env.findEnv(this.expList[0].value).get(this.expList[0].value);
       }
-      var realArgsList = this.list.slice(1);
+      var realArgsList = this.expList.slice(1);
     
       for (var i=0;i<realArgsList.length;i++) {
         func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
