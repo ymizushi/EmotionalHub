@@ -58,33 +58,6 @@ module emola {
     }
   }
   
-  export class Parser {
-    static parse(tokenReader, parentList = null) {
-      var syntaxList = [];
-      while (true) {
-        var token = tokenReader.next();
-        var point;
-        if (!parentList) {
-          var x = Math.random() * 200;
-          var y = Math.random() * 200;
-          point = new Point(Math.floor(x), Math.floor(y));
-        } else {
-          point = null;
-        }
-        if (token === '(') {
-          syntaxList.push(Parser.parse(tokenReader, parentList));
-        } else if (token === ')') {
-          return Core.createList(syntaxList, parentList, point);
-        } else if (token === null) {
-          break;
-        } else {
-          syntaxList.push(Atomizer.atomize(token));
-        }
-      }
-      return syntaxList[0];
-    }
-  }
-
   export class Global {
     static env = new Env(null)
     static tokenReader = new TokenReader()
@@ -133,17 +106,6 @@ module emola {
         TargetFunction = GraphVarList;
       }
       return new TargetFunction(syntaxList, parentList, point);
-    }
-    
-    static parseAndEval(tokenReader, env) {
-      if (!env) env = new Env(null);
-      var parsedList = Parser.parse(tokenReader);
-      return parsedList.evalSyntax(env);
-    }
-
-    static readAndEval(line, env) {
-      Global.tokenReader.add(line);
-      return Core.parseAndEval(Global.tokenReader, env);
     }
 
     static createContextWrapper = function (canvasId) {
@@ -194,10 +156,11 @@ module emola {
     }
   
     var consoleManager = new ConsoleManager('<div class="console">', function (line) {
-        var result = ''
+        var parsedList;
+      var result = ''
         try {
           Global.tokenReader.add(line)
-          var parsedList = Parser.parse(Global.tokenReader)
+          parsedList = Parser.parse(Global.tokenReader);
           if (parsedList.draw) {
             // var palette = new Palette()
             // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)

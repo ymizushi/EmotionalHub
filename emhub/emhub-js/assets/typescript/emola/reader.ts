@@ -57,4 +57,43 @@ module emola {
     }
   }
 
+  export class Parser {
+    static parse(tokenReader, parentList = null) {
+      var syntaxList = [];
+      while (true) {
+        var token = tokenReader.next();
+        var point;
+        if (!parentList) {
+          var x = Math.random() * 200;
+          var y = Math.random() * 200;
+          point = new Point(Math.floor(x), Math.floor(y));
+        } else {
+          point = null;
+        }
+        if (token === '(') {
+          syntaxList.push(Parser.parse(tokenReader, parentList));
+        } else if (token === ')') {
+          return Core.createList(syntaxList, parentList, point);
+        } else if (token === null) {
+          break;
+        } else {
+          syntaxList.push(Atomizer.atomize(token));
+        }
+      }
+      return syntaxList[0];
+    }
+
+    static parseAndEval(tokenReader, env) {
+      if (!env) env = new emola.Env(null);
+      var parsedList = Parser.parse(tokenReader);
+      return parsedList.evalSyntax(env);
+    }
+
+    static readAndEval(line, env) {
+      emola.Global.tokenReader.add(line);
+      return Parser.parseAndEval(emola.Global.tokenReader, env);
+    }
+  }
+
+
 }

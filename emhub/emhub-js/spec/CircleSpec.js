@@ -8,11 +8,11 @@ describe("Circle test", function() {
     expect(circle.color.g).toEqual(60);
     expect(circle.color.b).toEqual(70);
 
-    expect(emola.Core.readAndEval('(circle (point 100 200) 100 (color 192 80 77))')).toEqual(
+    expect(emola.Parser.readAndEval('(circle (point 100 200) 100 (color 192 80 77))')).toEqual(
       new emola.Circle(new emola.Point(100 , 200), 100, new emola.Color(192, 80, 77))
     );
 
-    expect(emola.Core.readAndEval('(do (def hoge (circle (point 100 200) 100 (color 192 80 77))) hoge)')).toEqual(
+    expect(emola.Parser.readAndEval('(do (def hoge (circle (point 100 200) 100 (color 192 80 77))) hoge)')).toEqual(
       new emola.Circle(new emola.Point(100 , 200), 100, new emola.Color(192, 80, 77))
     );
   });
