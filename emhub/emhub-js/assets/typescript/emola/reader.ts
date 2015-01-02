@@ -94,6 +94,4 @@ module emola {
       return Parser.parseAndEval(emola.Global.tokenReader, env);
     }
   }
-
-
 }
