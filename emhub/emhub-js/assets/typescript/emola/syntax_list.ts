@@ -407,10 +407,6 @@ module emola {
     expList: any;
     graphExpListContext:GraphExpListContext;
 
-    __constructor() {
-      GraphExpListContext
-    }
-
     constructor(expList, parent=null, point=null) {
       this.expList = expList;
     
@@ -481,7 +477,19 @@ module emola {
       (new Circle(this.point , this.radius, this.listColor)).draw(context);
       nodeCircle.draw(context);
     }
-    
+
+    drawText(atom: Atom, context: CanvasContext, point: Point, color: Color) {
+      var textString: string;
+      if (atom.value) {
+        textString = atom.value;
+      } else {
+        textString = atom.type;
+      }
+      var text: Text = new Text(textString, point, color);
+      text.draw(context);
+    }
+
+
     isMet(point) {
       return !!(this.point.x - GraphExpList.NODE_RADIUS <= point.x && point.x <= this.point.x + GraphExpList.NODE_RADIUS &&
       this.point.y - GraphExpList.NODE_RADIUS <= point.y && point.y <= this.point.y + GraphExpList.NODE_RADIUS);
