@@ -2,7 +2,7 @@
 
 module emola {
   export class TokenReader {
-    tokenizedList: any[]
+    tokenizedList: string[]
 
     constructor(line: string = "") {
       this.tokenizedList = []
@@ -15,7 +15,7 @@ module emola {
       this.tokenizedList = this.tokenizedList.concat(Tokenizer.tokenize(line))
     }
 
-    next(): any {
+    next(): string {
       if (this.tokenizedList.length === 0) {
         return null
       }
@@ -24,11 +24,11 @@ module emola {
   }
 
   export class Tokenizer {
-    static tokenize(inputStr: string) {
+    static tokenize(inputStr) {
       return inputStr.split('(').join(' ( ').split(')').join(' ) ').split(' ')
         .filter(str => str ? true : false )
         .map(ele => {
-          var parsedFloat = parseFloat(ele)
+          var parsedFloat = parseFloat(ele);
           return isNaN(parsedFloat) ? ele : parsedFloat
         }
       )

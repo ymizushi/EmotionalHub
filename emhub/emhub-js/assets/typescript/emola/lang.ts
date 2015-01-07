@@ -9,7 +9,6 @@ module emola {
     type: string;
     value: string;
 
-    // TODO: あとでenumでリファクタリング
     /* lang */
     static FN = 'fn';
     static IF = 'if';
@@ -106,7 +105,7 @@ module emola {
         case Atom.VAR:
           var foundEnv:Env = env.findEnv(this.value);
           if (foundEnv) {
-            var foundValue = foundEnv.get(this.value);
+            var foundValue:Evalable = foundEnv.get(this.value);
             if (foundValue.evalSyntax) {
               return foundValue.evalSyntax(env);
             } else {

@@ -1,10 +1,10 @@
 /// <reference path="../../../typings/jquery/jquery.d.ts" />
-/// <reference path="shape.ts" />
 /// <reference path="lang.ts" />
-///<reference path="syntax_list.ts"/>
-///<reference path="canvas.ts"/>
-///<reference path="reader.ts"/>
-///<reference path="socket.ts"/>
+/// <reference path="reader.ts"/>
+/// <reference path="shape.ts" />
+/// <reference path="syntax_list.ts"/>
+/// <reference path="canvas.ts"/>
+/// <reference path="socket.ts"/>
 
 module emola {
   var emola:any
@@ -146,7 +146,12 @@ module emola {
   }
   
   emola.Front = {};
-  
+  emola.Front.drawLoop = function () {
+    setTimeout(emola.Front.drawLoop, 15)
+    Global.graphicContext.clear()
+    Global.drawingManager.draw(Global.graphicContext)
+  }
+
   $(document).ready(function() {
     if (Global.graphicContext === null) {
       Global.graphicContext = Core.createContextWrapper('canvas');
@@ -236,11 +241,4 @@ module emola {
   }
 
   new EventManager()
-  
-  emola.Front.drawLoop = function () {
-    setTimeout(emola.Front.drawLoop, 15)
-    Global.graphicContext.clear()
-    Global.drawingManager.draw(Global.graphicContext)
-  }
-
 }

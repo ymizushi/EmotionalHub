@@ -7,8 +7,10 @@
 (def broadcast-channel (channel))
 
 (defn handler [ch handshake]
-  (receive-all ch (fn [msg] (enqueue broadcast-channel msg)))
-  (receive-all broadcast-channel (fn [msg] (enqueue ch msg))))
+  (receive-all ch (fn [msg] (do
+                              (enqueue broadcast-channel msg)
+                              (logging/info (str "message is " msg))
+                              ))))
 
 (defonce server (atom nil))
 
