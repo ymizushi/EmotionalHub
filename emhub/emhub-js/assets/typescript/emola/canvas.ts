@@ -9,10 +9,17 @@ module emola {
     Mul
   }
 
-  export class WidgetManager {
+  export class PaletteComponent {
+    syntaxNodeType: SyntaxNodeType;
 
+    constructor(syntaxNodeType: SyntaxNodeType) {
+      this.syntaxNodeType = syntaxNodeType
+    }
+
+    draw(contextWrapper: CanvasContext, rect: Rect) {
+      contextWrapper.drawRect(rect);
+    }
   }
-
   export interface Widget {
     rect : Rect
 
@@ -20,26 +27,13 @@ module emola {
     draw(contextWrapper: CanvasContext): void
   }
 
-
-  export class PaletteComponent {
-    size = new Size(100,100);
-    syntaxNodeType: SyntaxNodeType;
-
-    constructor(syntaxNodeType: SyntaxNodeType) {
-      this.syntaxNodeType = syntaxNodeType
-    }
-
-    draw(contextWrapper: CanvasContext, point: Point) {
-      contextWrapper.drawRect(new Rect(point, this.size, new Color()));
-    }
-  }
-
   export class Palette implements Widget {
     rect = new Rect(new Point(0,0), new Size(150,1000), new Color());
 
     paletteComponentList: PaletteComponent[];
 
-    constructor() {
+    constructor(rect: Rect) {
+      this.rect = rect;
     }
 
     clicked(inputManager: InputManager): any {
@@ -49,16 +43,36 @@ module emola {
       this.paletteComponentList.push(paletteComponent)
     }
 
-    draw(contextWrapper: CanvasContext) {
-      this.rect.draw(contextWrapper);
+    draw(canvasContext: CanvasContext) {
+      this.rect.draw(canvasContext);
+      var perHeight = this.rect.size.height/this.paletteComponentList.length;
+      for (var i in this.paletteComponentList) {
+        var size = new Size(this.rect.size.width, perHeight);
+        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*(i+1)), size, new Color());
+        this.paletteComponentList[i].draw(canvasContext, rect)
+      }
     }
   }
 
   export class CanvasWindow {
-    palette: Palette;
+    paletteList: Palette[];
+
+    static createCanvasWindow(canvasContext: CanvasContext) {
+      var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(100,500), new Color()));
+      var paletteComponentPlus = new PaletteComponent(SyntaxNodeType.Plus);
+      var paletteComponentMinus = new PaletteComponent(SyntaxNodeType.Minus);
+      var paletteComponentDiv = new PaletteComponent(SyntaxNodeType.Div);
+
+      palette.add(paletteComponentPlus);
+      palette.add(paletteComponentMinus);
+      palette.add(paletteComponentDiv);
+      palette.draw(canvasContext);
+
+    }
 
     constructor(palette: Palette) {
-      this.palette = palette
+      this.paletteList.push(palette);
     }
   }
+
 }

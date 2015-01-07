@@ -495,7 +495,7 @@ module emola {
       return this.expList.pop();
     }
     
-    draw(context) {
+    draw(context: CanvasContext) {
 
       for (var i=1;i<this.expList.length;i++) {
         this.theta += 2 * Math.PI/(this.expList.length-1);

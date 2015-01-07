@@ -12,6 +12,10 @@ module emola {
     x: number;
     y: number;
 
+    static copy(point: Point) {
+      return new Point(point.x, point.y);
+    }
+
     constructor(x: number, y: number) {
       this.x = x;
       this.y = y
@@ -195,6 +199,13 @@ module emola {
       this.context.fillStyle = 'rgb(' + textObject.color.r + ' ,' + textObject.color.g + ' ,' + textObject.color.b + ')';
       this.context.fillText(textObject.description, textObject.point.x, textObject.point.y, 200)
     }
+
+    drawImage(path: string, point, Point) {
+      var img = new Image();
+      img.src = path;
+      this.context.drawImage(img, point.x, point.y)
+    }
+
 
     clear() {
       var sizeWidth = this.context.canvas.clientWidth;

@@ -35,6 +35,7 @@ module emola {
     }
     
     draw(context) {
+      // CanvasWindow.createCanvasWindow(Global.graphicContext);
       for (var i=0;i<this.graphList.length;i++) {
         if (this.graphList[i].rotate) {
           this.graphList[i].rotate(0.01)
@@ -55,10 +56,10 @@ module emola {
   
   export class Global {
     static env = new Env(null)
-    static tokenReader = new TokenReader()
-    static graphicContext = null
-    static socket = new Socket()
-    static drawingManager = new DrawingManager(Global.socket)
+    static tokenReader: TokenReader = new TokenReader()
+    static graphicContext:CanvasContext = null
+    static socket: Socket = new Socket()
+    static drawingManager: DrawingManager = new DrawingManager(Global.socket)
     static drugging = false
   }
 
