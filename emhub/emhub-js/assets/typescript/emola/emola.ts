@@ -62,55 +62,6 @@ module emola {
     static drugging = false
   }
 
-  export class Core {
-    static createList(syntaxList, parentList) {
-      var firstList = syntaxList[0];
-      var syntaxMap = {};
-      /* lang */
-      syntaxMap[Atom.FN] = GraphFnList;
-      syntaxMap[Atom.IF] = GraphIfList;
-      syntaxMap[Atom.DEF] = GraphDefList;
-      syntaxMap[Atom.DEFN] = GraphDefnList;
-      syntaxMap[Atom.DO] = GraphDoList;
-      syntaxMap[Atom.SEND] = GraphSendList;
-      syntaxMap[Atom.LET] = GraphLetList;
-      syntaxMap[Atom.QUOTE] = GraphQuoteList;
-      syntaxMap[Atom.EVAL] = GraphEvalList;
-    
-      /* math */
-      syntaxMap[Atom.PLUS] = GraphPlusList;
-      syntaxMap[Atom.MINUS] = GraphMinusList;
-      syntaxMap[Atom.DIV] = GraphDivList;
-      syntaxMap[Atom.MUL] = GraphMulList;
-      syntaxMap[Atom.EQUAL] = GraphEqualList;
-      syntaxMap[Atom.GREATER] = GraphGreaterList;
-      syntaxMap[Atom.LESS] = GraphLessList;
-      syntaxMap[Atom.GREATEREQUAL] = GraphGreaterEqualList;
-      syntaxMap[Atom.LESSEQUAL] = GraphLessEqualList;
-    
-      /* graphic */
-      syntaxMap[Atom.DRAW] = GraphDrawList;
-      syntaxMap[Atom.POINT] = GraphPointList;
-      syntaxMap[Atom.COLOR] = GraphColorList;
-      syntaxMap[Atom.CIRCLE] = GraphCircleList;
-      syntaxMap[Atom.CLEAR] = GraphClearList;
-    
-      var TargetFunction = syntaxMap[firstList.type];
-      if (!TargetFunction) {
-        TargetFunction = GraphVarList;
-      }
-      return new TargetFunction(syntaxList, parentList);
-    }
-
-    static createContextWrapper = function (canvasId) {
-      var canvas:any = document.getElementById(canvasId)
-      if (!canvas || !canvas.getContext) {
-        return null
-      }
-      return new CanvasContext(canvas.getContext('2d'))
-    }
-  }
-  
   class ConsoleManager {
     callbackList: any
     commandContainer: any

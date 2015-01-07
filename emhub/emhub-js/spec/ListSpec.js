@@ -8,3 +8,14 @@ describe("GraphExpList Spec", function() {
   });
 });
 
+describe("createListTypeObject test", function() {
+  it("constructor", function() {
+    var parent = emola.ExpList.create([new emola.Atom(emola.Atom.MINUS, null), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom(emola.Atom.NUMBER, 2)], null);
+    var result = emola.ExpList.create([new emola.Atom(emola.Atom.MINUS, null), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom(emola.Atom.NUMBER, 2)], parent);
+    var expected = new emola.GraphMinusList([new emola.Atom(emola.Atom.MINUS, null), new emola.Atom(emola.Atom.NUMBER, 1), new emola.Atom(emola.Atom.NUMBER, 2)], parent);
+    expect(result).toEqual(expected);
+    expect(expected.evalSyntax(new emola.Env(null))).toEqual(-1);
+
+  });
+});
+

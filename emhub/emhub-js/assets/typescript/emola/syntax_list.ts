@@ -3,9 +3,49 @@
 ///<reference path="shape.ts"/>
 
 module emola {
+
   export class ExpList {
     parent: ExpList;
     list: any;
+
+    static create(syntaxList, parentList) {
+      var firstList = syntaxList[0];
+      var syntaxMap = {};
+      /* lang */
+      syntaxMap[Atom.FN] = GraphFnList;
+      syntaxMap[Atom.IF] = GraphIfList;
+      syntaxMap[Atom.DEF] = GraphDefList;
+      syntaxMap[Atom.DEFN] = GraphDefnList;
+      syntaxMap[Atom.DO] = GraphDoList;
+      syntaxMap[Atom.SEND] = GraphSendList;
+      syntaxMap[Atom.LET] = GraphLetList;
+      syntaxMap[Atom.QUOTE] = GraphQuoteList;
+      syntaxMap[Atom.EVAL] = GraphEvalList;
+
+      /* math */
+      syntaxMap[Atom.PLUS] = GraphPlusList;
+      syntaxMap[Atom.MINUS] = GraphMinusList;
+      syntaxMap[Atom.DIV] = GraphDivList;
+      syntaxMap[Atom.MUL] = GraphMulList;
+      syntaxMap[Atom.EQUAL] = GraphEqualList;
+      syntaxMap[Atom.GREATER] = GraphGreaterList;
+      syntaxMap[Atom.LESS] = GraphLessList;
+      syntaxMap[Atom.GREATEREQUAL] = GraphGreaterEqualList;
+      syntaxMap[Atom.LESSEQUAL] = GraphLessEqualList;
+
+      /* graphic */
+      syntaxMap[Atom.DRAW] = GraphDrawList;
+      syntaxMap[Atom.POINT] = GraphPointList;
+      syntaxMap[Atom.COLOR] = GraphColorList;
+      syntaxMap[Atom.CIRCLE] = GraphCircleList;
+      syntaxMap[Atom.CLEAR] = GraphClearList;
+
+      var TargetFunction = syntaxMap[firstList.type];
+      if (!TargetFunction) {
+        TargetFunction = GraphVarList;
+      }
+      return new TargetFunction(syntaxList, parentList);
+    }
 
     constructor(list: ExpList, parent: ExpList=null) {
       this.list = list;

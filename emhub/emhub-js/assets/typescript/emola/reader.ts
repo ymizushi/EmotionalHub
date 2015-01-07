@@ -65,7 +65,7 @@ module emola {
         if (token === '(') {
           syntaxList.push(Parser.parse(tokenReader, parentList));
         } else if (token === ')') {
-          return Core.createList(syntaxList, parentList);
+          return ExpList.create(syntaxList, parentList);
         } else if (token === null) {
           break;
         } else {
