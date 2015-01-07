@@ -60,7 +60,6 @@ module emola {
     static socket = new Socket()
     static drawingManager = new DrawingManager(Global.socket)
     static drugging = false
-
   }
 
   export class Core {
@@ -149,7 +148,8 @@ module emola {
 
   $(document).ready(function() {
     if (Global.graphicContext === null) {
-      Global.graphicContext = Core.createContextWrapper('canvas');
+      var canvas = document.getElementById('canvas');
+      Global.graphicContext = CanvasContext.create(canvas);
       if(Global.graphicContext !== null) {
         emola.Front.drawLoop();
       }

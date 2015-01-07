@@ -157,6 +157,13 @@ module emola {
     private offsetLeft: number;
     private offsetTop: number;
 
+    static create(canvas:any) {
+      if (!canvas || !canvas.getContext) {
+        return null;
+      }
+      return new CanvasContext(canvas.getContext('2d'));
+    }
+
     constructor(context: CanvasRenderingContext2D) {
       this.context = context;
       this.width = context.canvas.width;
