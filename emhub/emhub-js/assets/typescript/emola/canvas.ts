@@ -9,12 +9,17 @@ module emola {
     Mul
   }
 
+  export class WidgetManager {
+
+  }
+
   export interface Widget {
     rect : Rect
 
     clicked(inputManager: InputManager): Widget
     draw(contextWrapper: CanvasContext): void
   }
+
 
   export class PaletteComponent {
     size = new Size(100,100);

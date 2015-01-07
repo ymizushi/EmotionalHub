@@ -407,7 +407,7 @@ module emola {
     expList: any;
     graphExpListContext:GraphExpListContext;
 
-    constructor(expList, parent=null, point=null) {
+    constructor(expList, parent:GraphExpList=null) {
       this.expList = expList;
     
       // グラフィック要素
@@ -418,7 +418,14 @@ module emola {
       this.listColor = new Color(50, 50, 50,0.2);
     
       this.parent = parent;
-      this.point = point;
+
+      if (parent) {
+        this.point = null;
+      } else {
+        var x = Math.random() * 200;
+        var y = Math.random() * 200;
+        this.point = new Point(Math.floor(x), Math.floor(y));
+      }
     }
     
     push(element) {
@@ -547,8 +554,8 @@ module emola {
   }
 
   export class GraphDefList extends GraphExpList implements Evalable {
-    constructor(list, parent, point) {
-      super(list, parent, point);
+    constructor(list, parent) {
+      super(list, parent);
       this.listColor = new Color(0, 255, 0, 0.2)
     }
 
@@ -704,7 +711,7 @@ module emola {
 
   export class GraphMinusList extends GraphExpList implements Evalable {
     constructor(list, parent, point) {
-      super(list, parent, point);
+      super(list, parent);
       this.listColor = new Color(50, 0, 0, 0.2);
     }
 
@@ -723,7 +730,7 @@ module emola {
 
   export class GraphMulList extends GraphExpList implements Evalable {
     constructor(list, parent, point) {
-      super(list, parent, point);
+      super(list, parent);
       this.listColor = new Color(0, 200, 50, 0.2);
     }
   
@@ -746,7 +753,7 @@ module emola {
   
   export class GraphPlusList extends GraphExpList {
     constructor(list, parent, point) {
-      super(list, parent, point);
+      super(list, parent);
       this.listColor = new Color(255, 0, 0, 0.2);
     }
   
@@ -775,7 +782,7 @@ module emola {
     env: Env;
 
     constructor(list, parent, point) {
-      super(list, parent, point);
+      super(list, parent);
       this.listColor = new Color(0, 100, 0, 0.2);
     }
 

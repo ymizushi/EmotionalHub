@@ -26,9 +26,6 @@ module emola {
     
     remove(drawing) {
       this.list.forEach(function(element) {
-        if (element == drawing) {
-          this.expList.splice(element,1)
-        }
         if (element instanceof GraphExpList) {
           element.remove(drawing)
         }
@@ -69,7 +66,7 @@ module emola {
   }
 
   export class Core {
-    static createList(syntaxList, parentList, point) {
+    static createList(syntaxList, parentList) {
       var firstList = syntaxList[0];
       var syntaxMap = {};
       /* lang */
@@ -105,7 +102,7 @@ module emola {
       if (!TargetFunction) {
         TargetFunction = GraphVarList;
       }
-      return new TargetFunction(syntaxList, parentList, point);
+      return new TargetFunction(syntaxList, parentList);
     }
 
     static createContextWrapper = function (canvasId) {

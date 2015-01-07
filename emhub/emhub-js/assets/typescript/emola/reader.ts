@@ -58,22 +58,14 @@ module emola {
   }
 
   export class Parser {
-    static parse(tokenReader, parentList = null) {
+    static parse(tokenReader: TokenReader, parentList:GraphExpList = null) {
       var syntaxList = [];
       while (true) {
         var token = tokenReader.next();
-        var point;
-        if (!parentList) {
-          var x = Math.random() * 200;
-          var y = Math.random() * 200;
-          point = new Point(Math.floor(x), Math.floor(y));
-        } else {
-          point = null;
-        }
         if (token === '(') {
           syntaxList.push(Parser.parse(tokenReader, parentList));
         } else if (token === ')') {
-          return Core.createList(syntaxList, parentList, point);
+          return Core.createList(syntaxList, parentList);
         } else if (token === null) {
           break;
         } else {
