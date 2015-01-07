@@ -35,7 +35,6 @@ module emola {
     }
     
     draw(context) {
-      // CanvasWindow.createCanvasWindow(Global.graphicContext);
       for (var i=0;i<this.graphList.length;i++) {
         if (this.graphList[i].rotate) {
           this.graphList[i].rotate(0.01)
@@ -95,6 +94,7 @@ module emola {
   emola.Front.drawLoop = function () {
     setTimeout(emola.Front.drawLoop, 15)
     Global.graphicContext.clear()
+    CanvasWindow.createCanvasWindow(Global.graphicContext);
     Global.drawingManager.draw(Global.graphicContext)
   }
 

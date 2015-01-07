@@ -34,13 +34,14 @@ module emola {
 
     constructor(rect: Rect) {
       this.rect = rect;
+      this.paletteComponentList = [];
     }
 
     clicked(inputManager: InputManager): any {
     }
 
     add(paletteComponent: PaletteComponent) {
-      this.paletteComponentList.push(paletteComponent)
+      this.paletteComponentList.push(paletteComponent);
     }
 
     draw(canvasContext: CanvasContext) {
@@ -48,7 +49,7 @@ module emola {
       var perHeight = this.rect.size.height/this.paletteComponentList.length;
       for (var i in this.paletteComponentList) {
         var size = new Size(this.rect.size.width, perHeight);
-        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*(i+1)), size, new Color());
+        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*(i+1)), size, new Color(10,10,10,1));
         this.paletteComponentList[i].draw(canvasContext, rect)
       }
     }
@@ -58,7 +59,7 @@ module emola {
     paletteList: Palette[];
 
     static createCanvasWindow(canvasContext: CanvasContext) {
-      var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(100,500), new Color()));
+      var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(50,200), new Color(10,80,50,1)));
       var paletteComponentPlus = new PaletteComponent(SyntaxNodeType.Plus);
       var paletteComponentMinus = new PaletteComponent(SyntaxNodeType.Minus);
       var paletteComponentDiv = new PaletteComponent(SyntaxNodeType.Div);
