@@ -508,28 +508,14 @@ module emola {
           var circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
           circle.draw(context);
     
-          var text;
-          if (this.expList[i].value) {
-            text = this.expList[i].value;
-          } else {
-            text = this.expList[i].type;
-          }
-          text = new Text(text, point, new Color(200,200,200));
-          text.draw(context);
+          this.drawText(this.expList[i], context, point, new Color(200,200,200))
         }
     
       }
       (new Circle(this.point , this.radius, this.listColor)).draw(context);
       var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
       nodeCircle.draw(context);
-      var text;
-      if (this.expList[0].value) {
-        text = this.expList[0].value;
-      } else {
-        text = this.expList[0].type;
-      }
-      text = new Text(text, this.point, new Color(200,200,200));
-      text.draw(context);
+      this.drawText(this.expList[0], context, this.point, new Color(100,100,100))
     }
 
     drawText(atom: Atom, context: CanvasContext, point: Point, color: Color) {
