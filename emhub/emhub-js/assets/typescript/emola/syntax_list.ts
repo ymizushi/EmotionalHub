@@ -445,9 +445,8 @@ module emola {
     point: Point;
 
     expList: any;
-    graphExpListContext:GraphExpListContext;
 
-    constructor(expList, parent:GraphExpList=null) {
+    constructor(expList:ExpList, parent:GraphExpList=null) {
       this.expList = expList;
     
       // グラフィック要素
@@ -497,10 +496,9 @@ module emola {
     }
     
     draw(context) {
-      var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
-    
-      for (var i=0;i<this.expList.length;i++) {
-        this.theta += 2 * Math.PI/this.expList.length;
+
+      for (var i=1;i<this.expList.length;i++) {
+        this.theta += 2 * Math.PI/(this.expList.length-1);
         var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
         if (this.expList[i] instanceof GraphExpList) {
           point = new Point(this.point.x + this.radius*3*Math.cos(this.theta), this.point.y +  this.radius*3*Math.sin(this.theta));
@@ -522,7 +520,16 @@ module emola {
     
       }
       (new Circle(this.point , this.radius, this.listColor)).draw(context);
+      var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
       nodeCircle.draw(context);
+      var text;
+      if (this.expList[0].value) {
+        text = this.expList[0].value;
+      } else {
+        text = this.expList[0].type;
+      }
+      text = new Text(text, this.point, new Color(200,200,200));
+      text.draw(context);
     }
 
     drawText(atom: Atom, context: CanvasContext, point: Point, color: Color) {
