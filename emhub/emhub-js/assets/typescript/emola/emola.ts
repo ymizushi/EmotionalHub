@@ -11,43 +11,41 @@ module emola {
   emola = {}
 
   class DrawingManager {
-    private list: any[]
+    private graphList: GraphExpList[]
     private socket: Socket
 
     constructor(socket: Socket) {
-      this.list = []
+      this.graphList = []
       this.socket = socket
     }
     
     add(drawing: any) {
-      this.list.push(drawing)
+      this.graphList.push(drawing)
       // this.socket.send("hoge")
     }
     
     remove(drawing) {
-      this.list.forEach(function(element) {
-        if (element instanceof GraphExpList) {
-          element.remove(drawing)
-        }
+      this.graphList.forEach(function(element) {
+        element.remove(drawing);
       })
     }
 
     clear() {
-      this.list = []
+      this.graphList = []
     }
     
     draw(context) {
-      for (var i=0;i<this.list.length;i++) {
-        if (this.list[i].rotate) {
-          this.list[i].rotate(0.01)
+      for (var i=0;i<this.graphList.length;i++) {
+        if (this.graphList[i].rotate) {
+          this.graphList[i].rotate(0.01)
         }
-        this.list[i].draw(context)
+        this.graphList[i].draw(context)
       }
     }
 
-    getListObject(point: Point, drawing) {
-      for (var i in this.list) {
-        var targetListObject = this.list[i].getListObject(point)
+    getListObject(point: Point, drawing:Drawable) {
+      for (var i in this.graphList) {
+        var targetListObject = this.graphList[i].getListObject(point)
         if (targetListObject && targetListObject !== drawing) {
           return targetListObject
         }
