@@ -17,7 +17,11 @@ module emola {
     }
 
     draw(contextWrapper: CanvasContext, rect: Rect) {
-      contextWrapper.drawRect(rect);
+      rect.draw(contextWrapper);
+      var point:Point = new Point(rect.point.x+(rect.size.width/2), rect.point.y+(rect.size.height/2));
+      var text: Text = new Text("+", point, new Color(200,200,200,1), 20);
+
+      text.draw(contextWrapper);
     }
   }
   export interface Widget {
@@ -49,7 +53,7 @@ module emola {
       var perHeight = this.rect.size.height/this.paletteComponentList.length;
       for (var i in this.paletteComponentList) {
         var size = new Size(this.rect.size.width, perHeight);
-        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*(i+1)), size, new Color(10,10,10,1));
+        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*i), size, new Color(100,100,100,1));
         this.paletteComponentList[i].draw(canvasContext, rect)
       }
     }
@@ -59,7 +63,7 @@ module emola {
     paletteList: Palette[];
 
     static createCanvasWindow(canvasContext: CanvasContext) {
-      var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(50,200), new Color(10,80,50,1)));
+      var palette: Palette = new Palette(new Rect(new Point(100,100), new Size(50,200), new Color(10,80,50,1)));
       var paletteComponentPlus = new PaletteComponent(SyntaxNodeType.Plus);
       var paletteComponentMinus = new PaletteComponent(SyntaxNodeType.Minus);
       var paletteComponentDiv = new PaletteComponent(SyntaxNodeType.Div);

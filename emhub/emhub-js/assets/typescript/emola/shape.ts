@@ -97,14 +97,21 @@ module emola {
   }
 
   export class Text implements Drawable {
+    static DEFAULT_FONT_TYPE ="Hiragino Kaku Gothic ProN";
+    static DEFAULT_FONT_SIZE =12;
+
     description: string;
     point: Point;
     color: Color;
+    fontSize: number;
+    fontType: string;
 
-    constructor(description: string, point: Point, color: Color) {
+    constructor(description: string, point: Point, color: Color, fontSize=Text.DEFAULT_FONT_SIZE, fontType=Text.DEFAULT_FONT_TYPE) {
       this.description = description;
       this.point = point;
       this.color = color
+      this.fontSize = fontSize;
+      this.fontType = fontType;
     }
 
     draw(context: CanvasContext) {
@@ -197,6 +204,7 @@ module emola {
     
     drawText(textObject: Text) {
       this.context.fillStyle = 'rgb(' + textObject.color.r + ' ,' + textObject.color.g + ' ,' + textObject.color.b + ')';
+      this.context.font = textObject.fontSize+"px "+ "\'" + textObject.fontType + "\'";
       this.context.fillText(textObject.description, textObject.point.x, textObject.point.y, 200)
     }
 
