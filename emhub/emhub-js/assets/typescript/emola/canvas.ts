@@ -2,7 +2,7 @@
 ///<reference path="input.ts"/>
 
 module emola {
-  export class SyntaxNodeType {
+  class SyntaxNodeType {
     static PLUS = '+';
     static MINUS = '-';
     static DIV = '/';

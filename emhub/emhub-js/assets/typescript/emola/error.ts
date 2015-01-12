@@ -9,6 +9,16 @@ module emola {
     }
   }
 
+  export class InvalidArgumentError implements Error {
+    name:string;
+    message:string;
+
+    constructor(message: string) {
+      this.name = 'InvalidArgumentError';
+      this.message = message;
+    }
+  }
+
   export class NotFoundError implements Error {
     name:string;
     message:string;
@@ -19,13 +29,4 @@ module emola {
     }
   }
 
-  export class InvalidArgumentError implements Error {
-    name:string;
-    message:string;
-
-    constructor(message: string) {
-      this.name = 'InvalidArgumentError';
-      this.message = message;
-    }
-  }
 }

@@ -8,25 +8,21 @@
 /// <reference path="global.ts"/>
 
 module emola {
-  var emola:any
-  emola = {}
-
-  emola.Front = {};
-  emola.Front.drawLoop = function () {
-    setTimeout(emola.Front.drawLoop, 15)
-    Global.graphicContext.clear()
-    CanvasWindow.createCanvasWindow(Global.graphicContext);
-    Global.drawingManager.draw(Global.graphicContext)
-  }
-
   class Main {
+    static drawLoop () {
+      setTimeout(Main.drawLoop, 15)
+      Global.graphicContext.clear()
+      CanvasWindow.createCanvasWindow(Global.graphicContext);
+      Global.drawingManager.draw(Global.graphicContext)
+    }
+
     static start() {
       $(document).ready(function() {
         if (Global.graphicContext === null) {
           var canvas = document.getElementById('canvas');
           Global.graphicContext = CanvasContext.create(canvas);
           if(Global.graphicContext !== null) {
-            emola.Front.drawLoop();
+            Main.drawLoop();
           }
         }
 
