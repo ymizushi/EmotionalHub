@@ -5,7 +5,7 @@ module emola {
     tokenizedList: string[]
 
     constructor(line: string = "") {
-      this.tokenizedList = []
+      this.tokenizedList = [];
       if (line != "") {
         this.add(line)
       }
@@ -41,6 +41,8 @@ module emola {
         return new Atom(AtomType.TRUE);
       } else if (token === AtomType.FALSE) {
         return new Atom(AtomType.FALSE);
+      } else if (typeof token === 'number') {
+        return new Atom(AtomType.NUMBER, token);
       } else if (typeof token === 'string') {
         if (token[0] === '"' || token[0] === "'") {
           return new Atom(AtomType.STR, token.slice(1, -1));
@@ -49,11 +51,9 @@ module emola {
         } else {
           return new Atom(AtomType.VAR, token);
         }
-      } else if (typeof token === 'number') {
-        return new Atom(AtomType.NUMBER, token);
-      } else {
-        throw 'Unknown token';
       }
+
+      throw new UnknownTokenError("Couldn't find the token in AtomType.");
     }
   }
 
@@ -61,7 +61,7 @@ module emola {
     static parse(tokenReader: TokenReader, parentList:GraphExpList = null) {
       var syntaxList = [];
       while (true) {
-        var token = tokenReader.next();
+        var token: string = tokenReader.next();
         if (token === '(') {
           syntaxList.push(Parser.parse(tokenReader, parentList));
         } else if (token === ')') {
@@ -75,7 +75,7 @@ module emola {
       return syntaxList[0];
     }
 
-    static parseAndEval(tokenReader, env) {
+    static parseAndEval(tokenReader, env=null) {
       if (!env) env = new emola.Env(null);
       var parsedList = Parser.parse(tokenReader);
       return parsedList.evalSyntax(env);
