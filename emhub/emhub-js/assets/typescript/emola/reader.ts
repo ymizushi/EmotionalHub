@@ -75,15 +75,15 @@ module emola {
       return syntaxList[0];
     }
 
-    static parseAndEval(tokenReader, env=null) {
+    static parseAndEval(tokenReader: TokenReader, env=null) {
       if (!env) env = new emola.Env(null);
       var parsedList = Parser.parse(tokenReader);
       return parsedList.evalSyntax(env);
     }
 
-    static readAndEval(line, env) {
-      emola.Global.tokenReader.add(line);
-      return Parser.parseAndEval(emola.Global.tokenReader, env);
+    static readAndEval(tokenReader: TokenReader, line: string, env: Env) {
+      tokenReader.add(line);
+      return Parser.parseAndEval(tokenReader, env);
     }
   }
 }

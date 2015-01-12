@@ -6,7 +6,7 @@ describe("Atom test", function() {
   });
 
   it("static isAtom", function() {
-    var result = emola.Atom.isAtom(new emola.Atom(emola.Atom.FN, 'hoge'));
+    var result = emola.Atom.isAtom(new emola.Atom(emola.AtomType.FN, 'hoge'));
     expect(result).toBe(true);
   });
 

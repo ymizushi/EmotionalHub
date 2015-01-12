@@ -30,8 +30,9 @@ module emola {
           var parsedList;
           var result = ''
           try {
-            Global.tokenReader.add(line)
-            parsedList = Parser.parse(Global.tokenReader);
+            var tokenReader: TokenReader = new TokenReader();
+            tokenReader.add(line)
+            parsedList = Parser.parse(tokenReader);
             if (parsedList.draw) {
               // var palette = new Palette()
               // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)

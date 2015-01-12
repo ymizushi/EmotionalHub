@@ -24,9 +24,9 @@ describe("TokenReader Test", function() {
 
 describe("parse test", function() {
     it("constructor", function() {
-        emola.Global.tokenReader.add("(- 1 2)");
-
-        var result = emola.Parser.parse(emola.Global.tokenReader).evalSyntax(emola.Global.env);
+        var tokenReader = new emola.TokenReader();
+        tokenReader.add("(- 1 2)");
+        var result = emola.Parser.parse(tokenReader).evalSyntax(emola.Global.env);
         expect(result).toEqual(-1);
 
     });
