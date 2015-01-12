@@ -19,46 +19,40 @@ module emola {
     Global.drawingManager.draw(Global.graphicContext)
   }
 
-  $(document).ready(function() {
-    if (Global.graphicContext === null) {
-      var canvas = document.getElementById('canvas');
-      Global.graphicContext = CanvasContext.create(canvas);
-      if(Global.graphicContext !== null) {
-        emola.Front.drawLoop();
-      }
-    }
-  
-    new ConsoleManager('<div class="console">', function (line) {
-        var parsedList;
-      var result = ''
-        try {
-          Global.tokenReader.add(line)
-          parsedList = Parser.parse(Global.tokenReader);
-          if (parsedList.draw) {
-            // var palette = new Palette()
-            // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
-            // palette.add(paletteWidget)
-            // Global.drawingManager.add(palette)
-
-            Global.drawingManager.add(parsedList)
-
+  class Main {
+    static start() {
+      $(document).ready(function() {
+        if (Global.graphicContext === null) {
+          var canvas = document.getElementById('canvas');
+          Global.graphicContext = CanvasContext.create(canvas);
+          if(Global.graphicContext !== null) {
+            emola.Front.drawLoop();
           }
-          result = parsedList.evalSyntax(Global.env)
-        } catch (e) {
-          result = "Parse error"
-          console.log(e)
-        } 
-        return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
+        }
+
+        new ConsoleManager('<div class="console">', function (line) {
+          var parsedList;
+          var result = ''
+          try {
+            Global.tokenReader.add(line)
+            parsedList = Parser.parse(Global.tokenReader);
+            if (parsedList.draw) {
+              // var palette = new Palette()
+              // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
+              // palette.add(paletteWidget)
+              // Global.drawingManager.add(palette)
+
+              Global.drawingManager.add(parsedList)
+
+            }
+            result = parsedList.evalSyntax(Global.env)
+          } catch (e) {
+            result = "Parse error"
+            console.log(e)
+          }
+          return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
+        });
       });
-  });
-
-  class EventManager {
-    setMouseUpEventListener(func) {
-      $(window).mouseup(func)
-    }
-
-
-    constructor() {
 
       function getPosition(e:any):Point {
         var pageX = e.pageX;
@@ -99,7 +93,7 @@ module emola {
             }
           }
         )
-        
+
         $(window).mousemove(
           function (e) {
             if (druggingObject) {
@@ -109,22 +103,20 @@ module emola {
         )
 
         $(window).dblclick(
-           (e) => {
-             console.log("double clicked");
-             var drawing = getDrawingObject(druggingObject, e)
-             if (drawing) {
-               var result = drawing.evalSyntax(Global.env);
-               console.log(result);
-               var text: Text = new Text(result, drawing.point, new Color());
-               Global.drawingManager.add(text);
-               // text.draw(Global.graphicContext);
-             }
+          (e) => {
+            console.log("double clicked");
+            var drawing = getDrawingObject(druggingObject, e)
+            if (drawing) {
+              var result = drawing.evalSyntax(Global.env);
+              console.log(result);
+              var text: Text = new Text(result, drawing.point, new Color());
+              Global.drawingManager.add(text);
+              // text.draw(Global.graphicContext);
+            }
           }
         )
-      })()
+      })();
     }
-
   }
-
-  new EventManager()
+  Main.start();
 }
