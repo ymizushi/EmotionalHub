@@ -28,7 +28,7 @@ module emola {
       }
     }
   
-    var consoleManager = new ConsoleManager('<div class="console">', function (line) {
+    new ConsoleManager('<div class="console">', function (line) {
         var parsedList;
       var result = ''
         try {
@@ -49,7 +49,7 @@ module emola {
           console.log(e)
         } 
         return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
-      })
+      });
   });
 
   class EventManager {
