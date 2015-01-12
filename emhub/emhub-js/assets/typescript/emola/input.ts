@@ -2,7 +2,14 @@
 
 module emola {
   export class MouseInput {
+    clickPoint: Point
+    drugPoint: Point
+    dropPoint: Point
+
     constructor() {
+      this.clickPoint = new Point(10,10);
+      this.drugPoint = new Point(20,20);
+      this.dropPoint = new Point(30,30);
     }
   }
 
@@ -11,12 +18,8 @@ module emola {
     }
   }
 
-  export interface Druggable {
-  }
-
   export class InputManager {
-    clicked(): Point {
-      return new Point(1 ,2)
-    }
+    mouse = new MouseInput();
+    keyboard = new KeyboardInput();
   }
 }

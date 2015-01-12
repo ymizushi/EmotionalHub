@@ -34,7 +34,7 @@ module emola {
       this.graphList = []
     }
     
-    draw(context) {
+    draw(context: CanvasContext) {
       for (var i=0;i<this.graphList.length;i++) {
         if (this.graphList[i].rotate) {
           this.graphList[i].rotate(0.01)
@@ -132,6 +132,11 @@ module emola {
   });
 
   class EventManager {
+    setMouseUpEventListener(func) {
+      $(window).mouseup(func)
+    }
+
+
     constructor() {
 
       function getPosition(e:any):Point {
@@ -151,7 +156,6 @@ module emola {
 
       (function () {
         var druggingObject = null
-        var drawing = null
 
         $(window).mousedown(function (e) {
           Global.drugging = true
@@ -180,6 +184,20 @@ module emola {
             if (druggingObject) {
               druggingObject.point = getPosition(e)
             }
+          }
+        )
+
+        $(window).dblclick(
+           (e) => {
+             console.log("double clicked");
+             var drawing = getDrawingObject(druggingObject, e)
+             if (drawing) {
+               var result = drawing.evalSyntax(Global.env);
+               console.log(result);
+               var text: Text = new Text(result, drawing.point, new Color());
+               Global.drawingManager.add(text);
+               // text.draw(Global.graphicContext);
+             }
           }
         )
       })()
