@@ -12,33 +12,33 @@ module emola {
       var firstList = syntaxList[0];
       var syntaxMap = {};
       /* lang */
-      syntaxMap[Atom.FN] = GraphFnList;
-      syntaxMap[Atom.IF] = GraphIfList;
-      syntaxMap[Atom.DEF] = GraphDefList;
-      syntaxMap[Atom.DEFN] = GraphDefnList;
-      syntaxMap[Atom.DO] = GraphDoList;
-      syntaxMap[Atom.SEND] = GraphSendList;
-      syntaxMap[Atom.LET] = GraphLetList;
-      syntaxMap[Atom.QUOTE] = GraphQuoteList;
-      syntaxMap[Atom.EVAL] = GraphEvalList;
+      syntaxMap[AtomType.FN] = GraphFnList;
+      syntaxMap[AtomType.IF] = GraphIfList;
+      syntaxMap[AtomType.DEF] = GraphDefList;
+      syntaxMap[AtomType.DEFN] = GraphDefnList;
+      syntaxMap[AtomType.DO] = GraphDoList;
+      syntaxMap[AtomType.SEND] = GraphSendList;
+      syntaxMap[AtomType.LET] = GraphLetList;
+      syntaxMap[AtomType.QUOTE] = GraphQuoteList;
+      syntaxMap[AtomType.EVAL] = GraphEvalList;
 
       /* math */
-      syntaxMap[Atom.PLUS] = GraphPlusList;
-      syntaxMap[Atom.MINUS] = GraphMinusList;
-      syntaxMap[Atom.DIV] = GraphDivList;
-      syntaxMap[Atom.MUL] = GraphMulList;
-      syntaxMap[Atom.EQUAL] = GraphEqualList;
-      syntaxMap[Atom.GREATER] = GraphGreaterList;
-      syntaxMap[Atom.LESS] = GraphLessList;
-      syntaxMap[Atom.GREATEREQUAL] = GraphGreaterEqualList;
-      syntaxMap[Atom.LESSEQUAL] = GraphLessEqualList;
+      syntaxMap[AtomType.PLUS] = GraphPlusList;
+      syntaxMap[AtomType.MINUS] = GraphMinusList;
+      syntaxMap[AtomType.DIV] = GraphDivList;
+      syntaxMap[AtomType.MUL] = GraphMulList;
+      syntaxMap[AtomType.EQUAL] = GraphEqualList;
+      syntaxMap[AtomType.GREATER] = GraphGreaterList;
+      syntaxMap[AtomType.LESS] = GraphLessList;
+      syntaxMap[AtomType.GREATEREQUAL] = GraphGreaterEqualList;
+      syntaxMap[AtomType.LESSEQUAL] = GraphLessEqualList;
 
       /* graphic */
-      syntaxMap[Atom.DRAW] = GraphDrawList;
-      syntaxMap[Atom.POINT] = GraphPointList;
-      syntaxMap[Atom.COLOR] = GraphColorList;
-      syntaxMap[Atom.CIRCLE] = GraphCircleList;
-      syntaxMap[Atom.CLEAR] = GraphClearList;
+      syntaxMap[AtomType.DRAW] = GraphDrawList;
+      syntaxMap[AtomType.POINT] = GraphPointList;
+      syntaxMap[AtomType.COLOR] = GraphColorList;
+      syntaxMap[AtomType.CIRCLE] = GraphCircleList;
+      syntaxMap[AtomType.CLEAR] = GraphClearList;
 
       var TargetFunction = syntaxMap[firstList.type];
       if (!TargetFunction) {
@@ -98,7 +98,7 @@ module emola {
       if (this.list.length !== 3) {
         throw new InvalidArgumentError("Argument length are invalid.");
       }
-      if (this.list[1].type !== Atom.VAR) {
+      if (this.list[1].type !== AtomType.VAR) {
         throw new InvalidTypeError("Invalid atom type.")
       }
     }
@@ -157,7 +157,7 @@ module emola {
 
   export class EvalList extends ExpList implements Evalable {
     evalSyntax(env) {
-      if (this.list[1].type === Atom.VAR) {
+      if (this.list[1].type === AtomType.VAR) {
         var value = this.list[1].value;
         var quote = env.findEnv(value).get(value);
         return quote.exec()
@@ -314,8 +314,8 @@ module emola {
     }
 
     assert() {
-      if (this.list[0].type !== Atom.QUOTE) {
-        throw new Error("InvalidAtomTypeException");
+      if (this.list[0].type !== AtomType.QUOTE) {
+        throw new Error("InvalidAtomTypeTypeException");
       }
     }
   }
@@ -604,8 +604,8 @@ module emola {
       if (this.expList.length !== 3) {
         throw new Error("InvalidArgumentException")
       }
-      if (this.expList[1].type !== Atom.VAR) {
-        throw new Error("InvalidAtomTypeException")
+      if (this.expList[1].type !== AtomType.VAR) {
+        throw new Error("InvalidAtomTypeTypeException")
       }
     }
   }
@@ -667,7 +667,7 @@ module emola {
 
   export class GraphEvalList extends GraphExpList implements Evalable {
     evalSyntax(env) {
-      if (this.expList[1].type === Atom.VAR) {
+      if (this.expList[1].type === AtomType.VAR) {
         var value = this.expList[1].value;
         var quote = env.findEnv(value).get(value);
         return quote.exec()
@@ -834,8 +834,8 @@ module emola {
     }
     
     assert() {
-      if (this.expList[0].type !== Atom.QUOTE) {
-        throw new Error("InvalidAtomTypeException");
+      if (this.expList[0].type !== AtomType.QUOTE) {
+        throw new Error("InvalidAtomTypeTypeException");
       }
     }
   }

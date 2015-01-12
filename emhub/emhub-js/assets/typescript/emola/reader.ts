@@ -37,20 +37,20 @@ module emola {
 
   export class Atomizer {
     static atomize(token) {
-      if (token === Atom.TRUE) {
-        return new Atom(Atom.TRUE);
-      } else if (token === Atom.FALSE) {
-        return new Atom(Atom.FALSE);
+      if (token === AtomType.TRUE) {
+        return new Atom(AtomType.TRUE);
+      } else if (token === AtomType.FALSE) {
+        return new Atom(AtomType.FALSE);
       } else if (typeof token === 'string') {
         if (token[0] === '"' || token[0] === "'") {
-          return new Atom(Atom.STR, token.slice(1, -1));
+          return new Atom(AtomType.STR, token.slice(1, -1));
         } else if (Atom.isAtomToken(token)) {
           return new Atom(token, null);
         } else {
-          return new Atom(Atom.VAR, token);
+          return new Atom(AtomType.VAR, token);
         }
       } else if (typeof token === 'number') {
-        return new Atom(Atom.NUMBER, token);
+        return new Atom(AtomType.NUMBER, token);
       } else {
         throw 'Unknown token';
       }

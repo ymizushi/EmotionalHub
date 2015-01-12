@@ -5,10 +5,7 @@ module emola {
     evalSyntax(env: Env);
   }
 
-  export class Atom implements Evalable {
-    type: string;
-    value: string;
-
+  export class AtomType {
     /* lang */
     static FN = 'fn';
     static IF = 'if';
@@ -45,42 +42,48 @@ module emola {
     static CIRCLE = 'circle';
     static CLEAR = 'clear';
 
+    static getAtoms():string[] {
+      return [
+        AtomType.FN,
+        AtomType.IF,
+        AtomType.DEF,
+        AtomType.DEFN,
+        AtomType.DO,
+        AtomType.SEND,
+        AtomType.LET,
+        AtomType.QUOTE,
+        AtomType.EVAL,
+
+        AtomType.PLUS,
+        AtomType.MINUS,
+        AtomType.DIV,
+        AtomType.MUL,
+        AtomType.EQUAL,
+        AtomType.GREATER,
+        AtomType.LESS,
+        AtomType.GREATEREQUAL,
+        AtomType.LESSEQUAL,
+
+        AtomType.DRAW,
+        AtomType.POINT,
+        AtomType.COLOR,
+        AtomType.CIRCLE,
+        AtomType.CLEAR
+      ];
+    }
+  }
+
+  export class Atom implements Evalable {
+    type: string;
+    value: string;
+
     static isAtom(atom: Atom) {
       return atom instanceof Atom
     }
 
-    static getAtoms():string[] {
-      return [
-        Atom.FN,
-        Atom.IF,
-        Atom.DEF,
-        Atom.DEFN,
-        Atom.DO,
-        Atom.SEND,
-        Atom.LET,
-        Atom.QUOTE,
-        Atom.EVAL,
-
-        Atom.PLUS,
-        Atom.MINUS,
-        Atom.DIV,
-        Atom.MUL,
-        Atom.EQUAL,
-        Atom.GREATER,
-        Atom.LESS,
-        Atom.GREATEREQUAL,
-        Atom.LESSEQUAL,
-
-        Atom.DRAW,
-        Atom.POINT,
-        Atom.COLOR,
-        Atom.CIRCLE,
-        Atom.CLEAR
-      ];
-    }
 
     static isAtomToken(token: string):boolean {
-      return Atom.getAtoms().indexOf(token) >= 0
+      return AtomType.getAtoms().indexOf(token) >= 0
     }
 
     constructor(type: string, value: string=null) {
@@ -94,15 +97,15 @@ module emola {
 
     evalSyntax(env: Env) {
       switch (this.type) {
-        case Atom.TRUE:
+        case AtomType.TRUE:
           return true;
-        case Atom.FALSE:
+        case AtomType.FALSE:
           return false;
-        case Atom.STR:
+        case AtomType.STR:
           return this.value;
-        case Atom.NUMBER:
+        case AtomType.NUMBER:
           return Number(this.value);
-        case Atom.VAR:
+        case AtomType.VAR:
           var foundEnv:Env = env.findEnv(this.value);
           if (foundEnv) {
             var foundValue:Evalable = foundEnv.get(this.value);
