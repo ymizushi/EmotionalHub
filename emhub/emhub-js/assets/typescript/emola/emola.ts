@@ -9,8 +9,7 @@
 
 module emola {
   export class Global {
-    static env = new Env(null)
-    static graphicContext:CanvasContext = null
+    static graphicContext: CanvasContext = null
     static drawingManager: DrawingManager = new DrawingManager(new Socket())
   }
 
@@ -50,6 +49,7 @@ module emola {
     static start() {
       var druggingObject = null
       var drugging = false
+      var env: Env = new Env(null)
 
       $(document).ready(function() {
         Main.initGraphicContext();
@@ -64,7 +64,7 @@ module emola {
             if (parsedList.draw) {
               Global.drawingManager.add(parsedList)
             }
-            result = parsedList.evalSyntax(Global.env)
+            result = parsedList.evalSyntax(env)
           } catch (e) {
             result = "Parse error"
             console.log(e)
@@ -108,7 +108,7 @@ module emola {
           console.log("double clicked");
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
-            var result = drawing.evalSyntax(Global.env);
+            var result = drawing.evalSyntax(env);
             console.log(result);
             var text: Text = new Text(result, drawing.point, new Color());
             Global.drawingManager.add(text);
