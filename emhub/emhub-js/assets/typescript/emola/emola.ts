@@ -5,9 +5,15 @@
 /// <reference path="syntax_list.ts"/>
 /// <reference path="canvas.ts"/>
 /// <reference path="socket.ts"/>
-/// <reference path="global.ts"/>
+/// <reference path="manager.ts"/>
 
 module emola {
+  export class Global {
+    static env = new Env(null)
+    static graphicContext:CanvasContext = null
+    static drawingManager: DrawingManager = new DrawingManager(new Socket())
+  }
+
   class Main {
     static drawLoop () {
       setTimeout(Main.drawLoop, 15)
@@ -16,17 +22,39 @@ module emola {
       Global.drawingManager.draw(Global.graphicContext)
     }
 
-    static start() {
-      $(document).ready(function() {
-        if (Global.graphicContext === null) {
-          var canvas = document.getElementById('canvas');
-          Global.graphicContext = CanvasContext.create(canvas);
-          if(Global.graphicContext !== null) {
-            Main.drawLoop();
-          }
+    static initGraphicContext () {
+      if (Global.graphicContext === null) {
+        var canvas = document.getElementById('canvas');
+        Global.graphicContext = CanvasContext.create(canvas);
+        if(Global.graphicContext !== null) {
+          Main.drawLoop();
         }
+      }
+    }
 
-        new ConsoleManager('<div class="console">', function (line) {
+    static getPosition(e:any):Point {
+      var pageX = e.pageX;
+      var pageY = e.pageY;
+      var rect = e.target.getBoundingClientRect();
+
+      var x = pageX - rect.left;
+      var y = pageY - rect.top;
+      return new Point(x, y)
+    }
+
+    static getDrawingObject(drawing:any , e:any):any {
+      var point = Main.getPosition(e)
+      return Global.drawingManager.getListObject(point, drawing)
+    }
+
+    static start() {
+      var druggingObject = null
+      var drugging = false
+
+      $(document).ready(function() {
+        Main.initGraphicContext();
+
+        new ConsoleManager('<div class="console">', (line) => {
           var parsedList;
           var result = ''
           try {
@@ -34,13 +62,7 @@ module emola {
             tokenReader.add(line)
             parsedList = Parser.parse(tokenReader);
             if (parsedList.draw) {
-              // var palette = new Palette()
-              // var paletteWidget = new PaletteWidget(SyntaxNode.Plus)
-              // palette.add(paletteWidget)
-              // Global.drawingManager.add(palette)
-
               Global.drawingManager.add(parsedList)
-
             }
             result = parsedList.evalSyntax(Global.env)
           } catch (e) {
@@ -51,68 +73,48 @@ module emola {
         });
       });
 
-      function getPosition(e:any):Point {
-        var pageX = e.pageX;
-        var pageY = e.pageY;
-        var rect = e.target.getBoundingClientRect();
+      $(window).mousedown(function (e) {
+        drugging = true
+        var drawing = Main.getDrawingObject(null, e)
+        if (drawing) {
+          druggingObject = drawing
+        }
+      })
 
-        var x = pageX - rect.left;
-        var y = pageY - rect.top;
-        return new Point(x, y)
-      }
+      $(window).mouseup(
+        function (e) {
+          drugging = false
+          if (druggingObject) {
+            var drawing = Main.getDrawingObject(druggingObject, e)
+            if (drawing && druggingObject != drawing) {
+              drawing.add(druggingObject)
+              // Global.drawingManager.remove(druggingObject);
+            }
+            druggingObject = null
+          }
+        }
+      );
 
-      function getDrawingObject(drawing:any , e:any):any {
-        var point = getPosition(e)
-        return Global.drawingManager.getListObject(point, drawing)
-      }
+      $(window).mousemove(
+        function (e) {
+          if (druggingObject) {
+            druggingObject.point = Main.getPosition(e)
+          }
+        }
+      );
 
-      (function () {
-        var druggingObject = null
-
-        $(window).mousedown(function (e) {
-          Global.drugging = true
-          var drawing = getDrawingObject(null, e)
+      $(window).dblclick(
+        (e) => {
+          console.log("double clicked");
+          var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
-            druggingObject = drawing
+            var result = drawing.evalSyntax(Global.env);
+            console.log(result);
+            var text: Text = new Text(result, drawing.point, new Color());
+            Global.drawingManager.add(text);
           }
-        })
-
-        $(window).mouseup(
-          function (e) {
-            Global.drugging = false
-            if (druggingObject) {
-              var drawing = getDrawingObject(druggingObject, e)
-              if (drawing && druggingObject != drawing) {
-                drawing.add(druggingObject)
-                // Global.drawingManager.remove(druggingObject);
-              }
-              druggingObject = null
-            }
-          }
-        )
-
-        $(window).mousemove(
-          function (e) {
-            if (druggingObject) {
-              druggingObject.point = getPosition(e)
-            }
-          }
-        )
-
-        $(window).dblclick(
-          (e) => {
-            console.log("double clicked");
-            var drawing = getDrawingObject(druggingObject, e)
-            if (drawing) {
-              var result = drawing.evalSyntax(Global.env);
-              console.log(result);
-              var text: Text = new Text(result, drawing.point, new Color());
-              Global.drawingManager.add(text);
-              // text.draw(Global.graphicContext);
-            }
-          }
-        )
-      })();
+        }
+      );
     }
   }
   Main.start();
