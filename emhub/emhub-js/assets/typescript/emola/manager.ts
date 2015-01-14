@@ -50,31 +50,4 @@ module emola {
     }
   }
 
-  export class ConsoleManager {
-    callbackList: any
-    commandContainer: any
-
-    constructor(htmlString: string, func) {
-      this.commandContainer = $(htmlString)
-      this.callbackList = func;
-
-      $('#emola-console').append(this.commandContainer);
-      this.commandContainer.console({
-        promptLabel: 'Emola> ',
-        commandValidate: function(line) {
-          return line !== "";
-        },
-        commandHandle:this.callbackList,
-        autofocus: true,
-        animateScroll: true,
-        promptHistory: true,
-        charInsertTrigger: function(keycode,line) {
-          return true;
-        }
-      })
-    }
-    addCallback(callback) {
-      this.callbackList = callback
-    }
-  }
 }

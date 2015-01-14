@@ -13,6 +13,31 @@ module emola {
     static drawingManager: DrawingManager = new DrawingManager(new Socket())
   }
 
+  export class ConsoleManager {
+    callbackList: any
+    commandContainer: any
+
+    constructor(htmlString: string, func) {
+      this.commandContainer = $(htmlString)
+      this.callbackList = func;
+
+      $('#emola-console').append(this.commandContainer);
+      this.commandContainer.console({
+        promptLabel: 'Emola> ',
+        commandValidate: function(line) {
+          return line !== "";
+        },
+        commandHandle:this.callbackList,
+        autofocus: true,
+        animateScroll: true,
+        promptHistory: true,
+        charInsertTrigger: function(keycode,line) {
+          return true;
+        }
+      })
+    }
+  }
+
   class Main {
     static drawLoop () {
       setTimeout(Main.drawLoop, 15)
@@ -51,7 +76,7 @@ module emola {
       var drugging = false
       var env: Env = new Env(null)
 
-      $(document).ready(function() {
+      $(document).ready(() => {
         Main.initGraphicContext();
 
         new ConsoleManager('<div class="console">', (line) => {
@@ -73,7 +98,7 @@ module emola {
         });
       });
 
-      $(window).mousedown(function (e) {
+      $(window).mousedown((e) => {
         drugging = true
         var drawing = Main.getDrawingObject(null, e)
         if (drawing) {
@@ -81,8 +106,7 @@ module emola {
         }
       })
 
-      $(window).mouseup(
-        function (e) {
+      $(window).mouseup((e) => {
           drugging = false
           if (druggingObject) {
             var drawing = Main.getDrawingObject(druggingObject, e)
@@ -95,16 +119,14 @@ module emola {
         }
       );
 
-      $(window).mousemove(
-        function (e) {
+      $(window).mousemove((e) => {
           if (druggingObject) {
             druggingObject.point = Main.getPosition(e)
           }
         }
       );
 
-      $(window).dblclick(
-        (e) => {
+      $(window).dblclick((e) => {
           console.log("double clicked");
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {

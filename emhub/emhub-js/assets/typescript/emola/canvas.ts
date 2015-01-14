@@ -90,8 +90,6 @@ module emola {
       palette.add(paletteComponentCircle);
       palette.draw(canvasContext);
 
-
-
       // rect.draw(contextWrapper);
       // var point:Point = new Point(rect.point.x+(rect.size.width/2), rect.point.y+(rect.size.height/2));
       // var text: Text = new Text(this.syntaxNodeType, point, new Color(200,200,200,1), 20);
