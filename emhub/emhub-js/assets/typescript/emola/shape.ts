@@ -221,4 +221,45 @@ module emola {
       this.context.clearRect(0, 0, sizeWidth, sizeHeight)
     }
   }
+
+  export class CanvasLayer {
+    drawableList: Drawable[];
+
+    constructor() {
+      this.drawableList = [];
+    }
+
+    draw(canvasContext: CanvasContext) {
+      this.drawableList.forEach(e => e.draw(canvasContext));
+    }
+
+    add(drawable: Drawable) {
+      this.drawableList.push(drawable);
+    }
+  }
+
+  export class CanvasLayerSet {
+    canvasLayerList: CanvasLayer[];
+
+    constructor() {
+      this.canvasLayerList = [];
+    }
+
+    draw(canvasContext: CanvasContext) {
+      this.canvasLayerList.forEach(e => e.draw(canvasContext));
+    }
+
+    add(canvasLayer: CanvasLayer) {
+      this.canvasLayerList.push(canvasLayer);
+    }
+
+    remove(canvasLayer: CanvasLayer) {
+      for (var i in this.canvasLayerList) {
+        if (this.canvasLayerList[i] === canvasLayer) {
+          this.canvasLayerList.splice(i,1);
+          return;
+        }
+      }
+    }
+  }
 }
