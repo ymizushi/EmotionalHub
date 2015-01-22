@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/jquery/jquery.d.ts" />
 /// <reference path="lang.ts" />
 /// <reference path="reader.ts"/>
 /// <reference path="shape.ts" />
@@ -49,5 +48,4 @@ module emola {
       }
     }
   }
-
 }

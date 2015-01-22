@@ -79,7 +79,7 @@ module emola {
   export class CircleList extends ExpList implements Evalable {
     evalSyntax(env: Env) {
       var pointList: PointList = this.list[1];
-      var radius: Atom = this.list[2];
+      var radius: Evalable = this.list[2];
       var colorList: ColorList = this.list[3];
       return new Circle(pointList.evalSyntax(env), radius.evalSyntax(env), colorList.evalSyntax(env))
     }
@@ -560,7 +560,7 @@ module emola {
   export class GraphCircleList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       var pointList: GraphPointList = this.expList[1];
-      var radius: Atom = this.expList[2];
+      var radius: Evalable = this.expList[2];
       var colorList: GraphColorList = this.expList[3];
       return new Circle(pointList.evalSyntax(env), radius.evalSyntax(env), colorList.evalSyntax(env))
     }
@@ -857,14 +857,19 @@ module emola {
   export class GraphVarList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
-      var func:any;
+      var func;
+      // 一番目の引数が((piyo 1 2) 2)みたいな形式の時
       if (this.expList[0] instanceof GraphVarList) {
         func = this.expList[0].evalSyntax(env);
       } else {
         func = env.findEnv(this.expList[0].value).get(this.expList[0].value);
       }
       var realArgsList = this.expList.slice(1);
-    
+
+      if (func.args.length !== realArgsList.length) {
+        throw new InvalidArgumentError("Wrong args count");
+
+      }
       for (var i=0;i<realArgsList.length;i++) {
         func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
       }

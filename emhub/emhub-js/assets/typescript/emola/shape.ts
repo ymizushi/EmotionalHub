@@ -236,6 +236,15 @@ module emola {
     add(drawable: Drawable) {
       this.drawableList.push(drawable);
     }
+
+    remove(drawable: Drawable) {
+      for (var i in this.drawableList) {
+        if (this.drawableList[i] === drawable) {
+          this.drawableList.splice(i,1);
+          return;
+        }
+      }
+    }
   }
 
   export class CanvasLayerSet {

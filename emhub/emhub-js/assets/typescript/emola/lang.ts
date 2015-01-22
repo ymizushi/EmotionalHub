@@ -95,7 +95,7 @@ module emola {
       return this.type === type
     }
 
-    evalSyntax(env: Env) {
+    evalSyntax(env: Env):any {
       switch (this.type) {
         case AtomType.TRUE:
           return true;
@@ -108,12 +108,8 @@ module emola {
         case AtomType.VAR:
           var foundEnv:Env = env.findEnv(this.value);
           if (foundEnv) {
-            var foundValue:Evalable = foundEnv.get(this.value);
-            if (foundValue.evalSyntax) {
-              return foundValue.evalSyntax(env);
-            } else {
-              return foundValue;
-            }
+            var foundValue = foundEnv.get(this.value);
+            return foundValue;
           } else {
             throw new InvalidTypeError('Target key of environment is not found.');
           }
@@ -163,8 +159,10 @@ module emola {
     }
     
     evalSyntax(env: Env) {
+      // 引数のenvは見ない
       return this.expList.evalSyntax(this.env)
     }
+
   }
 
   export class Quote implements Evalable {

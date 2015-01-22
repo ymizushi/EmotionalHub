@@ -6,6 +6,7 @@
 /// <reference path="canvas.ts"/>
 /// <reference path="socket.ts"/>
 /// <reference path="manager.ts"/>
+/// <reference path="error.ts"/>
 
 module emola {
   export class Global {
@@ -91,8 +92,7 @@ module emola {
             }
             result = parsedList.evalSyntax(env)
           } catch (e) {
-            result = "Parse error"
-            console.log(e)
+            result = e.name + ": " + '"' + e.message + '"';
           }
           return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
         });
