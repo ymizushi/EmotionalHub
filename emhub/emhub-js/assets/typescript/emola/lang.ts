@@ -1,5 +1,5 @@
 ///<reference path="error.ts"/>
-///<reference path="syntax_list.ts"/>
+
 module emola {
   export interface Evalable {
     evalSyntax(env: Env);
@@ -110,10 +110,8 @@ module emola {
           if (foundEnv) {
             var foundValue = foundEnv.get(this.value);
             return foundValue;
-          } else {
-            throw new InvalidTypeError('Target key of environment is not found.');
           }
-          break;
+          throw new InvalidTypeError('Target key of environment is not found.');
         default:
           throw new InvalidTypeError('Unknown reserved word.');
       }
@@ -147,14 +145,15 @@ module emola {
       return this.outer.findEnv(key)
     }
   }
+
   export class Fn implements Evalable {
     args: string[];
-    expList: GraphExpList;
+    expList: Evalable;
     env: Env;
 
-    constructor(args: string[], expList:GraphExpList, env:Env) {
+    constructor(args: string[], evalable:Evalable, env:Env) {
       this.args = args;
-      this.expList = expList;
+      this.expList = evalable;
       this.env = env
     }
     
@@ -179,18 +178,6 @@ module emola {
     }
     exec() {
       return this.list.evalSyntax(this.env)
-    }
-  }
-
-  export class Node {
-    parent: Node;
-    children: any;
-    token: any;
-
-    constructor(parent) {
-      this.parent = parent;
-      this.children = [];
-      this.token = null
     }
   }
 }
