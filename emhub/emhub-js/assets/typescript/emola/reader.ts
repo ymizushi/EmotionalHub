@@ -33,6 +33,10 @@ module emola {
         }
       )
     }
+
+    static tokenize2(inputStr) {
+      var re = /^[()]|^[^()]+[^\S]$|"[\S\s]*"/;
+    }
   }
 
   export class Atomizer {

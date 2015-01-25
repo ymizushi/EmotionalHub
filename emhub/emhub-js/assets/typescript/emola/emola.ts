@@ -127,7 +127,6 @@ module emola {
       );
 
       $(window).dblclick((e) => {
-          console.log("double clicked");
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
             var result = drawing.evalSyntax(env);
