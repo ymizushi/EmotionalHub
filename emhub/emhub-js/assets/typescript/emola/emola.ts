@@ -3,9 +3,9 @@
 /// <reference path="reader.ts"/>
 /// <reference path="shape.ts" />
 /// <reference path="syntax_list.ts"/>
+/// <reference path="manager.ts"/>
 /// <reference path="canvas.ts"/>
 /// <reference path="socket.ts"/>
-/// <reference path="manager.ts"/>
 /// <reference path="error.ts"/>
 
 module emola {
@@ -14,7 +14,7 @@ module emola {
     static drawingManager: DrawingManager = new DrawingManager(new Socket())
   }
 
-  export class ConsoleManager {
+  export class Console {
     callbackList: any
     commandContainer: any
 
@@ -80,7 +80,7 @@ module emola {
       $(document).ready(() => {
         Main.initGraphicContext();
 
-        new ConsoleManager('<div class="console">', (line) => {
+        new Console('<div class="console">', (line) => {
           var parsedList;
           var result = ''
           try {
@@ -120,7 +120,7 @@ module emola {
       );
 
       $(window).mousemove((e) => {
-          if (druggingObject) {
+          if (drugging && druggingObject) {
             druggingObject.point = Main.getPosition(e)
           }
         }
@@ -130,7 +130,6 @@ module emola {
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
             var result = drawing.evalSyntax(env);
-            console.log(result);
             var text: Text = new Text(result, drawing.point, new Color());
             Global.drawingManager.add(text);
           }

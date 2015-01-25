@@ -822,9 +822,6 @@ module emola {
     exec () {
       this.assert();
       var list = this.expList[1];
-      if (list.draw) {
-        Global.drawingManager.add(list);
-      }
       return list.evalSyntax(this.env)
     
     }
