@@ -248,27 +248,17 @@ module emola {
   }
 
   export class CanvasLayerSet {
-    canvasLayerList: CanvasLayer[];
+    toolLayer: CanvasLayer
+    expLayer: CanvasLayer
 
     constructor() {
-      this.canvasLayerList = [];
+      this.toolLayer = new CanvasLayer();
+      this.expLayer = new CanvasLayer();
     }
 
     draw(canvasContext: CanvasContext) {
-      this.canvasLayerList.forEach(e => e.draw(canvasContext));
-    }
-
-    add(canvasLayer: CanvasLayer) {
-      this.canvasLayerList.push(canvasLayer);
-    }
-
-    remove(canvasLayer: CanvasLayer) {
-      for (var i in this.canvasLayerList) {
-        if (this.canvasLayerList[i] === canvasLayer) {
-          this.canvasLayerList.splice(i,1);
-          return;
-        }
-      }
+      this.expLayer.draw(canvasContext);
+      this.toolLayer.draw(canvasContext);
     }
   }
 }

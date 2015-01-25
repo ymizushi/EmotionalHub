@@ -15,10 +15,8 @@ module emola {
     constructor(socket: Socket) {
       this.graphList = []
       this.socket = socket
-      var toolLayer = new CanvasLayer();
-      var graphSyntaxLayer = new CanvasLayer();
-      this.canvasLayerSet.add(toolLayer);
-      this.canvasLayerSet.add(graphSyntaxLayer);
+
+      this.canvasLayerSet = new CanvasLayerSet();
     }
 
     add(drawing: any) {
