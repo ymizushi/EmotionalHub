@@ -43,7 +43,6 @@ module emola {
     static drawLoop () {
       setTimeout(Main.drawLoop, 15)
       Global.graphicContext.clear()
-      CanvasWindow.createCanvasWindow(Global.graphicContext);
       Global.drawingManager.draw(Global.graphicContext)
     }
 

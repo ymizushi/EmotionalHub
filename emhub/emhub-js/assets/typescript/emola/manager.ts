@@ -36,11 +36,14 @@ module emola {
 
     draw(context: CanvasContext) {
       for (var i=0;i<this.graphList.length;i++) {
-        if (this.graphList[i].rotate) {
-          this.graphList[i].rotate(0.01)
-        }
-        this.graphList[i].draw(context)
+          if (this.graphList[i].rotate) {
+              this.graphList[i].rotate(0.01)
+            }
+          this.graphList[i].draw(context)
       }
+
+      this.canvasLayerSet.set(this.graphList);
+      this.canvasLayerSet.draw(context);
     }
 
     getListObject(point: Point, drawing:Drawable) {
