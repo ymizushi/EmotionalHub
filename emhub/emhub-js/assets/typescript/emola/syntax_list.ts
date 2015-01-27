@@ -432,7 +432,7 @@ module emola {
     }
   }
 
-  export class GraphExpList {
+  export class GraphExpList implements Drawable {
     static NODE_RADIUS = 20;
     static LEAF_RADIUS = 15;
 
@@ -496,7 +496,6 @@ module emola {
     }
     
     draw(context: CanvasContext) {
-
       for (var i=1;i<this.expList.length;i++) {
         this.theta += 2 * Math.PI/(this.expList.length-1);
         var point = new Point(this.point.x + this.radius*Math.cos(this.theta), this.point.y +  this.radius*Math.sin(this.theta));
@@ -505,7 +504,7 @@ module emola {
           this.expList[i].point = point;
           this.expList[i].draw(context);
         } else {
-          var circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
+          var circle: Circle = new Circle(point, GraphExpList.LEAF_RADIUS, this.leafColor);
           circle.draw(context);
     
           this.drawText(this.expList[i], context, point, new Color(200,200,200))
@@ -540,12 +539,12 @@ module emola {
       if (this.isMet(point)) {
         return this;
       }
-      this.expList.forEach(function (element) {
-        var leafListObject = element;
+      for (var i in this.expList) {
+        var leafListObject = this.expList[i];
         if (leafListObject instanceof GraphExpList && leafListObject.getListObject(point)) {
           return leafListObject;
         }
-      });
+      }
       return null;
     }
     

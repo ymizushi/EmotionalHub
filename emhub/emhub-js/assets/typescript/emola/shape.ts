@@ -1,5 +1,4 @@
 ///<reference path="canvas.ts"/>
-///<reference path="canvas.ts"/>
 
 module emola {
   export interface Drawable {
@@ -257,52 +256,4 @@ module emola {
     }
   }
 
-  export class CanvasLayerSet {
-    toolLayer: CanvasLayer
-    expLayer: CanvasLayer
-
-    constructor() {
-      this.toolLayer = new CanvasLayer();
-      var palette = this.createPalette();
-      this.toolLayer.add(palette);
-      this.expLayer = new CanvasLayer();
-    }
-
-    createPalette() {
-      var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(50,251), new Color(10,97,50,1)));
-      var paletteComponentPlus = new PaletteComponent(SyntaxNodeType.PLUS);
-      var paletteComponentMinus = new PaletteComponent(SyntaxNodeType.MINUS);
-      var paletteComponentMul = new PaletteComponent(SyntaxNodeType.MUL);
-      var paletteComponentDiv = new PaletteComponent(SyntaxNodeType.DIV);
-      var paletteComponentCircle = new PaletteComponent(SyntaxNodeType.CIRCLE);
-
-      palette.add(paletteComponentPlus);
-      palette.add(paletteComponentMinus);
-      palette.add(paletteComponentMul);
-      palette.add(paletteComponentDiv);
-      palette.add(paletteComponentCircle);
-      return palette;
-    }
-
-    draw(canvasContext: CanvasContext) {
-      this.expLayer.draw(canvasContext);
-      this.toolLayer.draw(canvasContext);
-    }
-
-    set(drawableList: Drawable[]) {
-      this.expLayer.set(drawableList);
-    }
-
-    add(drawable: Drawable) {
-      this.expLayer.add(drawable);
-    }
-
-    remove(drawable: Drawable) {
-      this.expLayer.remove(drawable)
-    }
-
-    clear() {
-      this.expLayer.clear();
-    }
-  }
 }

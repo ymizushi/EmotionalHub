@@ -47,6 +47,10 @@ module emola {
     }
 
     getListObject(point: Point, drawing:Drawable) {
+      //for (var i in this.canvasLayerSet.toolLayer) {
+
+
+
       for (var i in this.graphList) {
         var targetListObject = this.graphList[i].getListObject(point)
         if (targetListObject && targetListObject !== drawing) {

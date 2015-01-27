@@ -21,7 +21,9 @@ module emola {
     constructor(htmlString: string, func) {
       this.commandContainer = $(htmlString)
       this.callbackList = func;
+    }
 
+    init() {
       $('#emola-console').append(this.commandContainer);
       this.commandContainer.console({
         promptLabel: 'Emola> ',
@@ -67,7 +69,7 @@ module emola {
     }
 
     static getDrawingObject(drawing:any , e:any):any {
-      var point = Main.getPosition(e)
+      var point: Point = Main.getPosition(e)
       return Global.drawingManager.getListObject(point, drawing)
     }
 
@@ -79,7 +81,7 @@ module emola {
       $(document).ready(() => {
         Main.initGraphicContext();
 
-        new Console('<div class="console">', (line) => {
+        var console: Console = new Console('<div class="console">', (line) => {
           var parsedList;
           var result = ''
           try {
@@ -95,6 +97,7 @@ module emola {
           }
           return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
         });
+        console.init();
       });
 
       $(window).mousedown((e) => {
@@ -111,7 +114,6 @@ module emola {
             var drawing = Main.getDrawingObject(druggingObject, e)
             if (drawing && druggingObject != drawing) {
               drawing.add(druggingObject)
-              // Global.drawingManager.remove(druggingObject);
             }
             druggingObject = null
           }

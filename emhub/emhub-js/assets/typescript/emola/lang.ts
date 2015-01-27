@@ -81,7 +81,6 @@ module emola {
       return atom instanceof Atom
     }
 
-
     static isAtomToken(token: string):boolean {
       return AtomType.getAtoms().indexOf(token) >= 0
     }
