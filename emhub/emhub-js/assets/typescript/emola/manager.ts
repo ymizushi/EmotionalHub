@@ -37,6 +37,7 @@ module emola {
 
     clear() {
       this.graphList = []
+      this.canvasLayerSet.clear()
     }
 
     draw(context: CanvasContext) {

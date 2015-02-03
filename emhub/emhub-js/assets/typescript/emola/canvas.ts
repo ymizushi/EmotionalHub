@@ -138,6 +138,7 @@ module emola {
 
     clear() {
       this.expLayer.clear();
+      this.displayLayer.clear();
     }
   }
 }
