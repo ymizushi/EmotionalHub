@@ -132,7 +132,7 @@ module emola {
           if (drawing) {
             var result = drawing.evalSyntax(env);
             var text: Text = new Text(result, drawing.point, new Color());
-            Global.drawingManager.add(text);
+            Global.drawingManager.addText(text);
           }
         }
       );

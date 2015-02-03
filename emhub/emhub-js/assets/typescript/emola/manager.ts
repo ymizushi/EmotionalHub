@@ -19,6 +19,11 @@ module emola {
       this.canvasLayerSet = new CanvasLayerSet();
     }
 
+    addText(text: Text) {
+      var displayLayer =this.canvasLayerSet.getDisplayLayer();
+      displayLayer.add(text);
+    }
+
     add(drawing: any) {
       this.graphList.push(drawing)
       // this.socket.send("hoge")
@@ -28,6 +33,10 @@ module emola {
       this.graphList.forEach(function(element) {
         element.remove(drawing);
       })
+    }
+
+    getCanvasLayerSet() {
+      return this.canvasLayerSet;
     }
 
     clear() {
@@ -49,10 +58,13 @@ module emola {
     getListObject(point: Point, drawing:Drawable) {
       //for (var i in this.canvasLayerSet.toolLayer) {
 
-
-
       for (var i in this.graphList) {
-        var targetListObject = this.graphList[i].getListObject(point)
+        var targetListObject
+        if (!this.graphList[i].getListObject){
+          console.log(this.graphList[i]);
+          return null;
+        }
+        targetListObject = this.graphList[i].getListObject(point)
         if (targetListObject && targetListObject !== drawing) {
           return targetListObject
         }

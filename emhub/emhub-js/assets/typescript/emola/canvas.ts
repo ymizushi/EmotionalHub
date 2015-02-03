@@ -73,13 +73,16 @@ module emola {
   }
 
   export class CanvasLayerSet {
-    toolLayer: CanvasLayer
-    expLayer: CanvasLayer
+    private toolLayer: CanvasLayer
+    private displayLayer: CanvasLayer
+    private expLayer: CanvasLayer
 
     constructor() {
-      this.toolLayer = new CanvasLayer();
       var palette = this.createOperatorPalette();
+      this.toolLayer = new CanvasLayer();
       this.toolLayer.add(palette);
+
+      this.displayLayer = new CanvasLayer();
       this.expLayer = new CanvasLayer();
     }
 
@@ -106,6 +109,11 @@ module emola {
     draw(canvasContext: CanvasContext) {
       this.expLayer.draw(canvasContext);
       this.toolLayer.draw(canvasContext);
+      this.displayLayer.draw(canvasContext);
+    }
+
+    getDisplayLayer() {
+      return this.displayLayer;
     }
 
     set(drawableList: Drawable[]) {
