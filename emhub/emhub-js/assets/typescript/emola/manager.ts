@@ -35,10 +35,6 @@ module emola {
       })
     }
 
-    getCanvasLayerSet() {
-      return this.canvasLayerSet;
-    }
-
     clear() {
       this.graphList = []
     }
@@ -55,15 +51,13 @@ module emola {
       this.canvasLayerSet.draw(context);
     }
 
-    getListObject(point: Point, drawing:Drawable) {
-      //for (var i in this.canvasLayerSet.toolLayer) {
+    getPalette():Palette {
+      return this.canvasLayerSet.getPalette();
+    }
 
+    getListObject(point: Point, drawing:Drawable) {
       for (var i in this.graphList) {
         var targetListObject
-        if (!this.graphList[i].getListObject){
-          console.log(this.graphList[i]);
-          return null;
-        }
         targetListObject = this.graphList[i].getListObject(point)
         if (targetListObject && targetListObject !== drawing) {
           return targetListObject

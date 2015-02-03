@@ -50,6 +50,10 @@ module emola {
   }
 
   export class Color {
+    static Red:   Color = new Color(255, 0, 0, 1);
+    static Green: Color = new Color(0, 255, 0, 1);
+    static Blue:  Color = new Color(0, 0, 255, 1);
+
     r: number;
     g: number;
     b: number;
@@ -67,6 +71,10 @@ module emola {
       this.g = color.g;
       this.b = color.b;
       this.a = color.a
+    }
+
+    static copy(color: Color) {
+      return new Color(color.r, color.g, color.b, color.a);
     }
   }
 

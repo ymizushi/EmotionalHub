@@ -12,6 +12,7 @@ module emola {
   export class Global {
     static graphicContext: CanvasContext = null
     static drawingManager: DrawingManager = new DrawingManager(new Socket())
+    static env: Env = new Env(null)
   }
 
   export class Console {
@@ -70,38 +71,57 @@ module emola {
 
     static getDrawingObject(drawing:any , e:any):any {
       var point: Point = Main.getPosition(e)
+      var palette: Palette = Global.drawingManager.getPalette();
+      var widgetComponent:WidgetComponent = palette.click(point);
+      if (widgetComponent) {
+        var parsedObject = Main.createParsedObject(widgetComponent.toString());
+        parsedObject.point = Point.copy(point);
+        if (parsedObject.draw) {
+          Global.drawingManager.add(parsedObject)
+        }
+      }
+
       return Global.drawingManager.getListObject(point, drawing)
+    }
+
+    static createParsedObject(line: string): GraphExpList {
+      var tokenReader: TokenReader = new TokenReader();
+      tokenReader.add(line)
+
+      return Parser.parse(tokenReader);
+    }
+
+    static read(line: string) {
+      var parsedList;
+      var result = ''
+      try {
+        var tokenReader: TokenReader = new TokenReader();
+        tokenReader.add(line)
+        parsedList = Parser.parse(tokenReader);
+        if (parsedList.draw) {
+          Global.drawingManager.add(parsedList)
+        }
+        result = parsedList.evalSyntax(Global.env)
+      } catch (e) {
+        result = e.name + ": " + '"' + e.message + '"';
+      }
+      return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
     }
 
     static start() {
       var druggingObject = null
       var drugging = false
-      var env: Env = new Env(null)
 
       $(document).ready(() => {
         Main.initGraphicContext();
 
-        var console: Console = new Console('<div class="console">', (line) => {
-          var parsedList;
-          var result = ''
-          try {
-            var tokenReader: TokenReader = new TokenReader();
-            tokenReader.add(line)
-            parsedList = Parser.parse(tokenReader);
-            if (parsedList.draw) {
-              Global.drawingManager.add(parsedList)
-            }
-            result = parsedList.evalSyntax(env)
-          } catch (e) {
-            result = e.name + ": " + '"' + e.message + '"';
-          }
-          return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
-        });
+        var console: Console = new Console('<div class="console">', Main.read);
         console.init();
       });
 
       $(window).mousedown((e) => {
         drugging = true
+
         var drawing = Main.getDrawingObject(null, e)
         if (drawing) {
           druggingObject = drawing
@@ -130,7 +150,8 @@ module emola {
       $(window).dblclick((e) => {
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
-            var result = drawing.evalSyntax(env);
+            //drawing.anim();
+            var result = drawing.evalSyntax(Global.env);
             var text: Text = new Text(result, drawing.point, new Color());
             Global.drawingManager.addText(text);
           }

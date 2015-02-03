@@ -26,13 +26,17 @@ module emola {
 
       text.draw(contextWrapper);
     }
+
+    toString() {
+      return "(" + this.syntaxNodeType + ")";
+    }
   }
 
 
   export interface Widget {
     rect : Rect
 
-    click(mouseInput: MouseInput): WidgetComponent
+    click(point: Point): WidgetComponent
   }
 
   export class Palette implements Widget, Drawable {
@@ -44,12 +48,12 @@ module emola {
       this.paletteComponentList = [];
     }
 
-    click(mouseInput: MouseInput): WidgetComponent {
+    click(point: Point): WidgetComponent {
       var perHeight = this.rect.size.height/this.paletteComponentList.length;
       for (var i in this.paletteComponentList) {
         var size = new Size(this.rect.size.width, perHeight);
         var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*i), size, new Color(100,100,100,1));
-        if (rect.point.x <= mouseInput.clickPoint.x &&  mouseInput.clickPoint.x <= rect.point.x+rect.size.width && rect.point.y <= mouseInput.clickPoint.y && mouseInput.clickPoint.y <= rect.point.y+rect.size.height) {
+        if (rect.point.x <= point.x &&  point.x <= rect.point.x+rect.size.width && rect.point.y <= point.y && point.y <= rect.point.y+rect.size.height) {
           return this.paletteComponentList[i];
         }
       }
@@ -77,16 +81,20 @@ module emola {
     private displayLayer: CanvasLayer
     private expLayer: CanvasLayer
 
+    private palette: Palette
+
     constructor() {
-      var palette = this.createOperatorPalette();
+      this.palette = this.createOperatorPalette();
+
       this.toolLayer = new CanvasLayer();
-      this.toolLayer.add(palette);
+      this.toolLayer.add(this.palette);
 
       this.displayLayer = new CanvasLayer();
       this.expLayer = new CanvasLayer();
+
     }
 
-    createOperatorPalette() {
+    createOperatorPalette():Palette {
       var palette: Palette = new Palette(new Rect(new Point(0,0), new Size(50,251), new Color(10,97,50,1)));
       var paletteComponentPlus = new PaletteComponent(SyntaxNodeType.PLUS);
       var paletteComponentMinus = new PaletteComponent(SyntaxNodeType.MINUS);
@@ -102,10 +110,6 @@ module emola {
       return palette;
     }
 
-    //get(mouseInput: MouseInput):Drawable {
-    //
-    //}
-
     draw(canvasContext: CanvasContext) {
       this.expLayer.draw(canvasContext);
       this.toolLayer.draw(canvasContext);
@@ -114,6 +118,10 @@ module emola {
 
     getDisplayLayer() {
       return this.displayLayer;
+    }
+
+    getPalette():Palette {
+      return this.palette;
     }
 
     set(drawableList: Drawable[]) {

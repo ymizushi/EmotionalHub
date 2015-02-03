@@ -374,7 +374,7 @@ module emola {
       this.point = point;
     }
 
-    rotate(theta) {
+    rotate(theta: number) {
       this.theta += theta ;
       for (var i=0;i<this.list.length;i++) {
         if (this.list[i] instanceof GraphExpList) {
@@ -515,6 +515,27 @@ module emola {
       var nodeCircle = new Circle(this.point , GraphExpList.NODE_RADIUS, this.nodeColor);
       nodeCircle.draw(context);
       this.drawText(this.expList[0], context, this.point, new Color(100,100,100))
+    }
+
+    anim() {
+      var registeredNodeColor: Color = Color.copy(this.nodeColor);
+
+      for (var i=0;i<this.expList.length;i++) {
+        if (this.expList[i] instanceof GraphExpList) {
+          this.expList[i].anim();
+        }
+        var firstTimerId = window.setInterval(() => {
+          this.nodeColor = Color.Red;
+          clearInterval(firstTimerId)
+        }, 500);
+
+        var secondTimerId = window.setInterval(() => {
+          this.nodeColor = registeredNodeColor;
+          clearInterval(secondTimerId)
+        }, 1000);
+        ;
+      }
+
     }
 
     drawText(atom: Atom, context: CanvasContext, point: Point, color: Color) {
