@@ -39,6 +39,9 @@ module emola {
       syntaxMap[AtomType.COLOR] = GraphColorList;
       syntaxMap[AtomType.CIRCLE] = GraphCircleList;
       syntaxMap[AtomType.CLEAR] = GraphClearList;
+      syntaxMap[AtomType.LINE] = GraphLineList;
+      syntaxMap[AtomType.RECT] = GraphRectList;
+      syntaxMap[AtomType.SIZE] = GraphSizeList;
 
       var TargetFunction = syntaxMap[firstList.type];
       if (!TargetFunction) {
@@ -586,6 +589,31 @@ module emola {
     }
   }
 
+  export class GraphLineList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var startPointList: GraphPointList = this.expList[1];
+      var endPointList: GraphPointList = this.expList[2];
+      return new Line(startPointList.evalSyntax(env), endPointList.evalSyntax(env))
+    }
+  }
+
+  export class GraphSizeList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var width:Evalable = this.expList[1];
+      var height:Evalable = this.expList[2];
+      return new Size(width.evalSyntax(env), height.evalSyntax(env))
+    }
+  }
+
+  export class GraphRectList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var pointList: GraphPointList = this.expList[1];
+      var sizeList: GraphSizeList = this.expList[2];
+      var colorList: GraphColorList = this.expList[3];
+      return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env), colorList.evalSyntax(env))
+    }
+  }
+
   export class GraphClearList extends GraphExpList implements Evalable {
     evalSyntax(_: Env) {
       Global.graphicContext.clear();
@@ -674,7 +702,7 @@ module emola {
   export class GraphDrawList extends GraphExpList  implements Evalable {
     evalSyntax(env) {
       var figure = this.expList[1].evalSyntax(env);
-      Global.drawingManager.add(figure);
+      Global.drawingManager.addDisplayElement(figure);
       return figure;
     }
   }

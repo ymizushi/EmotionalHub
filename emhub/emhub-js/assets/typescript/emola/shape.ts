@@ -84,7 +84,7 @@ module emola {
     size: Size;
     color: Color;
 
-    constructor(point: Point, size: Size, color: Color) {
+    constructor(point: Point, size: Size, color: Color=new Color()) {
       this.point = point;
       this.size = size;
       this.color = color
@@ -160,10 +160,12 @@ module emola {
   export class Line implements Drawable {
     from: Point;
     to: Point;
+    color: Color;
 
-    constructor(from: Point, to: Point) {
+    constructor(from: Point, to: Point, color: Color = new Color()) {
       this.from = from;
       this.to = to
+      this.color = color;
     }
     
     draw(context: CanvasContext) {

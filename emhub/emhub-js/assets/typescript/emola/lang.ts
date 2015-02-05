@@ -41,6 +41,9 @@ module emola {
     static COLOR = 'color';
     static CIRCLE = 'circle';
     static CLEAR = 'clear';
+    static LINE = 'line';
+    static RECT = 'rect';
+    static SIZE = 'size';
 
     static getAtoms():string[] {
       return [
@@ -68,7 +71,10 @@ module emola {
         AtomType.POINT,
         AtomType.COLOR,
         AtomType.CIRCLE,
-        AtomType.CLEAR
+        AtomType.CLEAR,
+        AtomType.RECT,
+        AtomType.LINE,
+        AtomType.SIZE,
       ];
     }
   }

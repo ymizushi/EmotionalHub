@@ -19,7 +19,7 @@ module emola {
       this.canvasLayerSet = new CanvasLayerSet();
     }
 
-    addText(text: Text) {
+    addDisplayElement(text: Text) {
       var displayLayer =this.canvasLayerSet.getDisplayLayer();
       displayLayer.add(text);
     }

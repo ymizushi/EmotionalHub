@@ -153,7 +153,7 @@ module emola {
             //drawing.anim();
             var result = drawing.evalSyntax(Global.env);
             var text: Text = new Text(result, drawing.point, new Color());
-            Global.drawingManager.addText(text);
+            Global.drawingManager.addDisplayElement(text);
           }
         }
       );
