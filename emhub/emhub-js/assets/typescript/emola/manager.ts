@@ -12,9 +12,8 @@ module emola {
 
     private canvasLayerSet: CanvasLayerSet
 
-    constructor(socket: Socket) {
+    constructor() {
       this.graphList = []
-      this.socket = socket
 
       this.canvasLayerSet = new CanvasLayerSet();
     }
@@ -26,7 +25,6 @@ module emola {
 
     add(drawing: any) {
       this.graphList.push(drawing)
-      // this.socket.send("hoge")
     }
 
     remove(drawing) {

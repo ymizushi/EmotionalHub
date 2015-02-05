@@ -12,7 +12,8 @@
 module emola {
   export class Global {
     static graphicContext: CanvasContext = null
-    static drawingManager: DrawingManager = new DrawingManager(new Socket())
+    static drawingManager: DrawingManager = new DrawingManager()
+    static socket: Socket = new Socket()
     static env: Env = new Env(null)
   }
 
@@ -43,7 +44,7 @@ module emola {
     }
   }
 
-  class Main {
+  export class Main {
     static drawLoop () {
       setTimeout(Main.drawLoop, 15)
       Global.graphicContext.clear()
@@ -155,6 +156,7 @@ module emola {
             var point =Point.copy(drawing.point);
             point.y += 20
             Global.drawingManager.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
+            Global.socket.send(TreeSerializer.serialize(drawing));
             var result = drawing.evalSyntax(Global.env);
             var text: Text = new Text(result, drawing.point, new Color());
             Global.drawingManager.addDisplayElement(text);

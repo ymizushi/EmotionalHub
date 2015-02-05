@@ -1,3 +1,6 @@
+///<reference path="reader.ts"/>
+///<reference path="emola.ts"/>
+
 module emola {
   export class Socket {
     static DEFAULT_PORT = 5000
@@ -8,7 +11,10 @@ module emola {
     constructor() {
         var socket = new WebSocket("ws://" + Socket.DEFAULT_HOST + ":" + Socket.DEFAULT_PORT);
         socket.onopen = (event)  => console.log("web socket connection is established.");
-        socket.onmessage = (event) => console.log(event.data);
+        socket.onmessage = (event) => {
+          var result = Main.read(event.data);
+          console.log(result);
+        };
         this.socket = socket
     }
 
