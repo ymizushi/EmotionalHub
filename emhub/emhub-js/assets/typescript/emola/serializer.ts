@@ -2,17 +2,13 @@
 
 module emola {
   export class TreeSerializer {
-    graphExpList: GraphExpList
-    constructor(graphExpList: GraphExpList) {
-      this.graphExpList = graphExpList;
-    }
-
-    serialize() {
+    static serialize(graphExpList: GraphExpList) {
       var output =  '(';
-      var expList = this.graphExpList.expList;
+      var expList = graphExpList.expList;
       for(var i in expList) {
-        if (expList[i] instanceof GraphExpList) {
-          output += this.serialize();
+        if (!(expList[i] instanceof Atom)) {
+          output +=  TreeSerializer.serialize(expList[i]);
+          continue;
         }
         if (Atom.isAtomToken(expList[i].type)) {
           output += expList[i].type;

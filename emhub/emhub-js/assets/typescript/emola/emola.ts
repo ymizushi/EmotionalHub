@@ -7,6 +7,7 @@
 /// <reference path="canvas.ts"/>
 /// <reference path="socket.ts"/>
 /// <reference path="error.ts"/>
+/// <reference path="serializer.ts"/>
 
 module emola {
   export class Global {
@@ -151,6 +152,9 @@ module emola {
           var drawing = Main.getDrawingObject(druggingObject, e)
           if (drawing) {
             //drawing.anim();
+            var point =Point.copy(drawing.point);
+            point.y += 20
+            Global.drawingManager.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
             var result = drawing.evalSyntax(Global.env);
             var text: Text = new Text(result, drawing.point, new Color());
             Global.drawingManager.addDisplayElement(text);
