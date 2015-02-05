@@ -609,8 +609,11 @@ module emola {
     evalSyntax(env: Env) {
       var pointList: GraphPointList = this.expList[1];
       var sizeList: GraphSizeList = this.expList[2];
-      var colorList: GraphColorList = this.expList[3];
-      return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env), colorList.evalSyntax(env))
+      if (this.expList.length >= 3) {
+        var colorList: GraphColorList = this.expList[3];
+        return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env), colorList.evalSyntax(env))
+      }
+      return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env))
     }
   }
 
