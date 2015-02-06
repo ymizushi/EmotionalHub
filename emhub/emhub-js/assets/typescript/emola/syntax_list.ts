@@ -448,6 +448,7 @@ module emola {
     point: Point;
 
     expList: any;
+    //hash: string;
 
     constructor(expList:ExpList, parent:GraphExpList=null) {
       this.expList = expList;
@@ -468,6 +469,8 @@ module emola {
         var y = Math.random() * 200;
         this.point = new Point(Math.floor(x), Math.floor(y));
       }
+
+      //this.hash = new Date().toDateString() + '_' + Math.random();
     }
     
     push(element) {
