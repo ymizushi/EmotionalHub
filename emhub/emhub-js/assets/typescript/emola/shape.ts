@@ -54,6 +54,10 @@ module emola {
     static Green: Color = new Color(0, 255, 0, 1);
     static Blue:  Color = new Color(0, 0, 255, 1);
 
+    static copy(color: Color) {
+      return new Color(color.r, color.g, color.b, color.a);
+    }
+
     r: number;
     g: number;
     b: number;
@@ -73,11 +77,7 @@ module emola {
       this.a = color.a
     }
 
-    static copy(color: Color) {
-      return new Color(color.r, color.g, color.b, color.a);
-    }
   }
-
 
   export class Rect implements Drawable {
     point: Point;
@@ -119,7 +119,7 @@ module emola {
     constructor(description: string, point: Point, color: Color, fontSize=Text.DEFAULT_FONT_SIZE, fontType=Text.DEFAULT_FONT_TYPE) {
       this.description = description;
       this.point = point;
-      this.color = color
+      this.color = color;
       this.fontSize = fontSize;
       this.fontType = fontType;
     }
@@ -164,7 +164,7 @@ module emola {
 
     constructor(from: Point, to: Point, color: Color = new Color()) {
       this.from = from;
-      this.to = to
+      this.to = to;
       this.color = color;
     }
     
@@ -220,7 +220,7 @@ module emola {
       this.context.fillText(textObject.description, textObject.point.x, textObject.point.y, 200)
     }
 
-    drawImage(path: string, point, Point) {
+    drawImage(path: string, point: Point) {
       var img = new Image();
       img.src = path;
       this.context.drawImage(img, point.x, point.y)
