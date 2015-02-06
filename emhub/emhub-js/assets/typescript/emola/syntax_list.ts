@@ -619,6 +619,7 @@ module emola {
   export class GraphClearList extends GraphExpList implements VisualEvalable {
     evalSyntax(_: Env, drawingManager: DrawingManager) {
       drawingManager.clear();
+      return null;
     }
   }
 

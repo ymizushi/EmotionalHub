@@ -86,10 +86,9 @@ module emola {
         if (parsedList.draw) {
           drawingManager.add(parsedList)
         }
-        result = parsedList.evalSyntax(env)
+        result = parsedList.evalSyntax(env, drawingManager)
       } catch (e) {
         result = e.name + ": " + '"' + e.message + '"';
-        throw e;
       }
       return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
     }
@@ -119,7 +118,7 @@ module emola {
               if (parsedList.draw) {
                 drawingManager.add(parsedList)
               }
-              result = parsedList.evalSyntax(env)
+              result = parsedList.evalSyntax(env, drawingManager)
             } catch (e) {
               result = e.name + ": " + '"' + e.message + '"';
               throw e;
