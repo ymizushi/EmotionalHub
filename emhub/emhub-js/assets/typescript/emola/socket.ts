@@ -9,13 +9,12 @@ module emola {
     socket: WebSocket
 
     constructor() {
-        var socket = new WebSocket("ws://" + Socket.DEFAULT_HOST + ":" + Socket.DEFAULT_PORT);
-        socket.onopen = (event)  => console.log("web socket connection is established.");
-        socket.onmessage = (event) => {
-          var result = Main.read(event.data);
-          console.log(result);
-        };
-        this.socket = socket
+        this.socket = new WebSocket("ws://" + Socket.DEFAULT_HOST + ":" + Socket.DEFAULT_PORT);
+        this.socket.onopen = (event)  => console.log("web socket connection is established.");
+    }
+
+    onMessage(callback: (event) => any) {
+      this.socket.onmessage = callback;
     }
 
     send(message: string) {

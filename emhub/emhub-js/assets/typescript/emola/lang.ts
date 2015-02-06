@@ -5,6 +5,10 @@ module emola {
     evalSyntax(env: Env);
   }
 
+  export interface VisualEvalable {
+    evalSyntax(env: Env, drawingManager: DrawingManager);
+  }
+
   export class AtomType {
     /* lang */
     static FN = 'fn';

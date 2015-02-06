@@ -1,4 +1,4 @@
-///<reference path="emola.ts"/>
+///<reference path="syntax_list.ts"/>
 
 module emola {
   export class TokenReader {
@@ -32,10 +32,6 @@ module emola {
           return isNaN(parsedFloat) ? ele : parsedFloat
         }
       )
-    }
-
-    static tokenize2(inputStr) {
-      var re = /^[()]|^[^()]+[^\S]$|"[\S\s]*"/;
     }
   }
 

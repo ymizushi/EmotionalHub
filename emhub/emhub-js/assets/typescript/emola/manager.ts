@@ -3,19 +3,23 @@
 /// <reference path="shape.ts" />
 /// <reference path="syntax_list.ts"/>
 /// <reference path="canvas.ts"/>
-/// <reference path="socket.ts"/>
 
 module emola {
   export class DrawingManager {
-    private graphList: GraphExpList[]
-    private socket: Socket
+    private canvasContext: CanvasContext;
+    private graphList: GraphExpList[];
 
-    private canvasLayerSet: CanvasLayerSet
+    private canvasLayerSet: CanvasLayerSet;
 
-    constructor() {
+    constructor(canvasContext: CanvasContext) {
+      this.canvasContext = canvasContext;
+
       this.graphList = []
-
       this.canvasLayerSet = new CanvasLayerSet();
+    }
+
+    clearCanvasContext() {
+      this.canvasContext.clear();
     }
 
     addDisplayElement(text: Text) {
@@ -38,16 +42,16 @@ module emola {
       this.canvasLayerSet.clear()
     }
 
-    draw(context: CanvasContext) {
+    draw() {
       for (var i=0;i<this.graphList.length;i++) {
           if (this.graphList[i].rotate) {
               this.graphList[i].rotate(0.01)
             }
-          this.graphList[i].draw(context)
+          this.graphList[i].draw(this.canvasContext)
       }
 
       this.canvasLayerSet.set(this.graphList);
-      this.canvasLayerSet.draw(context);
+      this.canvasLayerSet.draw(this.canvasContext);
     }
 
     getPalette():Palette {

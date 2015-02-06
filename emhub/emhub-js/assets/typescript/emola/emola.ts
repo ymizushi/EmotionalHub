@@ -10,16 +10,9 @@
 /// <reference path="serializer.ts"/>
 
 module emola {
-  export class Global {
-    static graphicContext: CanvasContext = null
-    static drawingManager: DrawingManager = new DrawingManager()
-    static socket: Socket = new Socket()
-    static env: Env = new Env(null)
-  }
-
   export class Console {
-    callbackList: any
     commandContainer: any
+    callbackList: any;
 
     constructor(htmlString: string, func) {
       this.commandContainer = $(htmlString)
@@ -44,21 +37,11 @@ module emola {
     }
   }
 
-  export class Main {
-    static drawLoop () {
-      setTimeout(Main.drawLoop, 15)
-      Global.graphicContext.clear()
-      Global.drawingManager.draw(Global.graphicContext)
-    }
-
-    static initGraphicContext () {
-      if (Global.graphicContext === null) {
-        var canvas = document.getElementById('canvas');
-        Global.graphicContext = CanvasContext.create(canvas);
-        if(Global.graphicContext !== null) {
-          Main.drawLoop();
-        }
-      }
+  class Main {
+    static drawLoop (drawingManager: DrawingManager) {
+      setTimeout(Main.drawLoop, 15, drawingManager);
+      drawingManager.clearCanvasContext();
+      drawingManager.draw()
     }
 
     static getPosition(e:any):Point {
@@ -71,19 +54,19 @@ module emola {
       return new Point(x, y)
     }
 
-    static getDrawingObject(drawing:any , e:any):any {
+    static getDrawingObject(drawing:any , e:any, drawingManager:DrawingManager):any {
       var point: Point = Main.getPosition(e)
-      var palette: Palette = Global.drawingManager.getPalette();
+      var palette: Palette = drawingManager.getPalette();
       var widgetComponent:WidgetComponent = palette.click(point);
       if (widgetComponent) {
         var parsedObject = Main.createParsedObject(widgetComponent.toString());
         parsedObject.point = Point.copy(point);
         if (parsedObject.draw) {
-          Global.drawingManager.add(parsedObject)
+          drawingManager.add(parsedObject)
         }
       }
 
-      return Global.drawingManager.getListObject(point, drawing)
+      return drawingManager.getListObject(point, drawing)
     }
 
     static createParsedObject(line: string): GraphExpList {
@@ -93,7 +76,7 @@ module emola {
       return Parser.parse(tokenReader);
     }
 
-    static read(line: string) {
+    static read(line: string, env: Env, drawingManager: DrawingManager) {
       var parsedList;
       var result = ''
       try {
@@ -101,30 +84,57 @@ module emola {
         tokenReader.add(line)
         parsedList = Parser.parse(tokenReader);
         if (parsedList.draw) {
-          Global.drawingManager.add(parsedList)
+          drawingManager.add(parsedList)
         }
-        result = parsedList.evalSyntax(Global.env)
+        result = parsedList.evalSyntax(env)
       } catch (e) {
         result = e.name + ": " + '"' + e.message + '"';
+        throw e;
       }
       return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
     }
 
     static start() {
-      var druggingObject = null
-      var drugging = false
+      var druggingObject = null;
+      var drugging = false;
+      var socket: Socket = new Socket();
+      var env: Env = new Env(null);
+      var canvasContext: CanvasContext;
+      var drawingManager: DrawingManager;
 
       $(document).ready(() => {
-        Main.initGraphicContext();
-
-        var console: Console = new Console('<div class="console">', Main.read);
+        var canvas = document.getElementById('canvas');
+        canvasContext = CanvasContext.create(canvas);
+        if (canvasContext !== null) {
+          drawingManager = new DrawingManager(canvasContext);
+          Main.drawLoop(drawingManager);
+        }
+        var console: Console = new Console('<div class="console">', (line: string) => {
+            var parsedList;
+            var result = ''
+            try {
+              var tokenReader: TokenReader = new TokenReader();
+              tokenReader.add(line);
+              parsedList = Parser.parse(tokenReader);
+              if (parsedList.draw) {
+                drawingManager.add(parsedList)
+              }
+              result = parsedList.evalSyntax(env)
+            } catch (e) {
+              result = e.name + ": " + '"' + e.message + '"';
+              throw e;
+            }
+            return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
+          }
+        );
         console.init();
+        socket.onMessage((event) => { Main.read(event.data, env, drawingManager)});
       });
 
       $(window).mousedown((e) => {
         drugging = true
 
-        var drawing = Main.getDrawingObject(null, e)
+        var drawing = Main.getDrawingObject(null, e, drawingManager);
         if (drawing) {
           druggingObject = drawing
         }
@@ -133,7 +143,7 @@ module emola {
       $(window).mouseup((e) => {
           drugging = false
           if (druggingObject) {
-            var drawing = Main.getDrawingObject(druggingObject, e)
+            var drawing = Main.getDrawingObject(druggingObject, e, drawingManager);
             if (drawing && druggingObject != drawing) {
               drawing.add(druggingObject)
             }
@@ -150,16 +160,16 @@ module emola {
       );
 
       $(window).dblclick((e) => {
-          var drawing = Main.getDrawingObject(druggingObject, e)
+          var drawing = Main.getDrawingObject(druggingObject, e, drawingManager);
           if (drawing) {
             //drawing.anim();
             var point =Point.copy(drawing.point);
             point.y += 20
-            Global.drawingManager.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
-            Global.socket.send(TreeSerializer.serialize(drawing));
-            var result = drawing.evalSyntax(Global.env);
+            drawingManager.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
+            socket.send(TreeSerializer.serialize(drawing));
+            var result = drawing.evalSyntax(env);
             var text: Text = new Text(result, drawing.point, new Color());
-            Global.drawingManager.addDisplayElement(text);
+            drawingManager.addDisplayElement(text);
           }
         }
       );
