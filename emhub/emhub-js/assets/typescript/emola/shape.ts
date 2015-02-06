@@ -5,18 +5,13 @@ module emola {
     draw(context: CanvasContext);
   }
 
-  export interface Figure {
-    point: Point
-    size: Size
-  }
-
   export class Point {
-    x: number;
-    y: number;
-
     static copy(point: Point) {
       return new Point(point.x, point.y);
     }
+
+    x: number;
+    y: number;
 
     constructor(x: number, y: number) {
       this.x = x;
@@ -108,7 +103,7 @@ module emola {
 
   export class Text implements Drawable {
     static DEFAULT_FONT_TYPE ="Hiragino Kaku Gothic ProN";
-    static DEFAULT_FONT_SIZE =12;
+    static DEFAULT_FONT_SIZE =15;
 
     description: string;
     point: Point;
@@ -129,7 +124,7 @@ module emola {
     }
   }
 
-  export class Circle implements Figure, Drawable {
+  export class Circle implements Drawable {
     point = new Point(0,0);
     size = new Size(100,100);
     radius: number;
@@ -234,7 +229,7 @@ module emola {
     }
   }
 
-  export class CanvasLayer {
+  export class CanvasLayer implements Drawable {
     drawableList: Drawable[];
 
     constructor() {
@@ -256,8 +251,8 @@ module emola {
     remove(drawable: Drawable) {
       for (var i in this.drawableList) {
         if (this.drawableList[i] === drawable) {
-          this.drawableList.splice(i,1);
-          return;
+          this.drawableList.splice(i, 1);
+          return null;
         }
       }
     }

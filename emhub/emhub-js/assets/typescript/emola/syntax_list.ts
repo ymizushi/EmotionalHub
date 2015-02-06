@@ -281,7 +281,7 @@ module emola {
   //}
   //
   //export class ClearList extends ExpList implements Evalable {
-  //  evalSyntax(_: Env, drawingManager: DrawingManager) {
+  //  evalSyntax(_: Env, drawingManager: DrawingDirector) {
   //    drawingManager.clear();
   //  }
   //}
@@ -617,7 +617,7 @@ module emola {
   }
 
   export class GraphClearList extends GraphExpList implements VisualEvalable {
-    evalSyntax(_: Env, drawingManager: DrawingManager) {
+    evalSyntax(_: Env, drawingManager: DrawingDirector) {
       drawingManager.clear();
       return null;
     }
@@ -702,7 +702,7 @@ module emola {
   
 
   export class GraphDrawList extends GraphExpList  implements VisualEvalable {
-    evalSyntax(env: Env, drawingManager: DrawingManager) {
+    evalSyntax(env: Env, drawingManager: DrawingDirector) {
       var figure = this.expList[1].evalSyntax(env);
       drawingManager.addDisplayElement(figure);
       return figure;

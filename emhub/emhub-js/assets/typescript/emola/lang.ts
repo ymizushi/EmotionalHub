@@ -6,7 +6,7 @@ module emola {
   }
 
   export interface VisualEvalable {
-    evalSyntax(env: Env, drawingManager: DrawingManager);
+    evalSyntax(env: Env, drawingManager: DrawingDirector);
   }
 
   export class AtomType {

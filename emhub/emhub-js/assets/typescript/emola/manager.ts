@@ -5,7 +5,7 @@
 /// <reference path="canvas.ts"/>
 
 module emola {
-  export class DrawingManager {
+  export class DrawingDirector {
     private canvasContext: CanvasContext;
     private graphList: GraphExpList[];
 

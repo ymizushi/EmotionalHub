@@ -38,7 +38,7 @@ module emola {
   }
 
   class Main {
-    static drawLoop (drawingManager: DrawingManager) {
+    static drawLoop (drawingManager: DrawingDirector) {
       setTimeout(Main.drawLoop, 15, drawingManager);
       drawingManager.clearCanvasContext();
       drawingManager.draw()
@@ -54,7 +54,7 @@ module emola {
       return new Point(x, y)
     }
 
-    static getDrawingObject(drawing:any , e:any, drawingManager:DrawingManager):any {
+    static getDrawingObject(drawing:any , e:any, drawingManager:DrawingDirector):any {
       var point: Point = Main.getPosition(e)
       var palette: Palette = drawingManager.getPalette();
       var widgetComponent:WidgetComponent = palette.click(point);
@@ -76,7 +76,7 @@ module emola {
       return Parser.parse(tokenReader);
     }
 
-    static read(line: string, env: Env, drawingManager: DrawingManager) {
+    static read(line: string, env: Env, drawingManager: DrawingDirector) {
       var parsedList;
       var result = ''
       try {
@@ -99,13 +99,13 @@ module emola {
       var socket: Socket = new Socket();
       var env: Env = new Env(null);
       var canvasContext: CanvasContext;
-      var drawingManager: DrawingManager;
+      var drawingManager: DrawingDirector;
 
       $(document).ready(() => {
         var canvas = document.getElementById('canvas');
         canvasContext = CanvasContext.create(canvas);
         if (canvasContext !== null) {
-          drawingManager = new DrawingManager(canvasContext);
+          drawingManager = new DrawingDirector(canvasContext);
           Main.drawLoop(drawingManager);
         }
         var console: Console = new Console('<div class="console">', (line: string) => {
