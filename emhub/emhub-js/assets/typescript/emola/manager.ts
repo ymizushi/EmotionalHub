@@ -14,7 +14,7 @@ module emola {
     constructor(canvasContext: CanvasContext) {
       this.canvasContext = canvasContext;
 
-      this.graphList = []
+      this.graphList = [];
       this.canvasLayerSet = new CanvasLayerSet();
     }
 
@@ -38,7 +38,7 @@ module emola {
     }
 
     clear() {
-      this.graphList = []
+      this.graphList = [];
       this.canvasLayerSet.clear()
     }
 
@@ -60,8 +60,7 @@ module emola {
 
     getListObject(point: Point, drawing:Drawable) {
       for (var i in this.graphList) {
-        var targetListObject
-        targetListObject = this.graphList[i].getListObject(point)
+        var targetListObject = this.graphList[i].getListObject(point);
         if (targetListObject && targetListObject !== drawing) {
           return targetListObject
         }
