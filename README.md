@@ -108,45 +108,11 @@ hoge
 
 ### Create Text
 ```clojure
-(def l (line (point 100 100) (point 1000 1000)))
-(draw l)
+(def t (text "hoge" (point 100 100) (color 50 50 50)))
+(draw t)
 ```
 
 ### Clear graphic context
 ```clojure
 (clear)
-```
-
-
-## Development setting
-
-### Initialize
-```sh
-cd emhub/emhub-js/
-./setup_js.sh
-```
-
-### Test
-```sh
-grunt jasmine
-```
-
-### Watching modified file
-```sh
-grunt watch
-```
-
-### Development command
-```sh
-grunt dev
-```
-
-### Compile *.ts
-```sh
-grunt ts
-```
-
-### Building for production
-```sh
-grunt
 ```

@@ -262,6 +262,7 @@ module emola {
         }
       }
     }
+
     clear() {
       this.drawableList = [];
     }
