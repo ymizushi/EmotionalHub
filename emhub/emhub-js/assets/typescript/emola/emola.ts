@@ -54,12 +54,12 @@ module emola {
       return new Point(x, y)
     }
 
-    static getDrawingObject(drawing:any , e:any, drawingManager:DrawingDirector):any {
+    static getDrawingObject(drawing:any , e:any, drawingManager:DrawingDirector, tokenReader: TokenReader):any {
       var point: Point = Main.getPosition(e)
       var palette: Palette = drawingManager.getPalette();
       var widgetComponent:WidgetComponent = palette.click(point);
       if (widgetComponent) {
-        var parsedObject = Main.createParsedObject(widgetComponent.toString());
+        var parsedObject = Main.createParsedObject(widgetComponent.toString(), tokenReader);
         parsedObject.point = Point.copy(point);
         if (parsedObject.draw) {
           drawingManager.add(parsedObject)
@@ -69,24 +69,20 @@ module emola {
       return drawingManager.getListObject(point, drawing)
     }
 
-    static createParsedObject(line: string): GraphExpList {
-      var tokenReader: TokenReader = new TokenReader();
+    static createParsedObject(line: string, tokenReader: TokenReader): GraphExpList {
       tokenReader.add(line)
 
       return Parser.parse(tokenReader);
     }
 
-    static read(line: string, env: Env, drawingManager: DrawingDirector) {
-      var parsedList;
-      var result = ''
+    static read(inputStr: string, tokenReader: TokenReader, env: Env, drawingDirector: DrawingDirector) {
+      var result: string;
       try {
-        var tokenReader: TokenReader = new TokenReader();
-        tokenReader.add(line)
-        parsedList = Parser.parse(tokenReader);
+        var parsedList:any = Main.createParsedObject(inputStr, tokenReader);
         if (parsedList.draw) {
-          drawingManager.add(parsedList)
+          drawingDirector.add(parsedList);
         }
-        result = parsedList.evalSyntax(env, drawingManager)
+        result = parsedList.evalSyntax(env, drawingDirector)
       } catch (e) {
         result = e.name + ": " + '"' + e.message + '"';
       }
@@ -98,42 +94,30 @@ module emola {
       var drugging = false;
       var socket: Socket = new Socket();
       var env: Env = new Env(null);
-      var canvasContext: CanvasContext;
-      var drawingManager: DrawingDirector;
+      var drawingDirector: DrawingDirector;
+      var tokenReader: TokenReader = new TokenReader();
 
       $(document).ready(() => {
         var canvas = document.getElementById('canvas');
-        canvasContext = CanvasContext.create(canvas);
+        var canvasContext: CanvasContext = CanvasContext.create(canvas);
         if (canvasContext !== null) {
-          drawingManager = new DrawingDirector(canvasContext);
-          Main.drawLoop(drawingManager);
+          drawingDirector = new DrawingDirector(canvasContext);
+          Main.drawLoop(drawingDirector);
         }
         var console: Console = new Console('<div class="console">', (line: string) => {
-            var parsedList;
-            var result = ''
-            try {
-              var tokenReader: TokenReader = new TokenReader();
-              tokenReader.add(line);
-              parsedList = Parser.parse(tokenReader);
-              if (parsedList.draw) {
-                drawingManager.add(parsedList)
-              }
-              result = parsedList.evalSyntax(env, drawingManager)
-            } catch (e) {
-              result = e.name + ": " + '"' + e.message + '"';
-              throw e;
-            }
-            return [{ msg:"=> " + result, className:"jquery-console-message-value"} ]
+            return Main.read(line, tokenReader, env, drawingDirector)
           }
         );
         console.init();
-        socket.onMessage((event) => { Main.read(event.data, env, drawingManager)});
+        socket.onMessage((event) => {
+          return Main.read(event.data, tokenReader, env, drawingDirector)
+        });
       });
 
       $(window).mousedown((e) => {
         drugging = true
 
-        var drawing = Main.getDrawingObject(null, e, drawingManager);
+        var drawing = Main.getDrawingObject(null, e, drawingDirector, tokenReader);
         if (drawing) {
           druggingObject = drawing
         }
@@ -142,7 +126,7 @@ module emola {
       $(window).mouseup((e) => {
           drugging = false
           if (druggingObject) {
-            var drawing = Main.getDrawingObject(druggingObject, e, drawingManager);
+            var drawing = Main.getDrawingObject(druggingObject, e, drawingDirector, tokenReader);
             if (drawing && druggingObject != drawing) {
               drawing.add(druggingObject)
             }
@@ -159,16 +143,16 @@ module emola {
       );
 
       $(window).dblclick((e) => {
-          var drawing = Main.getDrawingObject(druggingObject, e, drawingManager);
+          var drawing = Main.getDrawingObject(druggingObject, e, drawingDirector, tokenReader);
           if (drawing) {
             //drawing.anim();
             var point =Point.copy(drawing.point);
             point.y += 20
-            drawingManager.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
+            drawingDirector.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
             socket.send(TreeSerializer.serialize(drawing));
             var result = drawing.evalSyntax(env);
             var text: Text = new Text(result, drawing.point, new Color());
-            drawingManager.addDisplayElement(text);
+            drawingDirector.addDisplayElement(text);
           }
         }
       );
