@@ -45,21 +45,6 @@ hoge
 ;Emola=> 1
 ```
 
-### Local binding
-```clojure
-(defn calc (x)
-  (let (y 1 z 2)
-    (* x y z)))
-(calc 3)
-;Emola=> 6
-```
-
-### Create function object
-```clojure
-((fn (x y) (* x y)) 2 3)
-;Emola=> 6
-```
-
 ### Defiinition of function
 ```clojure
 (defn calc (x y)
@@ -68,6 +53,14 @@ hoge
 ;Emola=> 6
 ```
 
+### Local binding
+```clojure
+(defn calc (x)
+  (let (y 1 z 2)
+    (* x y z)))
+(calc 3)
+;Emola=> 6
+```
 
 ### If
 ```clojure
@@ -81,18 +74,42 @@ hoge
 ;Emola=> false
 ```
 
-### Do
+### Evaluates the expressions in order and returns the value of the last.
 ```clojure
 (do 
   (def hoge 1)
   (+ hoge 1))
+;Emola=> 2
 ```
 
 ### Message passing
 ```clojure
-(do
-  (def hoge (point 100 200))
-  (send hoge move (point 200 300)))
+(send (point 100 100) toString)
+;Emola=> {x: 100, y: 100}
+```
+
+### Create circle
+```clojure
+(def c (circle (point 100 100) 200 (color 100 100 100)))
+(draw c)
+```
+
+### Create Rectangle
+```clojure
+(def r (rect (point 100 100) (size 100 100) (color 0 255 0)))
+(draw r)
+```
+
+### Create Line
+```clojure
+(def l (line (point 100 100) (point 1000 1000)))
+(draw l)
+```
+
+### Create Text
+```clojure
+(def l (line (point 100 100) (point 1000 1000)))
+(draw l)
 ```
 
 ### Clear graphic context
@@ -100,19 +117,6 @@ hoge
 (clear)
 ```
 
-### Create circle
-```clojure
-(def hoge (circle (point 100 100) 200 (color 100 100 100)))
-(draw hoge)
-```
-
-### Create Rectangle
-```clojure
-```
-
-### Create Line
-```clojure
-```
 
 ## Development setting
 

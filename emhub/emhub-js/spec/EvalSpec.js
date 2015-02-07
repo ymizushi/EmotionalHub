@@ -162,4 +162,10 @@ describe("Visual Eval test", function() {
     var tokenReader  = new emola.TokenReader();
     expect(emola.Parser.readAndEval(tokenReader, '(circle (point 200 300) 100 (color 100 150 200))' ,null)).toEqual(circle);
   });
+
+  it("text", function() {
+    var text = new emola.Text("hoge", new emola.Point(200, 300), new emola.Color(0, 0, 100));
+    var tokenReader  = new emola.TokenReader();
+    expect(emola.Parser.readAndEval(tokenReader, '(text "hoge" (point 200 300) (color 0 0 100))' ,null)).toEqual(text);
+  });
 });

@@ -1,4 +1,5 @@
 ///<reference path="error.ts"/>
+///<reference path="manager.ts"/>
 
 module emola {
   export interface Evalable {
@@ -6,7 +7,7 @@ module emola {
   }
 
   export interface VisualEvalable {
-    evalSyntax(env: Env, drawingManager: DrawingDirector);
+    evalSyntax(env: Env, drawingDirector: DrawingDirector);
   }
 
   export class AtomType {
@@ -48,6 +49,7 @@ module emola {
     static LINE = 'line';
     static RECT = 'rect';
     static SIZE = 'size';
+    static TEXT = 'text';
 
     static getAtoms():string[] {
       return [
@@ -79,6 +81,7 @@ module emola {
         AtomType.RECT,
         AtomType.LINE,
         AtomType.SIZE,
+        AtomType.TEXT,
       ];
     }
   }

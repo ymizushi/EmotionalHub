@@ -27,6 +27,10 @@ module emola {
       this.x += point.x;
       this.y += point.y
     }
+
+    toString() {
+      return '{x: ' + this.x + ', y: ' + this.y + '}'
+    }
   }
 
   export class Size {
@@ -49,7 +53,7 @@ module emola {
     static Green: Color = new Color(0, 255, 0, 1);
     static Blue:  Color = new Color(0, 0, 255, 1);
 
-    static GlayBase: Color = new Color(100, 100, 100, 1)
+    static GlayBase: Color = new Color(100, 100, 100, 1);
 
     static copy(color: Color) {
       return new Color(color.r, color.g, color.b, color.a);

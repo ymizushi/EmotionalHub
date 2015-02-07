@@ -42,6 +42,7 @@ module emola {
       syntaxMap[AtomType.LINE] = GraphLineList;
       syntaxMap[AtomType.RECT] = GraphRectList;
       syntaxMap[AtomType.SIZE] = GraphSizeList;
+      syntaxMap[AtomType.TEXT] = GraphTextList;
 
       var TargetFunction = syntaxMap[firstList.type];
       if (!TargetFunction) {
@@ -579,63 +580,6 @@ module emola {
     }
   }
 
-  export class GraphCircleList extends GraphExpList implements Evalable {
-    evalSyntax(env: Env) {
-      var pointList: GraphPointList = this.expList[1];
-      var radius: Evalable = this.expList[2];
-      var colorList: GraphColorList = this.expList[3];
-      return new Circle(pointList.evalSyntax(env), radius.evalSyntax(env), colorList.evalSyntax(env))
-    }
-  }
-
-  export class GraphLineList extends GraphExpList implements Evalable {
-    evalSyntax(env: Env) {
-      var startPointList: GraphPointList = this.expList[1];
-      var endPointList: GraphPointList = this.expList[2];
-      return new Line(startPointList.evalSyntax(env), endPointList.evalSyntax(env))
-    }
-  }
-
-  export class GraphSizeList extends GraphExpList implements Evalable {
-    evalSyntax(env: Env) {
-      var width:Evalable = this.expList[1];
-      var height:Evalable = this.expList[2];
-      return new Size(width.evalSyntax(env), height.evalSyntax(env))
-    }
-  }
-
-  export class GraphRectList extends GraphExpList implements Evalable {
-    evalSyntax(env: Env) {
-      var pointList: GraphPointList = this.expList[1];
-      var sizeList: GraphSizeList = this.expList[2];
-      if (this.expList.length >= 3) {
-        var colorList: GraphColorList = this.expList[3];
-        return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env), colorList.evalSyntax(env))
-      }
-      return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env))
-    }
-  }
-
-  export class GraphClearList extends GraphExpList implements VisualEvalable {
-    evalSyntax(_: Env, drawingManager: DrawingDirector) {
-      drawingManager.clear();
-      return null;
-    }
-  }
-
-  export class GraphColorList extends GraphExpList implements Evalable {
-    evalSyntax(env: Env) {
-      this.assert();
-      return new Color(this.expList[1].evalSyntax(env), this.expList[2].evalSyntax(env), this.expList[3].evalSyntax(env))
-    }
-    
-    assert() {
-      if (this.expList[1] === undefined || this.expList[2] === undefined || this.expList[3] === undefined || this.expList.length > 4) {
-        throw new InvalidArgumentError('color arguments are illegal.')
-      }
-    }
-  }
-
   export class GraphDefList extends GraphExpList implements Evalable {
     constructor(list, parent) {
       super(list, parent);
@@ -678,7 +622,6 @@ module emola {
     }
   }
   
-
   export class GraphDivList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       var sum = 1;
@@ -705,7 +648,7 @@ module emola {
     evalSyntax(env: Env, drawingManager: DrawingDirector) {
       var figure = this.expList[1].evalSyntax(env);
       drawingManager.addDisplayElement(figure);
-      return figure;
+      return null;
     }
   }
 
@@ -777,7 +720,6 @@ module emola {
       return this.expList[1].evalSyntax(env) <= this.expList[2].evalSyntax(env);
     }
   }
-  
 
   export class GraphLetList extends GraphExpList implements Evalable {
     // (let (x 1) (+ x 1 1))
@@ -848,7 +790,33 @@ module emola {
       return sum;
     }
   }
-  
+
+  export class GraphVarList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      this.assert();
+      var func;
+      // 一番目の引数が((piyo 1 2) 2)みたいな形式の時
+      if (this.expList[0] instanceof GraphVarList) {
+        func = this.expList[0].evalSyntax(env);
+      } else {
+        func = env.findEnv(this.expList[0].value).get(this.expList[0].value);
+      }
+      var realArgsList = this.expList.slice(1);
+
+      if (func.args.length !== realArgsList.length) {
+        throw new InvalidArgumentError("Wrong args count");
+
+      }
+      for (var i=0;i<realArgsList.length;i++) {
+        func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
+      }
+      return func.evalSyntax(env);
+    }
+
+    assert() {
+    }
+  }
+
   export class GraphPointList extends GraphExpList implements Evalable {
     evalSyntax(env) {
       this.assert();
@@ -893,37 +861,77 @@ module emola {
       var object = this.expList[1].evalSyntax(env);
       var methodName = this.expList[2].value;
       var args = this.expList.slice(3).map(function (x) { return x.evalSyntax(env);});
-      object[methodName].apply(object, args);
-      return object;
+      return object[methodName].apply(object, args);
     }
     
     assert() {
     }
   }
 
-  export class GraphVarList extends GraphExpList implements Evalable {
+  export class GraphCircleList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var pointList: GraphPointList = this.expList[1];
+      var radius: Evalable = this.expList[2];
+      var colorList: GraphColorList = this.expList[3];
+      return new Circle(pointList.evalSyntax(env), radius.evalSyntax(env), colorList.evalSyntax(env))
+    }
+  }
+
+  export class GraphLineList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var startPointList: GraphPointList = this.expList[1];
+      var endPointList: GraphPointList = this.expList[2];
+      return new Line(startPointList.evalSyntax(env), endPointList.evalSyntax(env))
+    }
+  }
+
+  export class GraphSizeList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var width:Evalable = this.expList[1];
+      var height:Evalable = this.expList[2];
+      return new Size(width.evalSyntax(env), height.evalSyntax(env))
+    }
+  }
+
+  export class GraphRectList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var pointList: GraphPointList = this.expList[1];
+      var sizeList: GraphSizeList = this.expList[2];
+      if (this.expList.length >= 3) {
+        var colorList: GraphColorList = this.expList[3];
+        return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env), colorList.evalSyntax(env))
+      }
+      return new Rect(pointList.evalSyntax(env), sizeList.evalSyntax(env))
+    }
+  }
+
+  export class GraphClearList extends GraphExpList implements VisualEvalable {
+    evalSyntax(_: Env, drawingManager: DrawingDirector) {
+      drawingManager.clear();
+      return null;
+    }
+  }
+
+  export class GraphColorList extends GraphExpList implements Evalable {
     evalSyntax(env: Env) {
       this.assert();
-      var func;
-      // 一番目の引数が((piyo 1 2) 2)みたいな形式の時
-      if (this.expList[0] instanceof GraphVarList) {
-        func = this.expList[0].evalSyntax(env);
-      } else {
-        func = env.findEnv(this.expList[0].value).get(this.expList[0].value);
-      }
-      var realArgsList = this.expList.slice(1);
-
-      if (func.args.length !== realArgsList.length) {
-        throw new InvalidArgumentError("Wrong args count");
-
-      }
-      for (var i=0;i<realArgsList.length;i++) {
-        func.env.dict[func.args[i].value] = realArgsList[i].evalSyntax(env); //valueをdirectに指定しているけど良くない
-      }
-      return func.evalSyntax(env);
+      return new Color(this.expList[1].evalSyntax(env), this.expList[2].evalSyntax(env), this.expList[3].evalSyntax(env))
     }
-    
+
     assert() {
+      if (this.expList[1] === undefined || this.expList[2] === undefined || this.expList[3] === undefined || this.expList.length > 4) {
+        throw new InvalidArgumentError('color arguments are illegal.')
+      }
     }
   }
+
+  export class GraphTextList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      var str:string = this.expList[1].evalSyntax(env);
+      var point:Point = this.expList[2].evalSyntax(env);
+      var color:Color = this.expList[3].evalSyntax(env);
+      return new Text(str, point, color);
+    }
+  }
+
 }
