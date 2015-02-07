@@ -49,6 +49,8 @@ module emola {
     static Green: Color = new Color(0, 255, 0, 1);
     static Blue:  Color = new Color(0, 0, 255, 1);
 
+    static GlayBase: Color = new Color(100, 100, 100, 1)
+
     static copy(color: Color) {
       return new Color(color.r, color.g, color.b, color.a);
     }
@@ -103,7 +105,7 @@ module emola {
 
   export class Text implements Drawable {
     static DEFAULT_FONT_TYPE ="Hiragino Kaku Gothic ProN";
-    static DEFAULT_FONT_SIZE =15;
+    static DEFAULT_FONT_SIZE =18;
 
     description: string;
     point: Point;

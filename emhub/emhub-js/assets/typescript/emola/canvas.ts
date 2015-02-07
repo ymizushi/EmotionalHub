@@ -3,32 +3,48 @@
 
 module emola {
   export class SyntaxNodeType {
-    static PLUS = '+';
-    static MINUS = '-';
-    static DIV = '/';
-    static MUL = '*';
-    static CIRCLE = 'circle';
+    static PLUS = new SyntaxNodeType('+', '+');
+    static MINUS = new SyntaxNodeType('-', '-');
+    static DIV = new SyntaxNodeType('/', '/');
+    static MUL = new SyntaxNodeType('*', '*');
+    static CIRCLE = new SyntaxNodeType('◯', 'circle');
+
+    private displayStr: string
+    private tokenStr: string
+
+    constructor(displayStr: string, tokenStr: string) {
+      this.displayStr = displayStr;
+      this.tokenStr = tokenStr
+    }
+
+    public getDisplayStr(): string {
+      return this.displayStr
+    }
+
+    public getTokenStr(): string {
+      return this.tokenStr
+    }
   }
 
   export interface WidgetComponent {}
 
   export class PaletteComponent implements WidgetComponent {
-    syntaxNodeType: string;
+    syntaxNodeType: SyntaxNodeType;
 
-    constructor(syntaxNodeType: string) {
+    constructor(syntaxNodeType: SyntaxNodeType) {
       this.syntaxNodeType = syntaxNodeType
     }
 
     draw(contextWrapper: CanvasContext, rect: Rect) {
       rect.draw(contextWrapper);
-      var point:Point = new Point(rect.point.x+(rect.size.width/2), rect.point.y+(rect.size.height/2));
-      var text: Text = new Text(this.syntaxNodeType, point, new Color(200,200,200,1), 20);
+      var point:Point = new Point(rect.point.x+(rect.size.width/3), rect.point.y+(rect.size.height*2/3));
+      var text: Text = new Text(this.syntaxNodeType.getDisplayStr(), point, new Color(200,200,200,1), 20);
 
       text.draw(contextWrapper);
     }
 
     toString() {
-      return "(" + this.syntaxNodeType + ")";
+      return "(" + this.syntaxNodeType.getTokenStr() + ")";
     }
   }
 
