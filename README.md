@@ -93,7 +93,6 @@ hoge
 (send (window) alert 1)
 ```
 
-
 ### Create circle
 ```clojure
 (def c (circle (point 100 100) 200 (color 100 100 100)))

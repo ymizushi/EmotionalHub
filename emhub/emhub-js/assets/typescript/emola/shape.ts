@@ -218,7 +218,7 @@ module emola {
     drawText(textObject: Text) {
       this.context.fillStyle = 'rgb(' + textObject.color.r + ' ,' + textObject.color.g + ' ,' + textObject.color.b + ')';
       this.context.font = textObject.fontSize+"px "+ "\'" + textObject.fontType + "\'";
-      this.context.fillText(textObject.description, textObject.point.x, textObject.point.y, 200)
+      this.context.fillText(textObject.description, textObject.point.x, textObject.point.y, 1000)
     }
 
     drawImage(path: string, point: Point) {
