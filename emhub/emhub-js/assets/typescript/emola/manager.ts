@@ -18,6 +18,15 @@ module emola {
       this.canvasLayerSet = new CanvasLayerSet();
     }
 
+    hasId(id: string) {
+      for (var i in this.graphList) {
+        if (this.graphList[i].hasId(id)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     clearCanvasContext() {
       this.canvasContext.clear();
     }

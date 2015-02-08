@@ -448,7 +448,7 @@ module emola {
     point: Point;
 
     expList: any;
-    //hash: string;
+    id: string;
 
     constructor(expList:ExpList, parent:GraphExpList=null) {
       this.expList = expList;
@@ -470,7 +470,20 @@ module emola {
         this.point = new Point(Math.floor(x), Math.floor(y));
       }
 
-      //this.hash = new Date().toDateString() + '_' + Math.random();
+      this.id = new Date().toDateString() + '_' + Math.random();
+    }
+
+    hasId(id: string) {
+      console.log(this.expList);
+      for (var i in this.expList) {
+        if (this.expList[i] instanceof GraphExpList && this.expList[i].hasId(id)) {
+          return true;
+        }
+      }
+      if (this.id === id) {
+        return true;
+      }
+      return false;
     }
     
     push(element) {

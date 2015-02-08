@@ -75,10 +75,9 @@ module emola {
       return Parser.parse(tokenReader);
     }
 
-    static read(inputStr: string, tokenReader: TokenReader, env: Env, drawingDirector: DrawingDirector) {
+    static read(parsedList: any, tokenReader: TokenReader, env: Env, drawingDirector: DrawingDirector) {
       var result: string;
       try {
-        var parsedList:any = Main.createParsedObject(inputStr, tokenReader);
         if (parsedList.draw) {
           drawingDirector.add(parsedList);
         }
@@ -105,12 +104,19 @@ module emola {
           Main.drawLoop(drawingDirector);
         }
         var console: Console = new Console('<div class="console">', (line: string) => {
-            return Main.read(line, tokenReader, env, drawingDirector)
+            var parsedObject = Main.createParsedObject(line, tokenReader);
+            return Main.read(parsedObject, tokenReader, env, drawingDirector)
           }
         );
         console.init();
         socket.onMessage((event) => {
-          return Main.read(event.data, tokenReader, env, drawingDirector)
+          var json = JSON.parse(event.data);
+          window.console.log(json);
+          if (!drawingDirector.hasId(json.id)) {
+            var parsedObject = Main.createParsedObject(json.exp, tokenReader);
+            //parsedObject.id = json.id;
+            return Main.read(parsedObject, tokenReader, env, drawingDirector)
+          }
         });
       });
 
@@ -149,7 +155,11 @@ module emola {
             var point =Point.copy(drawing.point);
             point.y += 20
             drawingDirector.addDisplayElement(new Text(TreeSerializer.serialize(drawing), point, new Color()));
-            socket.send(TreeSerializer.serialize(drawing));
+            var json = {
+              'id': drawing.id,
+              'exp': TreeSerializer.serialize(drawing),
+            }
+            socket.send(JSON.stringify(json));
             var result = drawing.evalSyntax(env);
             var text: Text = new Text(result, drawing.point, new Color());
             drawingDirector.addDisplayElement(text);
