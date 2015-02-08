@@ -54,9 +54,6 @@ module emola {
         return new Point(200, 200)
       }
       return new Point(x, y)
-
-
-
     }
 
     static getDrawingObject(drawing:any , e:any, drawingManager:DrawingDirector, tokenReader: TokenReader):any {
