@@ -474,7 +474,6 @@ module emola {
     }
 
     hasId(id: string) {
-      console.log(this.expList);
       for (var i in this.expList) {
         if (this.expList[i] instanceof GraphExpList && this.expList[i].hasId(id)) {
           return true;

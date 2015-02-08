@@ -111,7 +111,6 @@ module emola {
         console.init();
         socket.onMessage((event) => {
           var json = JSON.parse(event.data);
-          window.console.log(json);
           if (!drawingDirector.hasId(json.id)) {
             var parsedObject = Main.createParsedObject(json.exp, tokenReader);
             //parsedObject.id = json.id;
