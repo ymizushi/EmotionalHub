@@ -50,12 +50,6 @@ module emola {
       var rect = e.target.getBoundingClientRect();
       var x = pageX - rect.left;
       var y = pageY - rect.top;
-      console.log("pageX" + pageX);
-      console.log("pageY" + pageY);
-      console.log("rect.left:" + rect.left);
-      console.log("rect.top:" + rect.top);
-      console.log("x:" + x);
-      console.log("y:" + y);
       if (!(rect.height === 500 && rect.width === 870)) {
         return new Point(200, 200)
       }
