@@ -88,6 +88,12 @@ hoge
 ;Emola=> {x: 100, y: 100}
 ```
 
+### Call Javascript built-in function
+```clojure
+(send (window) alert 1)
+```
+
+
 ### Create circle
 ```clojure
 (def c (circle (point 100 100) 200 (color 100 100 100)))

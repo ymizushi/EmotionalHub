@@ -50,6 +50,7 @@ module emola {
     static RECT = 'rect';
     static SIZE = 'size';
     static TEXT = 'text';
+    static WINDOW = 'window';
 
     static getAtoms():string[] {
       return [
@@ -82,6 +83,7 @@ module emola {
         AtomType.LINE,
         AtomType.SIZE,
         AtomType.TEXT,
+        AtomType.WINDOW,
       ];
     }
   }

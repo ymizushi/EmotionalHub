@@ -43,6 +43,7 @@ module emola {
       syntaxMap[AtomType.RECT] = GraphRectList;
       syntaxMap[AtomType.SIZE] = GraphSizeList;
       syntaxMap[AtomType.TEXT] = GraphTextList;
+      syntaxMap[AtomType.WINDOW] = GraphWindowList;
 
       var TargetFunction = syntaxMap[firstList.type];
       if (!TargetFunction) {
@@ -943,6 +944,12 @@ module emola {
       var point:Point = this.expList[2].evalSyntax(env);
       var color:Color = this.expList[3].evalSyntax(env);
       return new Text(str, point, color);
+    }
+  }
+
+  export class GraphWindowList extends GraphExpList implements Evalable {
+    evalSyntax(env: Env) {
+      return window;
     }
   }
 
