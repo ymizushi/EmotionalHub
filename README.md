@@ -74,7 +74,7 @@ hoge
 ;Emola=> false
 ```
 
-### Evaluates the expressions in order and returns the value of the last.
+### Evaluates the expressions in order.
 ```clojure
 (do 
   (def hoge 1)
@@ -93,7 +93,7 @@ hoge
 (send (window) alert 1)
 ```
 
-### Create circle
+### Create Circle
 ```clojure
 (def c (circle (point 100 100) 200 (color 100 100 100)))
 (draw c)

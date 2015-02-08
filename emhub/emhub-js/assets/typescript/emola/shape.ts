@@ -53,7 +53,8 @@ module emola {
     static Green: Color = new Color(0, 255, 0, 1);
     static Blue:  Color = new Color(0, 0, 255, 1);
 
-    static GlayBase: Color = new Color(100, 100, 100, 1);
+    static BaseGlay: Color = new Color(100, 100, 100, 0.3);
+    static BaseYellow: Color = new Color(255, 255, 200);
 
     static copy(color: Color) {
       return new Color(color.r, color.g, color.b, color.a);
