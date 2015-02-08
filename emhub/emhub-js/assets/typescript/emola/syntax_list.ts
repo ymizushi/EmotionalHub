@@ -466,9 +466,9 @@ module emola {
       if (parent) {
         this.point = null;
       } else {
-        var x = Math.random() * 200;
-        var y = Math.random() * 200;
-        this.point = new Point(Math.floor(x), Math.floor(y));
+        var x = Math.random() * 600;
+        var y = Math.random() * 300;
+        this.point = new Point(Math.floor(100+x), Math.floor(100+y));
       }
 
       this.id = new Date().toDateString() + '_' + Math.random();
