@@ -159,7 +159,7 @@ module emola {
               'exp': TreeSerializer.serialize(drawing),
             }
             socket.send(JSON.stringify(json));
-            var result = drawing.evalSyntax(env);
+            var result = drawing.evalSyntax(env, drawingDirector);
             var text: Text = new Text(result, drawing.point, new Color());
             drawingDirector.addDisplayElement(text);
           }

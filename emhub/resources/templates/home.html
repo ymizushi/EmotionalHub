@@ -23,26 +23,16 @@
       <h4>(add 1 2)</h4>
       <h4>(defn fuga (x y) (let (z (+ x y)) (+ z z)))</h4>
       <h4>(defn foo (x) (let (w (window)) (if (= x 1) (send w alert "x=1") (send w alert "x!=1"))))</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
-      <h4>DD</h4>
+      <h4>(let (w (window)) (do (send w alert "first") (send w alert "second")))</h4>
+      <h4>(def c (circle (point 100 100) 200 (color 100 100 100)))</h4>
+      <h4>(draw c)</h4>
+      <h4>(def r (rect (point 100 100) (size 100 100) (color 0 255 0)))</h4>
+      <h4>(draw r)</h4>
+      <h4>(def l (line (point 100 100) (point 1000 1000)))</h4>
+      <h4>(draw l)</h4>
+      <h4>(def t (text "hoge" (point 100 100) (color 50 50 50)))</h4>
+      <h4>(draw t)</h4>
+      <h4>(clear)</h4>
     </div>
   </div>
   <footer>
