@@ -3,8 +3,9 @@
 
 module emola {
   export class Socket {
-    static DEFAULT_PORT = 5000
-    static DEFAULT_HOST = "localhost"
+    static DEFAULT_PORT = 49387
+    //static DEFAULT_HOST = "localhost"
+    static DEFAULT_HOST = "emohub-ws.paas.db.dwango.co.jp"
 
     socket: WebSocket
 

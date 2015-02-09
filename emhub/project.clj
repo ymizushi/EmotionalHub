@@ -22,12 +22,14 @@
          :init    emhub.handler/init
          :destroy emhub.handler/destroy}
   :profiles
-  {:uberjar {:aot :all}
+  {:uberjar {:omit-source true
+             :env {:production true}
+             :aot :all}
    :production {:ring {:open-browser? false
                        :stacktraces?  false
                        :auto-reload?  false}}
    :dev {:dependencies [[ring-mock "0.1.5"]
-                        [ring/ring-devel "1.3.1"]
+                        [ring/ring-devel "1.3.2"]
                         [pjstadig/humane-test-output "0.6.0"]]
          :injections [(require 'pjstadig.humane-test-output)
                       (pjstadig.humane-test-output/activate!)]
