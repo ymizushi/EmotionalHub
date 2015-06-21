@@ -3,23 +3,11 @@
 
 EmotionalHub is the interactive programming platform for amusement and education with Emola.
 
-Emola is a kind of LISP programming language designed by Yuta Mizushima.
-
-This repository is under development.
+Emola is a kind of LISP programming language designed by ymizushi.
 
 ## Screenshot
 ![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot.png "Screenshot1")
 ![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot2.png "Screenshot2")
-
-## System
-EmotionalHub Components(Server side)
-https://docs.google.com/drawings/d/1gh6Fzs61AxsI4xbTUMgXuV3o8YkWVjGqIxYlALNQhRc
-
-EmotionalHub Components(Client side)
-https://docs.google.com/drawings/d/1imRUTv_ILlSOW3gvipSyi4quXv08q3CdYAaR6rB85JM
-
-EmotionalHub Components(View side)
-https://docs.google.com/drawings/d/1RwGYKqnmMIhU7JJBnRr_bN44PopG6dXDCAtYqp_CAro
 
 ## Emola Language Specification
 
