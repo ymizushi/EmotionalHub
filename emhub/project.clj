@@ -1,6 +1,8 @@
 (defproject emhub "0.1.0-SNAPSHOT"
   :description "The interactive programming environment for education and entertainment."
   :url "https://github.com/ymizushi/EmotionalHub"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [lib-noir "0.8.9"]
                  [ring-server "0.3.1"]
