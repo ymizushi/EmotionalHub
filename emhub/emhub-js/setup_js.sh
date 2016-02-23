@@ -14,4 +14,5 @@ sudo npm link
 sudo npm install -g bower
 bower install
 npm install -g grunt
+tsd query jqueryui --resolve --save --action install
 exit 0

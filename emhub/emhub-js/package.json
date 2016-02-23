@@ -3,19 +3,19 @@
   "version": "0.0.2",
   "main": "Gruntfile.js",
   "devDependencies": {
-    "grunt": "0.4.2",
-    "grunt-contrib-concat": "~0.5.0",
-    "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-watch": "~0.6.0",
-    "grunt-contrib-jasmine": "~0.7.0",
-    "grunt-typescript": "~0.3.8",
-    "typescript-tools": "~0.3.1",
+    "grunt": "",
+    "grunt-contrib-concat": "",
+    "grunt-contrib-uglify": "",
+    "grunt-contrib-watch": "",
+    "grunt-contrib-jasmine": "",
+    "grunt-typescript": "",
+    "typescript-tools": "",
     "jslint": "",
     "jshint": "",
     "bower": ""
   },
   "peerDependencies": {
-    "grunt": "0.4.2"
+    "grunt": ""
   },
   "description": "Interactive programming environtment.",
   "scripts": {
@@ -26,7 +26,7 @@
     "url": "git://github.com/ymizushi/EmotionalHub.git"
   },
   "author": "Yuta Mizushima",
-  "license": "MIT License",
+  "license": "AML",
   "bugs": {
     "url": "https://github.com/ymizushi/EmotionalHub/issues"
   },
