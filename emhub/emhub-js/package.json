@@ -3,16 +3,17 @@
   "version": "0.0.2",
   "main": "Gruntfile.js",
   "devDependencies": {
+    "bower": "",
     "grunt": "",
     "grunt-contrib-concat": "",
+    "grunt-contrib-jasmine": "",
     "grunt-contrib-uglify": "",
     "grunt-contrib-watch": "",
-    "grunt-contrib-jasmine": "",
+    "grunt-tsc": "^1.0.12",
     "grunt-typescript": "",
-    "typescript-tools": "",
-    "jslint": "",
     "jshint": "",
-    "bower": ""
+    "jslint": "",
+    "typescript-tools": ""
   },
   "peerDependencies": {
     "grunt": ""

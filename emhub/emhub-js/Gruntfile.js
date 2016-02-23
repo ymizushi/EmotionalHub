@@ -20,17 +20,22 @@ module.exports = function(grunt) {
       }
     },
 
-    typescript: {
+    tsc: {
       base: {
-        src: ['assets/typescript/emola/**/*.ts'],
-        dest: '../resources/public/js/build/emola.js',
-        options: {
-          module: 'amd', //or commonjs
-          target: 'es5', //or es3
-          basePath: 'assets/typescript',
-          sourceMap: true,
-          declaration: true
-        }
+        files: [
+          {
+            dest: '../resources/public/js/build/emola.js',
+            src: ['assets/typescript/emola/**/*.ts'],
+            ext: ".js",
+            options: {
+              expand : "true",
+              module: 'amd', //or commonjs
+              target: 'es5', //or es3
+              sourceMap: true,
+              declaration: true
+            }
+          }
+        ]
       }
     },
  
@@ -50,9 +55,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-tsc');
   // デフォルトタスクの設定
-  grunt.registerTask('ts', ['typescript']);
-  grunt.registerTask('ts-test', ['typescript','jasmine']);
+  grunt.registerTask('ts', ['tsc']);
+  grunt.registerTask('ts-test', ['tsc','jasmine']);
   grunt.registerTask('default', ['ts', 'uglify']);
 };
