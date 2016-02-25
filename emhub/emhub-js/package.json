@@ -1,26 +1,20 @@
 {
   "name": "EmotionalHub",
-  "version": "0.0.2",
-  "main": "Gruntfile.js",
+  "version": "0.0.3",
+  "main": "gulpfile.js",
   "devDependencies": {
     "bower": "",
-    "grunt": "",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-jasmine": "",
-    "grunt-contrib-uglify": "",
-    "grunt-contrib-watch": "",
-    "grunt-tsc": "^1.0.12",
-    "grunt-typescript": "",
+    "gulp": "",
+    "gulp-jasmine": "^2.3.0",
+    "gulp-typescript": "",
     "jshint": "",
     "jslint": "",
+    "merge2": "",
     "typescript-tools": ""
-  },
-  "peerDependencies": {
-    "grunt": ""
   },
   "description": "Interactive programming environtment.",
   "scripts": {
-    "test": "grunt dev --verbose"
+    "test": "gulp dev --verbose"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ module emola {
 
     constructor(displayStr: string, tokenStr: string) {
       this.displayStr = displayStr;
-      this.tokenStr = tokenStr
+      this.tokenStr = tokenStr;
     }
 
     public getDisplayStr(): string {
@@ -68,7 +68,7 @@ module emola {
       var perHeight = this.rect.size.height/this.paletteComponentList.length;
       for (var i in this.paletteComponentList) {
         var size = new Size(this.rect.size.width, perHeight);
-        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*i), size, new Color(100,100,100,1));
+        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y + perHeight*parseInt(i)), size, new Color(100,100,100,1));
         if (rect.point.x <= point.x &&  point.x <= rect.point.x+rect.size.width && rect.point.y <= point.y && point.y <= rect.point.y+rect.size.height) {
           return this.paletteComponentList[i];
         }
@@ -85,7 +85,7 @@ module emola {
       var perHeight = this.rect.size.height/this.paletteComponentList.length;
       for (var i in this.paletteComponentList) {
         var size = new Size(this.rect.size.width, perHeight);
-        var rect = new Rect(new Point(this.rect.point.x, this.rect.point.y+perHeight*i), size, new Color(100,100,100,1));
+        var rect = new Rect(new Point(this.rect.point.x, perHeight*parseInt(i) + this.rect.point.y), size, new Color(100,100,100,1));
         this.paletteComponentList[i].draw(canvasContext, rect)
       }
     }

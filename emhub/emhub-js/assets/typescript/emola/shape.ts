@@ -258,7 +258,7 @@ module emola {
     remove(drawable: Drawable) {
       for (var i in this.drawableList) {
         if (this.drawableList[i] === drawable) {
-          this.drawableList.splice(i, 1);
+          this.drawableList.splice(parseInt(i), 1);
           return null;
         }
       }

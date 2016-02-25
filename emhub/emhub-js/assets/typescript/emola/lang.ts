@@ -100,7 +100,7 @@ module emola {
       return AtomType.getAtoms().indexOf(token) >= 0
     }
 
-    constructor(type: string, value: string=null) {
+    constructor(type: string, value: any=null) {
       this.type = type;
       this.value = value
     }

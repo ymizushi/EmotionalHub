@@ -36,7 +36,7 @@ module emola {
   }
 
   export class Atomizer {
-    static atomize(token) {
+    static atomize(token: any) {
       if (token === AtomType.TRUE) {
         return new Atom(AtomType.TRUE);
       } else if (token === AtomType.FALSE) {
