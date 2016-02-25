@@ -5,12 +5,18 @@
   "devDependencies": {
     "bower": "",
     "gulp": "",
-    "gulp-jasmine": "^2.3.0",
+    "gulp-jasmine": "",
     "gulp-typescript": "",
+    "gulp-concat": "",
     "jshint": "",
     "jslint": "",
     "merge2": "",
-    "typescript-tools": ""
+    "typescript-tools": "",
+    "grunt-contrib-jasmine": "",
+    "grunt-contrib-concat": "",
+    "grunt-contrib-uglify": "",
+    "grunt-contrib-watch": "",
+    "grunt-tsc": ""
   },
   "description": "Interactive programming environtment.",
   "scripts": {

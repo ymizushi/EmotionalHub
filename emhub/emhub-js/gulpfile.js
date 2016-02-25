@@ -12,14 +12,6 @@ gulp.task('default', function() {
 });
 
 gulp.task('test', ['default'], function() {
-    gulp.src([
-        '../resources/public/js/lib/jquery/dist/jquery.js',
-        '../resources/public/js/lib/jquery-console/jquery.console.js',
-        '../resources/public/js/build/emola.js',
-        'spec/*Spec.js',
-    ])
-    .pipe(concat("spec.js"))
-    .pipe(gulp.dest('assets/'));
-    gulp.src('assets/spec.js')
-    .pipe(jasmine())
+    gulp.src(['spec/*Spec.js', '../resources/public/js/build/emola.js'])
+    .pipe(jasmine());
 });

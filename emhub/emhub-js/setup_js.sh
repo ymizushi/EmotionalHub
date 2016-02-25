@@ -10,9 +10,8 @@ else
     echo "npm install command is not found."
     exit 1
 fi
-sudo npm link
-sudo npm install -g bower
+npm link
+npm install bower
 bower install
-npm install -g grunt
 tsd query jqueryui --resolve --save --action install
 exit 0
