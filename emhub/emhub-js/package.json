@@ -4,19 +4,20 @@
   "main": "gulpfile.js",
   "devDependencies": {
     "bower": "",
+    "grunt-contrib-concat": "",
+    "grunt-contrib-jasmine": "",
+    "grunt-contrib-uglify": "",
+    "grunt-contrib-watch": "",
+    "grunt-tsc": "",
     "gulp": "",
-    "gulp-jasmine": "",
-    "gulp-typescript": "",
     "gulp-concat": "",
+    "gulp-jasmine": "",
+    "gulp-jasmine-browser": "^1.0.1",
+    "gulp-typescript": "",
     "jshint": "",
     "jslint": "",
     "merge2": "",
-    "typescript-tools": "",
-    "grunt-contrib-jasmine": "",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-uglify": "",
-    "grunt-contrib-watch": "",
-    "grunt-tsc": ""
+    "typescript-tools": ""
   },
   "description": "Interactive programming environtment.",
   "scripts": {

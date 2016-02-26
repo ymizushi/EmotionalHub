@@ -9,8 +9,10 @@ module emola {
     socket: WebSocket
 
     constructor() {
-        this.socket = new WebSocket("ws://" + Socket.DEFAULT_HOST + ":" + Socket.DEFAULT_PORT);
-        this.socket.onopen = (event)  => console.log("web socket connection is established.");
+        if (typeof WebSocket !== 'undefined') {
+          this.socket = new WebSocket("ws://" + Socket.DEFAULT_HOST + ":" + Socket.DEFAULT_PORT);
+          this.socket.onopen = (event)  => console.log("web socket connection is established.");
+        }
     }
 
     onMessage(callback: (event) => any) {
