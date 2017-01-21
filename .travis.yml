@@ -1,7 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "6.9"
 before_install:
   - cd emhub/emhub-js && npm install -g grunt-cli && npm install -g grunt-typescript
 script:
   - grunt ts-test
+before_install:
+  - "npm install peerDependency"
