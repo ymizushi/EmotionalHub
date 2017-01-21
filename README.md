@@ -7,6 +7,9 @@ Emola is a kind of LISP programming language designed by ymizushi.
 
 [Try Emola](http://emohub.ymizushi.info/)
 
+## Setup
+See [SETUP.md](https://github.com/ymizushi/EmotionalHub/blob/master/description/SETUP.md "SETUP.md")
+
 ## Screenshot
 ![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot.png "Screenshot1")
 ![alt text](https://github.com/ymizushi/EmotionalHub/blob/master/description/screenshot2.png "Screenshot2")
