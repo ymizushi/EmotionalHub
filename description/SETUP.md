@@ -1,6 +1,6 @@
-## Development
+# Setup
 
-### Initialize
+## Initialize
 ```sh
 cd emhub/emhub-js/
 ./setup_js.sh
@@ -36,14 +36,14 @@ cd emhub/emhub-js/
 grunt
 ```
 
-### Runnning Wev server
+### Runnning Web server
 ```sh
 cd emhub/
 lein install
 lein ring server
 ```
 
-### Runnning Wev socket server
+### Runnning Web socket server
 ```sh
 cd emhub/
 lein install
