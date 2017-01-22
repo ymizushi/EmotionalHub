@@ -10,10 +10,9 @@ else
     echo "npm install command is not found."
     exit 1
 fi
-npm install -g 
-npm install -g david
-npm install -g grunt-cli
-npm install -g tsd
+
+npm install
+export PATH=$PATH:$PWD/node_modules/.bin
 bower install
 tsd query jqueryui --resolve --save --action install
 npm link
