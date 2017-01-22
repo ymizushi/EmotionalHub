@@ -36,14 +36,14 @@ cd emhub/emhub-js/
 grunt
 ```
 
-### Runnning Web server
+### Running Web server
 ```sh
 cd emhub/
 lein install
 lein ring server
 ```
 
-### Runnning Web socket server
+### Running Web socket server
 ```sh
 cd emhub/
 lein install
