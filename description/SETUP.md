@@ -47,5 +47,5 @@ lein ring server
 ```sh
 cd emhub/
 lein install
-lein ring server
+lein run
 ```
