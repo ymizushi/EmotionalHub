@@ -5,7 +5,7 @@ EmotionalHub is the interactive programming platform for amusement and education
 
 Emola is a kind of LISP programming language designed by ymizushi.
 
-[Try Emola](http://emohub.ymizushi.info/)
+[Try Emola](http://blog.ymizushi.info/emohub/)
 
 ## Setup
 See [SETUP.md](https://github.com/ymizushi/EmotionalHub/blob/master/description/SETUP.md "SETUP.md")
