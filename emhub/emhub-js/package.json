@@ -31,9 +31,11 @@
     "url": "git://github.com/ymizushi/EmotionalHub.git"
   },
   "author": "Yuta Mizushima",
-  "license": "AML",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ymizushi/EmotionalHub/issues"
   },
-  "homepage": "https://github.com/ymizushi/EmotionalHub"
+  "homepage": "http://ymizushi.github.io/emohub/",
+  "dependencies": {},
+  "keywords": []
 }
