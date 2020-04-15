@@ -1,5 +1,5 @@
 # EmotionalHub
-[![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.png?branch=master)](https://travis-ci.org/ymizushi/EmotionalHub)
+[![Build Status](https://travis-ci.org/ymizushi/EmotionalHub.svg?branch=master)](https://travis-ci.org/ymizushi/EmotionalHub)
 
 EmotionalHub is the interactive programming platform for amusement and education with Emola.
 
