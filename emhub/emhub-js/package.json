@@ -1,7 +1,7 @@
 {
   "name": "EmotionalHub",
   "version": "0.0.4",
-  "main": "gulpfile.js",
+  "main": "Gruntfile.js",
   "devDependencies": {
     "bower": "",
     "grunt": "^0.4.5",
@@ -11,11 +11,6 @@
     "grunt-contrib-uglify": "",
     "grunt-contrib-watch": "",
     "grunt-tsc": "",
-    "gulp": "",
-    "gulp-concat": "",
-    "gulp-jasmine": "",
-    "gulp-jasmine-browser": "",
-    "gulp-typescript": "",
     "jshint": "",
     "jslint": "",
     "merge2": "",
