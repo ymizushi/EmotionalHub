@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "13.11.0"
 before_install:
   - cd emhub/emhub-js && npm install -g
 script:

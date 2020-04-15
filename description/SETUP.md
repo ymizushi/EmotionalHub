@@ -9,7 +9,7 @@ cd emhub/emhub-js/
 ### Test
 ```sh
 cd emhub/emhub-js/
-grunt jasmine
+grunt ts-test
 ```
 
 ### Watching modified file
