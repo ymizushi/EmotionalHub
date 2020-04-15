@@ -10,7 +10,7 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install -g
+            - run: npm install
             - run: grunt ts-test
 workflows:
     build-and-test:
