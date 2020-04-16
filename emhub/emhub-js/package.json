@@ -1,21 +1,12 @@
 {
   "name": "EmotionalHub",
   "version": "0.0.4",
-  "main": "Gruntfile.js",
+  "main": "index.js",
   "devDependencies": {
-    "bower": "",
-    "grunt": "^0.4.5",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-jasmine": "",
-    "grunt-contrib-uglify": "",
-    "grunt-contrib-watch": "",
-    "grunt-tsc": "",
-    "jshint": "",
-    "jslint": "",
-    "merge2": "",
-    "typescript": "2.0.3",
-    "typescript-tools": ""
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "description": "Interactive programming environtment.",
   "scripts": {
@@ -31,6 +22,9 @@
     "url": "https://github.com/ymizushi/EmotionalHub/issues"
   },
   "homepage": "http://ymizushi.github.io/emohub/",
-  "dependencies": {},
+  "dependencies": {
+    "@types/jquery": "^3.3.34",
+    "jquery": "^3.5.0"
+  },
   "keywords": []
 }

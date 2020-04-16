@@ -5,11 +5,11 @@ module emola {
   export interface Evalable {
     evalSyntax(env: Env);
   }
-
+  
   export interface VisualEvalable {
     evalSyntax(env: Env, drawingDirector: DrawingDirector);
   }
-
+  
   export class AtomType {
     /* lang */
     static FN = 'fn';
@@ -22,13 +22,13 @@ module emola {
     static LET = 'let';
     static QUOTE = 'quote';
     static EVAL = 'eval';
-
+  
     /* type */
     static TRUE = 'true';
     static FALSE = 'false';
     static STR = 'str';
     static NUMBER = 'number';
-
+  
     /* math */
     static PLUS = '+';
     static MINUS = '-';
@@ -39,7 +39,7 @@ module emola {
     static LESS = '<';
     static GREATEREQUAL = '>=';
     static LESSEQUAL = '<=';
-
+  
     /* visual */
     static DRAW = 'draw';
     static POINT = 'point';
@@ -51,7 +51,7 @@ module emola {
     static SIZE = 'size';
     static TEXT = 'text';
     static WINDOW = 'window';
-
+  
     static getAtoms():string[] {
       return [
         AtomType.FN,
@@ -63,7 +63,7 @@ module emola {
         AtomType.LET,
         AtomType.QUOTE,
         AtomType.EVAL,
-
+  
         AtomType.PLUS,
         AtomType.MINUS,
         AtomType.DIV,
@@ -73,7 +73,7 @@ module emola {
         AtomType.LESS,
         AtomType.GREATEREQUAL,
         AtomType.LESSEQUAL,
-
+  
         AtomType.DRAW,
         AtomType.POINT,
         AtomType.COLOR,
@@ -87,28 +87,28 @@ module emola {
       ];
     }
   }
-
+  
   export class Atom implements Evalable {
     type: string;
     value: string;
-
+  
     static isAtom(atom: Atom) {
       return atom instanceof Atom
     }
-
+  
     static isAtomToken(token: string):boolean {
       return AtomType.getAtoms().indexOf(token) >= 0
     }
-
+  
     constructor(type: string, value: any=null) {
       this.type = type;
       this.value = value
     }
-
+  
     equalToType(type: string) {
       return this.type === type
     }
-
+  
     evalSyntax(env: Env):any {
       switch (this.type) {
         case AtomType.TRUE:
@@ -131,24 +131,24 @@ module emola {
       }
     }
   }
-
+  
   export class Env {
     outer: Env;
     dict: {};
-
+  
     constructor(outer: Env) {
       this.outer = outer;
       this.dict = {}
     }
-
+  
     update(key: string, value: Evalable) {
       this.dict[key] = value
     }
-
+  
     get(key: string): Evalable {
       return this.dict[key]
     }
-
+  
     findEnv(key: string):Env {
       if (this.outer === null && !this.dict[key]) {
         throw new NotFoundError('symbol:' + key +  ' is not found in env.')
@@ -159,12 +159,12 @@ module emola {
       return this.outer.findEnv(key)
     }
   }
-
+  
   export class Fn implements Evalable {
     args: string[];
     expList: Evalable;
     env: Env;
-
+  
     constructor(args: string[], evalable:Evalable, env:Env) {
       this.args = args;
       this.expList = evalable;
@@ -175,13 +175,13 @@ module emola {
       // 引数のenvは見ない
       return this.expList.evalSyntax(this.env)
     }
-
+  
   }
-
+  
   export class Quote implements Evalable {
     list: any;
     env: Env;
-
+  
     constructor(list) {
       this.list = list
     }

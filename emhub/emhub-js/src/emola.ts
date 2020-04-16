@@ -1,13 +1,4 @@
-/// <reference path="../../../typings/jquery/jquery.d.ts" />
-/// <reference path="lang.ts" />
-/// <reference path="reader.ts"/>
-/// <reference path="shape.ts" />
-/// <reference path="syntax_list.ts"/>
-/// <reference path="manager.ts"/>
-/// <reference path="canvas.ts"/>
-/// <reference path="socket.ts"/>
-/// <reference path="error.ts"/>
-/// <reference path="serializer.ts"/>
+import DrawingDirector from './manager';
 
 module emola {
   export class Console {
